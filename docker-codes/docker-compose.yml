@@ -1,0 +1,35 @@
+version: '3'
+services:
+  database:
+    image: mysql:5.7
+    container_name: database
+    hostname: database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+    ports:
+    - "3306:3306"
+
+  api-server:
+    build: ./api-server/
+    container_name: api-server
+    hostname: api-server
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - database
+    ports:
+      - "3000:3001"
+    volumes:
+      - ./api-server/teamx/:/teamx
+
+  http-server:
+    build: ./http-server/
+    container_name: http-server
+    hostname: http-server
+    volumes:
+     - ./http-server/teamx:/usr/src/app
+    # command: sh -c "cd react-sample && yarn start"
+    ports:
+     - "80:3000"
