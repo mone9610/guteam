@@ -8,49 +8,49 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/docker-codes/api-server/teamx/.bundle
+/docker-codes/api-server/guteam/.bundle
 
 # Ignore all logfiles and tempfiles.
-/docker-codes/api-server/teamx/log/*
-/docker-codes/api-server/teamx/tmp/*
-!/docker-codes/api-server/teamx/log/.keep
-!/docker-codes/api-server/teamx/tmp/.keep
+/docker-codes/api-server/guteam/log/*
+/docker-codes/api-server/guteam/tmp/*
+!/docker-codes/api-server/guteam/log/.keep
+!/docker-codes/api-server/guteam/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/docker-codes/api-server/teamx/tmp/pids/*
-!/docker-codes/api-server/teamx/tmp/pids/
-!/docker-codes/api-server/teamx/tmp/pids/.keep
+/docker-codes/api-server/guteam/tmp/pids/*
+!/docker-codes/api-server/guteam/tmp/pids/
+!/docker-codes/api-server/guteam/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/docker-codes/api-server/teamx/storage/*
-!/docker-codes/api-server/teamx/storage/.keep
-/docker-codes/api-server/teamx.byebug_history
+/docker-codes/api-server/guteam/storage/*
+!/docker-codes/api-server/guteam/storage/.keep
+/docker-codes/api-server/guteam.byebug_history
 
 # Ignore master key for decrypting credentials and more.
-/docker-codes/api-server/teamx/config/master.key
+/docker-codes/api-server/guteam/config/master.key
 
 
 ## react関連
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/docker-codes/http-server/teamx/node_modules
-/docker-codes/http-server/teamx/.pnp
-/docker-codes/http-server/teamx.pnp.js
+/docker-codes/http-server/guteam/node_modules
+/docker-codes/http-server/guteam/.pnp
+/docker-codes/http-server/guteam.pnp.js
 
 # testing
-/docker-codes/http-server/teamx/coverage
+/docker-codes/http-server/guteam/coverage
 
 # production
-/docker-codes/http-server/teamx/build
+/docker-codes/http-server/guteam/build
 
 # misc
-/docker-codes/http-server/teamx/.DS_Store
-/docker-codes/http-server/teamx/.env.local
-/docker-codes/http-server/teamx/.env.development.local
-/docker-codes/http-server/teamx/.env.test.local
-/docker-codes/http-server/teamx/.env.production.local
+/docker-codes/http-server/guteam/.DS_Store
+/docker-codes/http-server/guteam/.env.local
+/docker-codes/http-server/guteam/.env.development.local
+/docker-codes/http-server/guteam/.env.test.local
+/docker-codes/http-server/guteam/.env.production.local
 
-/docker-codes/http-server/teamx/npm-debug.log*
-/docker-codes/http-server/teamx/yarn-debug.log*
-/docker-codes/http-server/teamx/yarn-error.log*
+/docker-codes/http-server/guteam/npm-debug.log*
+/docker-codes/http-server/guteam/yarn-debug.log*
+/docker-codes/http-server/guteam/yarn-error.log*
