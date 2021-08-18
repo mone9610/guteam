@@ -1,23 +1,44 @@
-import { VFC } from 'react';
-import logo from './logo.svg';
+import { useState, useEffect, createContext, VFC } from 'react';
 import './App.css';
+import { Switch, Route, Redirect } from 'react-router';
+// import Cookies from "js-cookie";
+
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+import Home from './presentational/pages/Home';
+import LogIn from './presentational/pages/LogIn';
+import SignUp from './presentational/pages/SignUp';
+import Client from './presentational/pages/Client';
+
+const customTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#4D217C',
+    },
+    secondary: {
+      main: '#D6C2DE',
+    },
+  },
+});
 
 const App: VFC = () => (
   <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
+    <ThemeProvider theme={customTheme}>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/login">
+          <LogIn />
+        </Route>
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+        <Route path="/client">
+          <Client />
+        </Route>
+      </Switch>
+    </ThemeProvider>
   </div>
 );
 

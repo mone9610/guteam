@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: '#4D217C',
+//     secondary: 'D6C2DE',
+//   },
+// });
+
 ReactDOM.render(
-  <React.StrictMode>
+  // <MuiThemeProvider theme={theme}>
+  <BrowserRouter>
     <App />
-  </React.StrictMode>,
+  </BrowserRouter>,
+  // </MuiThemeProvider>,
   document.getElementById('root')
 );
 
