@@ -9,7 +9,7 @@ import SignUpButton from '../molecules/SignUpButton';
 import LoginButton from '../molecules/LoginButton';
 import EasyLoginButton from '../molecules/EasyLoginButton';
 
-const ToolBar: VFC = () => (
+const Header: VFC = () => (
   <div>
     <AppBar position="static" color="transparent" id="top">
       <Toolbar>
@@ -31,4 +31,4 @@ const ToolBar: VFC = () => (
   </div>
 );
 
-export default ToolBar;
+export default Header;
