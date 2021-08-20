@@ -1,12 +1,12 @@
 import { VFC } from 'react';
 
-import ToolBar from '../organisms/ToolBar';
+import Header from '../organisms/Header';
 import Rows from '../organisms/Rows';
 import Footer from '../organisms/Footer';
 
 const Home: VFC = () => (
   <div>
-    <ToolBar />
+    <Header />
     <Rows />
     <Footer />
   </div>
