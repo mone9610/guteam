@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: root
     ports:
-    - "3306:3306"
+    - "3306"
 
   api-server:
     build: ./api-server/
@@ -22,14 +22,14 @@ services:
     ports:
       - "3000:3001"
     volumes:
-      - ./api-server/teamx/:/teamx
+      - ./api-server/guteam/:/guteam
 
-  http-server:
-    build: ./http-server/
-    container_name: http-server
-    hostname: http-server
-    volumes:
-     - ./http-server/teamx:/usr/src/app
-    # command: sh -c "cd react-sample && yarn start"
-    ports:
-     - "80:3000"
+  # http-server:
+  #   build: ./http-server/
+  #   container_name: http-server
+  #   hostname: http-server
+  #   volumes:
+  #    - ./http-server/guteam:/usr/src/app
+  #   # command: sh -c "cd react-sample && yarn start"
+  #   ports:
+  #    - "80:3000"

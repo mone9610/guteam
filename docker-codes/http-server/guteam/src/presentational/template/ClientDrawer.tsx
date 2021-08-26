@@ -24,6 +24,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import BuildIcon from '@material-ui/icons/Build';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 import Collapse from '@material-ui/core/Collapse';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -88,6 +90,7 @@ interface Props {
 }
 
 const ClientDrawer: VFC<Props> = (props) => {
+  const { logout } = useAuth0();
   // eslint-disable-next-line react/prop-types
   const { window } = props;
   const classes = useStyles();
@@ -222,7 +225,11 @@ const ClientDrawer: VFC<Props> = (props) => {
             {/* <ListItem button className={classes.nested}>
               <ListItemText primary="プロフィール編集" />
             </ListItem> */}
-            <ListItem button className={classes.nested}>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => logout()}
+            >
               <ListItemText primary="ログアウト" />
             </ListItem>
           </List>

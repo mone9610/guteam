@@ -7,6 +7,8 @@ import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 import ProfileOnAvatar from './ProfileOnAvatar';
 
 const Avatar: VFC = () => {
@@ -19,6 +21,8 @@ const Avatar: VFC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { logout } = useAuth0();
 
   return (
     <div>
@@ -41,7 +45,7 @@ const Avatar: VFC = () => {
         onClose={handleClose}
       >
         <ProfileOnAvatar />
-        <MenuItem>ログアウト</MenuItem>
+        <MenuItem onClick={() => logout()}>ログアウト</MenuItem>
       </Menu>
     </div>
   );
