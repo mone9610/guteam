@@ -1,5 +1,7 @@
 ## drawio関連は非公開にする
 *.drawio
+##環境変数は非公開
+*.env
 ##rails関連
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.
 #

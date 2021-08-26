@@ -6,6 +6,7 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import ClientDrawer from '../template/ClientDrawer';
 import Content from '../template/Content';
 
@@ -46,27 +47,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  // eslint-disable-next-line react/require-default-props
-  window?: () => Window;
-}
-
-const Client: VFC<Props> = (props: Props) => {
-  const { window } = props;
+const Client: VFC = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const history = useHistory();
 
   return (
     <div className={classes.root}>

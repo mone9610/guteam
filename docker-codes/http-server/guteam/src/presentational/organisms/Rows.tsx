@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 
 import LargeSignUpButton from '../molecules/LargeSignUpButton';
 import LargeLoginButton from '../molecules/LargeLoginButton';
-import EasyLoginButton from '../molecules/EasyLoginButton';
 import Home1 from '../../assets/img/home1.jpg';
 import Timeline from '../../assets/img/timeline.svg';
 import Community from '../../assets/img/community.svg';
@@ -52,9 +51,6 @@ const Rows: VFC = () => {
               </p>
               <p>
                 <LargeLoginButton />
-              </p>
-              <p>
-                <EasyLoginButton />
               </p>
             </p>
           </Grid>
@@ -173,9 +169,6 @@ const Rows: VFC = () => {
             </p>
             <p>
               <LargeLoginButton />
-            </p>
-            <p>
-              <EasyLoginButton />
             </p>
           </p>
         </Grid>

@@ -7,7 +7,6 @@ import Box from '@material-ui/core/Box';
 import LogoMedium from '../../assets/img/logo_medium.jpg';
 import SignUpButton from '../molecules/SignUpButton';
 import LoginButton from '../molecules/LoginButton';
-import EasyLoginButton from '../molecules/EasyLoginButton';
 
 const Header: VFC = () => (
   <div>
@@ -17,9 +16,6 @@ const Header: VFC = () => (
           <img src={LogoMedium} alt="Logo" />
         </Box>
         <div style={{ flexGrow: 1 }} />
-        <Box m={2} display={{ xs: 'none', sm: 'none', md: 'block' }}>
-          <EasyLoginButton />
-        </Box>
         <Box m={2} display={{ xs: 'none', sm: 'none', md: 'block' }}>
           <SignUpButton />
         </Box>

@@ -1,23 +1,23 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: '#4D217C',
-//     secondary: 'D6C2DE',
-//   },
-// });
+const domain: any = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId: any = process.env.REACT_APP_AUTH0_CLIENT_ID;
+const audience: any = process.env.REACT_APP_AUTH0_AUDIENCE;
 
 ReactDOM.render(
-  // <MuiThemeProvider theme={theme}>
-  <BrowserRouter>
+  <Auth0Provider
+    domain={domain}
+    clientId={clientId}
+    audience={audience}
+    redirectUri={window.location.origin}
+  >
     <App />
-  </BrowserRouter>,
-  // </MuiThemeProvider>,
+  </Auth0Provider>,
   document.getElementById('root')
 );
 
