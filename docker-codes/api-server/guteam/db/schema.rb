@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_24_041553) do
+ActiveRecord::Schema.define(version: 2021_08_27_022706) do
 
   create_table "posts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2021_08_24_041553) do
     t.string "introduction"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "picture_url"
   end
 
   add_foreign_key "posts", "users"

@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,6 +36,7 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
+
 import Avatar from '../molecules/Avatar';
 
 const drawerWidth = 240;
@@ -90,6 +91,7 @@ interface Props {
 }
 
 const ClientDrawer: VFC<Props> = (props) => {
+  const history = useHistory();
   const { logout } = useAuth0();
   // eslint-disable-next-line react/prop-types
   const { window } = props;
@@ -117,6 +119,10 @@ const ClientDrawer: VFC<Props> = (props) => {
   const [openSetting, setOpenSetting] = React.useState(false);
   const handleClickSetting = () => {
     setOpenSetting(!openSetting);
+  };
+  const [openAdmin, setOpenAdmin] = React.useState(false);
+  const handleClickAdmin = () => {
+    setOpenAdmin(!openAdmin);
   };
 
   const drawer = (
@@ -213,6 +219,12 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
+        <ListItem button>
+          <ListItemIcon>
+            <InfoIcon />
+          </ListItemIcon>
+          <ListItemText primary="お知らせ" />
+        </ListItem>
         <ListItem button onClick={handleClickSetting}>
           <ListItemIcon>
             <SettingsIcon />
@@ -222,9 +234,13 @@ const ClientDrawer: VFC<Props> = (props) => {
         </ListItem>
         <Collapse in={openSetting} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {/* <ListItem button className={classes.nested}>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/client/profile')}
+            >
               <ListItemText primary="プロフィール編集" />
-            </ListItem> */}
+            </ListItem>
             <ListItem
               button
               className={classes.nested}
@@ -235,6 +251,31 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
+        <ListItem button onClick={handleClickAdmin}>
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary="管理機能" />
+          {openAdmin ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openAdmin} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/client/admin/user')}
+            >
+              <ListItemText primary="ユーザー管理" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => logout()}
+            >
+              <ListItemText primary="ログアウト" />
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
     </div>
   );
@@ -260,7 +301,9 @@ const ClientDrawer: VFC<Props> = (props) => {
             ここに今いるページのタイトルを表示
           </Typography>
           <div style={{ flexGrow: 1 }} />
-          <InfoIcon className={classes.appbarIcon} />
+          {/* <InfoIcon
+            className={classes.appbarIcon}
+          /> */}
           <Avatar />
         </Toolbar>
       </AppBar>
