@@ -1,9 +1,14 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { VFC, useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Formik, Form, Field } from 'formik';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -28,10 +33,17 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       width: '30ch',
     },
+    alert: {
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+    },
   })
 );
 
-type User2 = {
+// ToDo:typeは別ファイルで管理する予定
+type UserType = {
   id: string;
   name: string;
   sub: string;
@@ -39,44 +51,78 @@ type User2 = {
   // eslint-disable-next-line camelcase
   picture_url: string;
 };
-export type { User2 };
+export type { UserType };
 
-const basePath = 'http://localhost:3000/api/v1/users/';
-const pathParam = '6129adf2f2e16000706316e9';
-const url = basePath + pathParam;
+// ToDo:共通化する
+const getUserID = (sub: string): string => {
+  const userID = sub.replace(/auth0\|/g, '');
+  return userID;
+};
+
+const basePath = process.env.REACT_APP_REST_URL;
+const pathParam = '/users/';
+const initialAvatar =
+  'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg';
 
 const Profile: VFC = () => {
   const classes = useStyles();
   const { user, getAccessTokenSilently } = useAuth0();
-  const [user2, setUser2] = useState<User2>();
+  const [userType, setUserType] = useState<UserType>();
   const [progress, setProgress] = useState(false);
-  const [inputName, setInputName] = useState('');
-  const [inputIntroduction, setInputIntroduction] = useState('');
-  const [pictureUrl, setPictureUrl] = useState<string>('');
+  const [inputName, setInputName] = useState(userType?.name);
+  const [inputIntroduction, setInputIntroduction] = useState(
+    userType?.introduction
+  );
+  const [pictureUrl, setPictureUrl] = useState(userType?.picture_url);
+  const [token, setToken] = useState('');
 
+  // HACK：userSubを宣言しないとgetUserIDが実行できないため、定数を2回宣言している
+  const userSub: any = user?.sub;
+  const userID: string = getUserID(userSub);
+  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+  const url = basePath + pathParam + userID;
+
+  // ToDo:getUser関数として、共通化する
   useEffect(() => {
     setProgress(true);
-    void axios
-      .get<User2>(url, {
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRuZWJLcmtuSm9xOTJOZGRHYmc2ViJ9.eyJpc3MiOiJodHRwczovL2d1dGVhbS5qcC5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjEyOWFkZjJmMmUxNjAwMDcwNjMxNmU5IiwiYXVkIjpbImh0dHBzOi8vZ3V0ZWFtX2FwaSIsImh0dHBzOi8vZ3V0ZWFtLmpwLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MzAzNzcwMDMsImV4cCI6MTYzMDQ2MzQwMywiYXpwIjoiYjdIUDBFOExCMzdVVWQ1UE1CRGg5UUxCanJMWXpBUEYiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOltdfQ.DmPIYDpaJkpJEOcTbVPMMEMYuLPjMySdbZax97DuWCJpC0CJLV4xyuNog_a-rHiKPiSDRu_lTu0IgWy9ygoIZupzccZuNjLSsfVBOYeCDrIxE17lrMUnU8KFSS9IP-U9xwUKRPPNB_NaE1ZIhYrSd7vhdJc1UZLrlI3KksqVEJjE27ZBdXBYnKcGrDa-lB7pgj6ROQxfcTkxgGmxVk_R37-pzkyj2cQsz6IiGmrjnzx9neBcgH2EANqqf0n2_v_49sE_1mPaLYGiRErnUlMh8mD824DxqhYRxYn9rtK1hckedh4atTR8zHjReHU8mGqc5w-rNMU0wdMgKxX0H0dusw',
-        },
-        timeout: 10000,
-      })
-      .then((res) => {
-        setUser2(res.data);
-        setProgress(false);
-      })
-      .catch((err) => {
-        console.log('err:', err);
-        alert(
-          'エラーが発生しました。しばらくしてからもう一度試してみてください。'
-        );
-      });
-  }, []);
+    const header = `Bearer ${token}`;
 
+    const getToken = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently({});
+        setToken(accessToken);
+      } catch (e) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        console.log(e.message);
+      }
+    };
+    void getToken();
+
+    // HACK:トークン取得後に更新されるフラグをもとに、getリクエストを制御している
+    if (token)
+      void axios
+        .get<UserType>(url, {
+          headers: {
+            Authorization: header,
+          },
+          timeout: 10000,
+        })
+        .then((res) => {
+          setUserType(res.data);
+          setProgress(false);
+        })
+        .catch((err) => {
+          console.log('err:', err);
+          // <Alert className={classes.alert} severity="error">
+          //   エラーが発生しました。しばらく待ってから再度試してください。
+          // </Alert>;
+          alert('エラーが発生しました。しばらく待ってから再度試してください。');
+        });
+  }, [classes.alert, getAccessTokenSilently, token, url]);
+
+  // ToDo:putUser関数として、共通化する
   const handleSubmit = () => {
+    const header = `Bearer ${token}`;
     const data = {
       name: inputName,
       introduction: inputIntroduction,
@@ -85,15 +131,14 @@ const Profile: VFC = () => {
     axios
       .put(url, data, {
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRuZWJLcmtuSm9xOTJOZGRHYmc2ViJ9.eyJpc3MiOiJodHRwczovL2d1dGVhbS5qcC5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjEyOWFkZjJmMmUxNjAwMDcwNjMxNmU5IiwiYXVkIjpbImh0dHBzOi8vZ3V0ZWFtX2FwaSIsImh0dHBzOi8vZ3V0ZWFtLmpwLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MzAzNzcwMDMsImV4cCI6MTYzMDQ2MzQwMywiYXpwIjoiYjdIUDBFOExCMzdVVWQ1UE1CRGg5UUxCanJMWXpBUEYiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOltdfQ.DmPIYDpaJkpJEOcTbVPMMEMYuLPjMySdbZax97DuWCJpC0CJLV4xyuNog_a-rHiKPiSDRu_lTu0IgWy9ygoIZupzccZuNjLSsfVBOYeCDrIxE17lrMUnU8KFSS9IP-U9xwUKRPPNB_NaE1ZIhYrSd7vhdJc1UZLrlI3KksqVEJjE27ZBdXBYnKcGrDa-lB7pgj6ROQxfcTkxgGmxVk_R37-pzkyj2cQsz6IiGmrjnzx9neBcgH2EANqqf0n2_v_49sE_1mPaLYGiRErnUlMh8mD824DxqhYRxYn9rtK1hckedh4atTR8zHjReHU8mGqc5w-rNMU0wdMgKxX0H0dusw',
+          Authorization: header,
         },
       })
       .then((res) => {
-        alert('プロフィールを更新しました。');
+        alert(' プロフィールを更新しました。');
       })
       .catch((error) => {
-        alert('エラーが発生しました。');
+        alert('エラーが発生しました。しばらく待ってから再度試してください。');
       });
   };
 
@@ -107,101 +152,71 @@ const Profile: VFC = () => {
         <>
           <main className={classes.content}>
             <br />
-            <form autoComplete="off" onSubmit={() => handleSubmit()}>
-              {/* ToDo:画像についてはURLがなければ初期イメージを設定する */}
-              <input
-                type="image"
-                src={user2?.picture_url}
-                alt={user2?.picture_url}
-                className={classes.imgCircleEditable}
-                onClick={() =>
-                  setPictureUrl(
-                    'https://s.gravatar.com/avatar/680e0e78ed099c9ec31c82c0c949169c?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fgu.png'
-                  )
-                }
-              />
-              <p />
-              <TextField
-                id="standard-required"
-                name="name"
-                label="ユーザー名"
-                defaultValue={user2?.name}
-                className={classes.textField}
-                helperText="全角8字以内で入力"
-                inputProps={{ maxLength: 8 }}
-                onChange={(e) => setInputName(e.target.value)}
-              />
-              <p />
-              <TextField
-                id="outlined-helperText"
-                name="introduction"
-                label="自己紹介"
-                defaultValue={user2?.introduction}
-                helperText="全角120字以内で入力"
-                inputProps={{ maxLength: 120 }}
-                variant="outlined"
-                multiline
-                rows={10}
-                className={classes.textField}
-                onChange={(e) => setInputIntroduction(e.target.value)}
-              />
-              <p />
-              <TextField
-                disabled
-                id="standard-read-only-input"
-                label="ユーザーID"
-                defaultValue={user2?.sub}
-                InputProps={{
-                  readOnly: true,
-                }}
-                className={classes.textField}
-              />
-              <p />
-              {/* ToDo:emailのからむを作成する */}
-              <TextField
-                disabled
-                id="standard-read-only-input"
-                label="メールアドレス"
-                helperText="公開されません"
-                defaultValue={user?.email}
-                InputProps={{
-                  readOnly: true,
-                }}
-                className={classes.textField}
-              />
-              <p />
-              <TextField
-                disabled
-                id="standard-read-only-input"
-                label="役割"
-                defaultValue="管理者"
-                InputProps={{
-                  readOnly: true,
-                }}
-                className={classes.textField}
-              />
-              <p />
-              <Grid
-                container
-                justify="center"
-                justifyContent="center"
-                alignContent="center"
-                // direction="row-reverse"
-                spacing={2}
-              >
-                <Grid item xs={12} justifyContent="center">
-                  <Button
-                    // onClick={() => handleSubmit()}
-                    variant="contained"
-                    size="large"
-                    color="primary"
-                    type="submit"
-                  >
-                    変更を保存
-                  </Button>
-                </Grid>
+            {/* <form autoComplete="off" onSubmit={() => handleSubmit()}> */}
+            <img
+              // type="image"
+              src={userType?.picture_url ?? initialAvatar}
+              alt={userType?.picture_url ?? '未設定'}
+              className={classes.imgCircleEditable}
+            />
+            <p />
+            <TextField
+              id="standard-required"
+              name="name"
+              label="ユーザー名"
+              defaultValue={userType?.name ?? '未設定'}
+              className={classes.textField}
+              helperText="全角16字以内で入力"
+              inputProps={{ maxLength: 16 }}
+              onChange={(e) => setInputName(e.target.value)}
+            />
+            <p />
+            <TextField
+              id="outlined-helperText"
+              name="introduction"
+              label="自己紹介"
+              defaultValue={userType?.introduction ?? ''}
+              helperText="全角120字以内で入力"
+              inputProps={{ maxLength: 120 }}
+              variant="outlined"
+              multiline
+              rows={10}
+              className={classes.textField}
+              onChange={(e) => setInputIntroduction(e.target.value)}
+            />
+            <p />
+            <TextField
+              disabled
+              id="standard-read-only-input"
+              label="ユーザーID"
+              defaultValue={userType?.sub ?? '未取得'}
+              InputProps={{
+                readOnly: true,
+              }}
+              className={classes.textField}
+            />
+            <p />
+            <Grid
+              container
+              justify="center"
+              justifyContent="center"
+              alignContent="center"
+              // direction="row-reverse"
+              spacing={2}
+            >
+              <Grid item xs={12} justifyContent="center">
+                <Button
+                  onClick={() => handleSubmit()}
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  // type="submit"
+                >
+                  変更を保存
+                </Button>
               </Grid>
-            </form>
+            </Grid>
+            {/* </form> */}
           </main>
         </>
       )}

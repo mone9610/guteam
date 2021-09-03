@@ -25,37 +25,8 @@ const customTheme = createTheme({
 export const history = createBrowserHistory();
 
 const App: VFC = () => {
-  const { isAuthenticated, loginWithRedirect, logout, getAccessTokenSilently } =
-    useAuth0();
-  const [token, setToken] = useState<string>('');
   const [role, setRole] = useState<string>('');
   const { isLoading } = useAuth0();
-
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        const accessToken = await getAccessTokenSilently({});
-        setToken(accessToken);
-      } catch (e) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        console.log(e.message);
-      }
-    };
-    void getToken();
-  }, [getAccessTokenSilently]);
-
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onRedirectCallback = async (appState: { returnTo: any }) => {
-    history.replace({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      pathname: appState?.returnTo || window.location.pathname,
-      search: '',
-    });
-  };
-
-  const goToClient = () => {
-    history.push('/client');
-  };
 
   return (
     <div className="App">
