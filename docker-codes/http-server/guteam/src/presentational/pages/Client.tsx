@@ -42,17 +42,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const TokenContext = createContext('');
+export const LoadingContext = createContext(true);
 
 const Client: VFC = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <ClientDrawer />
-      <CssBaseline />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Content />
-      </main>
+      <LoadingContext.Provider value>
+        <ClientDrawer />
+        <CssBaseline />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Content />
+        </main>
+      </LoadingContext.Provider>
     </div>
   );
 };

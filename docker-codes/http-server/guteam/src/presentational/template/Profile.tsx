@@ -1,19 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { VFC, useState, useEffect } from 'react';
+import { VFC, useState, useEffect, useContext } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Formik, Form, Field } from 'formik';
 
 import { useAuth0 } from '@auth0/auth0-react';
-
+import ReactS3Client from 'react-aws-s3-typescript';
 import axios from 'axios';
-import Spinner from '../molecules/Spinner';
+
+import { User } from 'common/CustomTypes';
+import Spinner from 'presentational/molecules/Spinner';
+import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
+import { absSubFromUserID, getUser } from 'common/customFunctions';
+import { useToken } from 'common/CustomHooks';
+
+// import { LoadingContext } from 'presentational/pages/Client';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,104 +49,180 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-// ToDo:typeは別ファイルで管理する予定
-type UserType = {
-  id: string;
-  name: string;
-  sub: string;
-  introduction: string;
-  // eslint-disable-next-line camelcase
-  picture_url: string;
-};
-export type { UserType };
-
-// ToDo:共通化する
-const getUserID = (sub: string): string => {
-  const userID = sub.replace(/auth0\|/g, '');
-  return userID;
-};
-
 const basePath = process.env.REACT_APP_REST_URL;
 const pathParam = '/users/';
 const initialAvatar =
   'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg';
 
+const S3_BUCKET = 'guteam-test-20210819';
+const REGION = 'ap-northeast-1';
+const ACCESS_KEY = 'AKIAWVMZOAEFRWDNKLMA';
+const SECRET_ACCESS_KEY = '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';
+
+const config = {
+  bucketName: S3_BUCKET,
+  dirName: 'profile/test',
+  region: REGION,
+  accessKeyId: ACCESS_KEY,
+  secretAccessKey: SECRET_ACCESS_KEY,
+};
+
+// eslint-disable-next-line consistent-return
+const uploadFile = async (file: any) => {
+  /* Import s3 config object and call the constrcutor */
+  const ts = Date.parse(new Date().toISOString());
+  const s3 = new ReactS3Client(config);
+  const filename = `${ts}`; /* Optional */
+  try {
+    const res = await s3.uploadFile(file, filename);
+    console.log(res);
+    console.log(res.location);
+    return res.location;
+  } catch (exception) {
+    console.log(exception);
+  }
+};
+
 const Profile: VFC = () => {
   const classes = useStyles();
-  const { user, getAccessTokenSilently } = useAuth0();
-  const [userType, setUserType] = useState<UserType>();
-  const [progress, setProgress] = useState(false);
-  const [inputName, setInputName] = useState(userType?.name);
+  const { user, getAccessTokenSilently, isLoading } = useAuth0();
+  const [userData, setUserData] = useState<User>();
+  // const [userType, setUserType] = useState<User>();
+  const [inputName, setInputName] = useState(userData?.name);
   const [inputIntroduction, setInputIntroduction] = useState(
-    userType?.introduction
+    userData?.introduction
   );
-  const [pictureUrl, setPictureUrl] = useState(userType?.picture_url);
-  const [token, setToken] = useState('');
-
-  // HACK：userSubを宣言しないとgetUserIDが実行できないため、定数を2回宣言している
+  const [pictureUrl, setPictureUrl] = useState(userData?.picture_url);
   const userSub: any = user?.sub;
-  const userID: string = getUserID(userSub);
+  const userID: string = absSubFromUserID(userSub);
+  const token = useToken();
+  const [progress, setProgress] = useState(true);
+  const [isResistered, setIsResistered] = useState(false);
+  const [status, setStatus] = useState({
+    open: false,
+    type: 'success',
+    message: '成功しました。',
+  });
+
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const url = basePath + pathParam + userID;
+  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+  const url2 = basePath + pathParam;
 
-  // ToDo:getUser関数として、共通化する
+  async function processImage(event: any) {
+    const sizeLimit = 1024 * 1024 * 1;
+    const imageFile = event.target.files[0];
+    if (event.target.files[0].size > sizeLimit) {
+      alert('ファイルサイズは1MB以下にしてください');
+    } else {
+      const loc = await uploadFile(imageFile);
+      setPictureUrl(loc);
+    }
+  }
+
+  // ToDo:CustomHookとして共通化する
   useEffect(() => {
     setProgress(true);
     const header = `Bearer ${token}`;
 
-    const getToken = async () => {
-      try {
-        const accessToken = await getAccessTokenSilently({});
-        setToken(accessToken);
-      } catch (e) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        console.log(e.message);
-      }
-    };
-    void getToken();
-
     // HACK:トークン取得後に更新されるフラグをもとに、getリクエストを制御している
     if (token)
+      // ToDo:getUser関数として、共通化する
       void axios
-        .get<UserType>(url, {
+        .get<User>(url, {
           headers: {
             Authorization: header,
           },
           timeout: 10000,
         })
         .then((res) => {
-          setUserType(res.data);
+          setUserData(res.data);
           setProgress(false);
+          setIsResistered(true);
         })
         .catch((err) => {
           console.log('err:', err);
-          // <Alert className={classes.alert} severity="error">
-          //   エラーが発生しました。しばらく待ってから再度試してください。
-          // </Alert>;
+
           alert('エラーが発生しました。しばらく待ってから再度試してください。');
         });
-  }, [classes.alert, getAccessTokenSilently, token, url]);
 
-  // ToDo:putUser関数として、共通化する
-  const handleSubmit = () => {
+    //  Todo: ユーザーが登録されていなかった場合の初回登録用関数。postUser関数として共通化する。
+    // if (!isResistered)
+    //   void axios
+    //     .post<User>(
+    //       url2,
+    //       {
+    //         name: null,
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //         sub: absSubFromUserID(userSub),
+    //         introduction: null,
+    //         picture_url: initialAvatar,
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: header,
+    //           ContentType: 'application/json; charset=utf-8',
+    //         },
+
+    //         timeout: 10000,
+    //       }
+    //     )
+    //     .then((res) => {
+    //       setProgress(false);
+    //       setIsResistered(true);
+    //     })
+    //     .catch((err) => {
+    //       console.log('err:', err);
+    //       // <Alert className={classes.alert} severity="error">
+    //       //   エラーが発生しました。しばらく待ってから再度試してください。
+    //       // </Alert>;
+    //       // alert('エラーが発生しました。しばらく待ってから再度試してください。');
+    //     });
+  }, [getAccessTokenSilently, isResistered, token, url, url2, userSub]);
+
+  function putUser() {
     const header = `Bearer ${token}`;
-    const data = {
-      name: inputName,
-      introduction: inputIntroduction,
-      picture_url: pictureUrl,
-    };
-    axios
-      .put(url, data, {
-        headers: {
-          Authorization: header,
+    void axios
+      .put<User>(
+        url,
+        {
+          name: inputName,
+          introduction: inputIntroduction,
+          picture_url: pictureUrl,
         },
-      })
+        {
+          headers: {
+            Authorization: header,
+            // Authorization: 'hogehoge',
+          },
+          timeout: 10000,
+        }
+      )
       .then((res) => {
-        alert(' プロフィールを更新しました。');
+        console.log(res.status);
+        setStatus({
+          open: true,
+          type: 'success',
+          message: 'プロフィールの更新に成功しました。',
+        });
       })
-      .catch((error) => {
-        alert('エラーが発生しました。しばらく待ってから再度試してください。');
+      .catch((err) => {
+        console.log('err:', err);
+        setStatus({
+          open: true,
+          type: 'error',
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          message: `プロフィールの更新に失敗しました。(コード：${err.response.status})`,
+        });
       });
+  }
+
+  const handleClose = (event: unknown, reason: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setStatus({ ...status, open: false });
   };
 
   return (
@@ -151,20 +234,38 @@ const Profile: VFC = () => {
       ) : (
         <>
           <main className={classes.content}>
+            <CustomizedSnackbars
+              open={status.open}
+              handleClose={handleClose}
+              type={status.type}
+              message={status.message}
+            />
             <br />
             {/* <form autoComplete="off" onSubmit={() => handleSubmit()}> */}
             <img
               // type="image"
-              src={userType?.picture_url ?? initialAvatar}
-              alt={userType?.picture_url ?? '未設定'}
+              // src={userData?.picture_url ?? initialAvatar}
+              src={pictureUrl ?? userData?.picture_url ?? initialAvatar}
+              alt={userData?.picture_url ?? '未設定'}
               className={classes.imgCircleEditable}
             />
+            <p />
+            <Button variant="contained" color="secondary" component="label">
+              画像をアップロード
+              <input
+                type="file"
+                id="customFile"
+                accept="image/*"
+                onChange={processImage}
+                hidden
+              />
+            </Button>
             <p />
             <TextField
               id="standard-required"
               name="name"
               label="ユーザー名"
-              defaultValue={userType?.name ?? '未設定'}
+              defaultValue={userData?.name ?? '未設定'}
               className={classes.textField}
               helperText="全角16字以内で入力"
               inputProps={{ maxLength: 16 }}
@@ -175,7 +276,9 @@ const Profile: VFC = () => {
               id="outlined-helperText"
               name="introduction"
               label="自己紹介"
-              defaultValue={userType?.introduction ?? ''}
+              defaultValue={
+                userData?.introduction ?? '自己紹介を書いてみよう！'
+              }
               helperText="全角120字以内で入力"
               inputProps={{ maxLength: 120 }}
               variant="outlined"
@@ -189,7 +292,7 @@ const Profile: VFC = () => {
               disabled
               id="standard-read-only-input"
               label="ユーザーID"
-              defaultValue={userType?.sub ?? '未取得'}
+              defaultValue={userData?.sub ?? '未取得'}
               InputProps={{
                 readOnly: true,
               }}
@@ -206,7 +309,7 @@ const Profile: VFC = () => {
             >
               <Grid item xs={12} justifyContent="center">
                 <Button
-                  onClick={() => handleSubmit()}
+                  onClick={() => putUser()}
                   variant="contained"
                   size="large"
                   color="primary"

@@ -9,7 +9,7 @@ import { createBrowserHistory } from 'history';
 
 import Home from './presentational/pages/Home';
 import Client from './presentational/pages/Client';
-import { ProtectedRoute } from './utils/ProtectedRoute';
+import { ProtectedRoute } from './common/ProtectedRoute';
 
 const customTheme = createTheme({
   palette: {
