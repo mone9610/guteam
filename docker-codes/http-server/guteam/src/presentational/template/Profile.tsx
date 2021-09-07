@@ -50,21 +50,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const basePath = process.env.REACT_APP_REST_URL;
+const bucket = process.env.S3_BUCKET!;
 const pathParam = '/users/';
 const initialAvatar =
   'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg';
 
-const S3_BUCKET = 'guteam-test-20210819';
-const REGION = 'ap-northeast-1';
-const ACCESS_KEY = 'AKIAWVMZOAEFRWDNKLMA';
-const SECRET_ACCESS_KEY = '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';
-
 const config = {
-  bucketName: S3_BUCKET,
+  // bucketName: process.env.S3_BUCKET!,
+  bucketName: process.env.REACT_APP_S3_BUCKET!,
   dirName: 'profile/test',
-  region: REGION,
-  accessKeyId: ACCESS_KEY,
-  secretAccessKey: SECRET_ACCESS_KEY,
+  region: process.env.REACT_APP_REGION!,
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY!,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY!,
 };
 
 // eslint-disable-next-line consistent-return
@@ -79,6 +76,8 @@ const uploadFile = async (file: any) => {
     console.log(res.location);
     return res.location;
   } catch (exception) {
+    console.log(process.env.REACT_APP_S3_BUCKET);
+    console.log(config);
     console.log(exception);
   }
 };
@@ -107,7 +106,7 @@ const Profile: VFC = () => {
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const url = basePath + pathParam + userID;
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  const url2 = basePath + pathParam;
+  // const url2 = basePath + pathParam;
 
   async function processImage(event: any) {
     const sizeLimit = 1024 * 1024 * 1;
@@ -179,7 +178,7 @@ const Profile: VFC = () => {
     //       // </Alert>;
     //       // alert('エラーが発生しました。しばらく待ってから再度試してください。');
     //     });
-  }, [getAccessTokenSilently, isResistered, token, url, url2, userSub]);
+  }, [getAccessTokenSilently, isResistered, token, url, userSub]);
 
   function putUser() {
     const header = `Bearer ${token}`;

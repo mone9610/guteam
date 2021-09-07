@@ -19,7 +19,6 @@ import GroupIcon from '@material-ui/icons/Group';
 import EmailIcon from '@material-ui/icons/Email';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import BuildIcon from '@material-ui/icons/Build';
@@ -29,7 +28,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Collapse from '@material-ui/core/Collapse';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
 import {
   makeStyles,
   useTheme,
@@ -156,12 +154,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="家庭" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <ListItem button onClick={handleClickTeam}>
@@ -176,18 +168,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemText primary="将棋マスターズ" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="大手町中学校" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <ListItem button onClick={handleClickDirect}>
@@ -202,20 +182,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemText primary="馬山働次郎" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <Badge badgeContent={4} color="error">
-                <ListItemText primary="犬山従太郎" />
-              </Badge>
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <Divider />
@@ -301,9 +267,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             ここに今いるページのタイトルを表示
           </Typography>
           <div style={{ flexGrow: 1 }} />
-          {/* <InfoIcon
-            className={classes.appbarIcon}
-          /> */}
           <Avatar />
         </Toolbar>
       </AppBar>
