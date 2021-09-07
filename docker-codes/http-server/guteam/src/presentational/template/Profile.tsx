@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable no-console */
-/* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { VFC, useState, useEffect, useContext } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactS3Client from 'react-aws-s3-typescript';
@@ -19,8 +16,6 @@ import Spinner from 'presentational/molecules/Spinner';
 import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
 import { absSubFromUserID, getUser } from 'common/customFunctions';
 import { useToken } from 'common/CustomHooks';
-
-// import { LoadingContext } from 'presentational/pages/Client';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,11 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const basePath = process.env.REACT_APP_REST_URL;
-const bucket = process.env.S3_BUCKET!;
 const pathParam = '/users/';
-const initialAvatar =
-  'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg';
+const initialAvatar = process.env.REACT_APP_INITIAL_AVATAR;
 
+// ToDo:AWS接続用の関数は、custom functionsとして共通化する
 const config = {
   // bucketName: process.env.S3_BUCKET!,
   bucketName: process.env.REACT_APP_S3_BUCKET!,
@@ -72,12 +66,8 @@ const uploadFile = async (file: any) => {
   const filename = `${ts}`; /* Optional */
   try {
     const res = await s3.uploadFile(file, filename);
-    console.log(res);
-    console.log(res.location);
     return res.location;
   } catch (exception) {
-    console.log(process.env.REACT_APP_S3_BUCKET);
-    console.log(config);
     console.log(exception);
   }
 };
@@ -105,14 +95,16 @@ const Profile: VFC = () => {
 
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const url = basePath + pathParam + userID;
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  // const url2 = basePath + pathParam;
 
   async function processImage(event: any) {
     const sizeLimit = 1024 * 1024 * 1;
     const imageFile = event.target.files[0];
     if (event.target.files[0].size > sizeLimit) {
-      alert('ファイルサイズは1MB以下にしてください');
+      setStatus({
+        open: true,
+        type: 'error',
+        message: 'ファイルサイズは1MB以下にしてください',
+      });
     } else {
       const loc = await uploadFile(imageFile);
       setPictureUrl(loc);
@@ -141,8 +133,12 @@ const Profile: VFC = () => {
         })
         .catch((err) => {
           console.log('err:', err);
-
-          alert('エラーが発生しました。しばらく待ってから再度試してください。');
+          setStatus({
+            open: true,
+            type: 'error',
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            message: `予期せぬエラーが発生しました。(コード：${err.response.status})`,
+          });
         });
 
     //  Todo: ユーザーが登録されていなかった場合の初回登録用関数。postUser関数として共通化する。
