@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,7 +19,6 @@ import GroupIcon from '@material-ui/icons/Group';
 import EmailIcon from '@material-ui/icons/Email';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
 import BuildIcon from '@material-ui/icons/Build';
@@ -29,13 +28,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Collapse from '@material-ui/core/Collapse';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
 import {
   makeStyles,
   useTheme,
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
+
 import Avatar from '../molecules/Avatar';
 
 const drawerWidth = 240;
@@ -90,6 +89,7 @@ interface Props {
 }
 
 const ClientDrawer: VFC<Props> = (props) => {
+  const history = useHistory();
   const { logout } = useAuth0();
   // eslint-disable-next-line react/prop-types
   const { window } = props;
@@ -117,6 +117,10 @@ const ClientDrawer: VFC<Props> = (props) => {
   const [openSetting, setOpenSetting] = React.useState(false);
   const handleClickSetting = () => {
     setOpenSetting(!openSetting);
+  };
+  const [openAdmin, setOpenAdmin] = React.useState(false);
+  const handleClickAdmin = () => {
+    setOpenAdmin(!openAdmin);
   };
 
   const drawer = (
@@ -150,12 +154,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="家庭" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <ListItem button onClick={handleClickTeam}>
@@ -170,18 +168,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemText primary="将棋マスターズ" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="大手町中学校" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <ListItem button onClick={handleClickDirect}>
@@ -196,23 +182,15 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
             </ListItem>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemText primary="馬山働次郎" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <Badge badgeContent={4} color="error">
-                <ListItemText primary="犬山従太郎" />
-              </Badge>
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="新規追加" />
-            </ListItem> */}
           </List>
         </Collapse>
         <Divider />
+        <ListItem button>
+          <ListItemIcon>
+            <InfoIcon />
+          </ListItemIcon>
+          <ListItemText primary="お知らせ" />
+        </ListItem>
         <ListItem button onClick={handleClickSetting}>
           <ListItemIcon>
             <SettingsIcon />
@@ -222,9 +200,13 @@ const ClientDrawer: VFC<Props> = (props) => {
         </ListItem>
         <Collapse in={openSetting} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {/* <ListItem button className={classes.nested}>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/client/profile')}
+            >
               <ListItemText primary="プロフィール編集" />
-            </ListItem> */}
+            </ListItem>
             <ListItem
               button
               className={classes.nested}
@@ -235,6 +217,31 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
+        <ListItem button onClick={handleClickAdmin}>
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary="管理機能" />
+          {openAdmin ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openAdmin} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/client/admin/user')}
+            >
+              <ListItemText primary="ユーザー管理" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => logout()}
+            >
+              <ListItemText primary="ログアウト" />
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
     </div>
   );
@@ -260,7 +267,6 @@ const ClientDrawer: VFC<Props> = (props) => {
             ここに今いるページのタイトルを表示
           </Typography>
           <div style={{ flexGrow: 1 }} />
-          <InfoIcon className={classes.appbarIcon} />
           <Avatar />
         </Toolbar>
       </AppBar>

@@ -1,17 +1,11 @@
-import React, { VFC } from 'react';
+import { VFC, createContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {
-  makeStyles,
-  useTheme,
-  Theme,
-  createStyles,
-} from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
 import ClientDrawer from '../template/ClientDrawer';
 import Content from '../template/Content';
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -47,18 +41,21 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+export const TokenContext = createContext('');
+export const LoadingContext = createContext(true);
+
 const Client: VFC = () => {
   const classes = useStyles();
-  const history = useHistory();
-
   return (
     <div className={classes.root}>
-      <ClientDrawer />
-      <CssBaseline />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Content />
-      </main>
+      <LoadingContext.Provider value>
+        <ClientDrawer />
+        <CssBaseline />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Content />
+        </main>
+      </LoadingContext.Provider>
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from 'react-router';
 
 import Timeline from './Timeline';
 import Community from './Community';
+import Profile from './Profile';
+import AdminUser from './AdminUser';
 
 const Content: VFC = () => (
   <div>
@@ -15,6 +17,12 @@ const Content: VFC = () => (
       </Route>
       <Route path="/client/community">
         <Community />
+      </Route>
+      <Route path="/client/profile">
+        <Profile />
+      </Route>
+      <Route path="/client/admin/user">
+        <AdminUser />
       </Route>
     </Switch>
   </div>
