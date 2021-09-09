@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { VFC, useState, useEffect, useContext } from 'react';
+
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactS3Client from 'react-aws-s3-typescript';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setTitle } from 'common/features/pageTitleSlice';
 
 import { User } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
@@ -95,6 +98,14 @@ const Profile: VFC = () => {
 
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const url = basePath + pathParam + userID;
+
+  // ToDo:dispatchとtitleの更新を共通化できないか検討
+  const pageTitle = 'プロフィール';
+  const dispatch = useDispatch();
+  const updateTitle = () => {
+    dispatch(setTitle(pageTitle));
+  };
+  void updateTitle();
 
   async function processImage(event: any) {
     const sizeLimit = 1024 * 1024 * 1;

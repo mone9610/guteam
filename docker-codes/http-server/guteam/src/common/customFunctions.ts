@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { User } from 'common/CustomTypes';
-import { LoadingContext } from 'presentational/pages/Client';
 import axios from 'axios';
 
 const basePath = process.env.REACT_APP_REST_URL;

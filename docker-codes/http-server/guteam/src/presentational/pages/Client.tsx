@@ -1,9 +1,14 @@
 import { VFC, createContext } from 'react';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import ClientDrawer from '../template/ClientDrawer';
-import Content from '../template/Content';
+import titleSlice from 'common/features/pageTitleSlice';
+
+import ClientDrawer from 'presentational/template/ClientDrawer';
+import Content from 'presentational/template/Content';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,21 +46,18 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const TokenContext = createContext('');
-export const LoadingContext = createContext(true);
+const store = configureStore({ reducer: titleSlice });
 
 const Client: VFC = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <LoadingContext.Provider value>
-        <ClientDrawer />
-        <CssBaseline />
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Content />
-        </main>
-      </LoadingContext.Provider>
+      <ClientDrawer />
+      <CssBaseline />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Content />
+      </main>
     </div>
   );
 };

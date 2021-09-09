@@ -1,5 +1,7 @@
 import React, { VFC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { TitleState } from 'common/features/pageTitleSlice';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -100,6 +102,9 @@ const ClientDrawer: VFC<Props> = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const titleJson = useSelector((state: TitleState) => state.title);
+  const title = Object.values(titleJson)[0];
 
   // HACK:サイドバーのオープン制御のstate。もっといい書き方はないか探す
   const [openCommunity, setOpenCommunity] = React.useState(false);
@@ -264,10 +269,10 @@ const ClientDrawer: VFC<Props> = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            ここに今いるページのタイトルを表示
+            {title}
           </Typography>
           <div style={{ flexGrow: 1 }} />
-          <Avatar />
+          {/* <Avatar /> */}
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
