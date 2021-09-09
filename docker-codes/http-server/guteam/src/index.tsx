@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import ReactDOM from 'react-dom';
-import './index.css';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { Provider } from 'react-redux';
+import store from 'common/stores/index';
+
 import App from './App';
+import './index.css';
+
 import reportWebVitals from './reportWebVitals';
 
 const domain: any = process.env.REACT_APP_AUTH0_DOMAIN;
@@ -16,7 +20,9 @@ ReactDOM.render(
     audience={audience}
     redirectUri={window.location.origin}
   >
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Auth0Provider>,
   document.getElementById('root')
 );
