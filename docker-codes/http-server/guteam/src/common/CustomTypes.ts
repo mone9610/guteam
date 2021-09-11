@@ -7,7 +7,7 @@ export type User = {
   picture_url: string;
 };
 
-export type Post = {
+export type PostData = {
   id: number;
   // eslint-disable-next-line camelcase
   user_id: number;
@@ -16,6 +16,8 @@ export type Post = {
   is_deleted: boolean;
   // eslint-disable-next-line camelcase
   created_at: string;
+  // eslint-disable-next-line camelcase
+  updated_at: string;
 };
 
 export type {};

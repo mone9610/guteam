@@ -17,9 +17,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import { Post, User } from 'common/CustomTypes';
+import { PostData, User } from 'common/CustomTypes';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Spinner from 'presentational/molecules/Spinner';
+import Post from 'presentational/organisms/Post';
+
 import { userInfo } from 'os';
 
 const useStyles = makeStyles(() =>
@@ -42,7 +44,7 @@ const useStyles = makeStyles(() =>
 // }
 
 type Props = {
-  posts: Post[];
+  posts: PostData[];
   users: User[];
   isLoading: boolean;
 };
@@ -61,30 +63,39 @@ const PostList: VFC<Props> = (props) => {
         <>
           <List className={classes.root}>
             {props.posts.map((post) => (
-              <ListItem alignItems="flex-start" key={post.id}>
-                <ListItemAvatar>
-                  <Avatar alt="犬" src="/static/images/avatar/1.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                  // primary={users.find((name) => post.user_id === user.id)}
-                  secondary={
-                    <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        {post.message}
-                      </Typography>
-                      <br />
-                      {post.created_at}
-                      {/* {() => sampleDate(post.created_at, 'YYYY年MM月DD日')} */}
-                      に投稿
-                    </>
-                  }
-                />
-              </ListItem>
+              <Post
+                key={post.id}
+                picture_url="hogehoge"
+                name="hogehoge"
+                message={post.message}
+                is_deleted={post.is_deleted}
+                created_at={post.created_at}
+                updated_at={post.updated_at}
+              />
+              // <ListItem alignItems="flex-start" key={post.id}>
+              //   <ListItemAvatar>
+              //     <Avatar alt="犬" src="/static/images/avatar/1.jpg" />
+              //   </ListItemAvatar>
+              //   <ListItemText
+              //     // primary={users.find((name) => post.user_id === user.id)}
+              //     secondary={
+              //       <>
+              //         <Typography
+              //           component="span"
+              //           variant="body2"
+              //           className={classes.inline}
+              //           color="textPrimary"
+              //         >
+              //           {post.message}
+              //         </Typography>
+              //         <br />
+              //         {post.created_at}
+              //         {/* {() => sampleDate(post.created_at, 'YYYY年MM月DD日')} */}
+              //         に投稿
+              //       </>
+              //     }
+              //   />
+              // </ListItem>
             ))}
           </List>
         </>

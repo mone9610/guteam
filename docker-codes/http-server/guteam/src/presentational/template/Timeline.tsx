@@ -3,7 +3,7 @@ import { VFC } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle } from 'common/features/pageTitleSlice';
 
-import PostList from 'presentational/organisms/PostList';
+import PostList from 'presentational/template/PostList';
 import PostEnd from 'presentational/organisms/PostEnd';
 import ClientFooter from 'presentational/organisms/ClientFooter';
 import Post from '../organisms/Post';
@@ -21,7 +21,7 @@ const postData = [
     id: 3,
     user_id: 1,
     message: '7890123',
-    is_deleted: false,
+    is_deleted: true,
     created_at: '2021-09-11T01:42:13.094Z',
     updated_at: '2021-09-11T01:42:13.094Z',
   },

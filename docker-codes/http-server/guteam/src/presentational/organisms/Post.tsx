@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable camelcase */
 import { VFC } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -19,58 +20,84 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Post: VFC = () => {
+type Props = {
+  key: number;
+  picture_url: string;
+  name: string;
+  message: string;
+  created_at: string;
+  updated_at?: string;
+  is_deleted: boolean;
+};
+
+const Post: VFC<Props> = (props) => {
   const classes = useStyles();
+  const {
+    key,
+    picture_url,
+    name,
+    message,
+    created_at,
+    updated_at,
+    is_deleted,
+  } = props;
 
   return (
-    <List className={classes.root}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="犬" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="犬山従太郎"
-          secondary={
-            <>
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
-                今日は3回回ってワンと言いました。
-              </Typography>
-              <br />
-              2020/08/20に投稿
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="馬" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="馬谷働次郎"
-          secondary={
-            <>
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
-                今日は12時間も働いた。
-              </Typography>
-              <br />
-              2020/08/20に投稿
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-    </List>
+    <div>
+      {is_deleted ? (
+        <>
+          <ListItem alignItems="flex-start" key={key}>
+            <ListItemAvatar>
+              <Avatar alt="×" src={picture_url} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={
+                <>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    この投稿は削除されました。
+                  </Typography>
+                  <br />
+                  {updated_at}に削除
+                </>
+              }
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+        </>
+      ) : (
+        <>
+          <ListItem alignItems="flex-start" key={key}>
+            <ListItemAvatar>
+              <Avatar alt="×" src={picture_url} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={
+                <>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    {message}
+                  </Typography>
+                  <br />
+                  {created_at}に投稿
+                </>
+              }
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+        </>
+      )}
+    </div>
   );
 };
 
