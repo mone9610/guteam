@@ -3,21 +3,8 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 
-# 自動テスト時にアクセストークンを取得する方法
-# url = URI("https://YOUR_DOMAIN/oauth/token")
-
-# http = Net::HTTP.new(url.host, url.port)
-# http.use_ssl = true
-# http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-# request = Net::HTTP::Post.new(url)
-# request["content-type"] = 'application/x-www-form-urlencoded'
-# request.body = "grant_type=password&username=user%40example.com&password=pwd&audience=YOUR_API_IDENTIFIER&scope=read%3Asample&client_id=%24%7Baccount.clientId%7D&client_secret=YOUR_CLIENT_SECRET"
-
-# response = http.request(request)
-# puts response.read_body
-
-auth='Bearer ' + ENV['AUTH0_TOKEN_FOR_TEST']
+@access_token = TokenService.get_token
+auth='Bearer ' + @access_token
 
 RSpec.describe 'Posts', type: :request do
   before do
