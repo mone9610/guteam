@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'uri'
 require 'net/http'
 require 'openssl'
-require 'database_cleaner'
 
 # 自動テスト時にアクセストークンを取得する方法
 # url = URI("https://YOUR_DOMAIN/oauth/token")
@@ -20,112 +19,91 @@ require 'database_cleaner'
 
 auth='Bearer ' + ENV['AUTH0_TOKEN_FOR_TEST']
 
-RSpec.describe 'Users', type: :request do
+RSpec.describe 'Posts', type: :request do
   before do
     @headers = {
     'Authorization' => auth,
     }
   end
-  describe 'GET /api/v1/users' do
-    it 'tokenがheaderに入っているとき、GETのレスポンスコードが200、かつ1件のデータが返ってくること' do
-      # FactoryBot.create_list(:user,5)
-      get '/api/v1/users',headers: @headers
+  describe 'GET /api/v1/posts' do
+    it 'tokenがheaderに入っているとき、GETのレスポンスコードが200、かつ5件のデータが返ってくること' do
+      FactoryBot.create_list(:post, 5)
+      get '/api/v1/posts', headers: @headers
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json.length).to eq(1)
+      expect(json.length).to eq(5)
     end
-    
+
     it 'tokenがheaderに入っていないとき、GETのレスポンスコードが400' do
-      get '/api/v1/users',headers: @headers
+      get '/api/v1/posts',headers: @headers
       expect(response).to have_http_status(200)
     end
   end
 
-  describe 'GET /api/v1/users:sub' do
+  describe 'GET /api/v1/posts:id' do
     it 'tokenがheaderに入っており、パラメータ内のsubが存在するとき、GETのレスポンスコードが200、かつ指定したsubのレコードが返ってくること' do
-      user = FactoryBot.create(:user, sub: 'sub')
-      get '/api/v1/users/'+user.sub,headers: @headers
+      post = FactoryBot.create(:post)
+      get '/api/v1/posts/'+post.id.to_s,headers: @headers
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json['sub']).to eq(user.sub)
+      expect(json['id']).to eq(post.id)
     end
 
     it 'tokenがheaderに入っており、パラメータ内のsubが存在しないとき、GETのレスポンスコードが404が返ってくること' do
-      get '/api/v1/users/notexist',headers: @headers
+      get '/api/v1/posts/notexist',headers: @headers
       json = JSON.parse(response.body)
       expect(response).to have_http_status(404)
     end
   end
 
-  describe 'POST /api/v1/users' do
+  describe 'POST /api/v1/posts' do
+    before do
+      SecuredController
+      
+    end
     it 'tokenがheaderに入っており、body内にparamが存在するとき、POSTのレスポンスコードが200、かつ指定した値と同値のレコードが返ってくること' do
       @params = {
-        'name' => 'post',
-        'sub' => 'subsub',
-        'introduction' => 'this is post',
-        'picture_url' => 'http://postpicture'
+        'message' => 'test',
         }
-      post '/api/v1/users/',headers: @headers, params:@params
+      post '/api/v1/posts/',headers: @headers, params:@params
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json['name']).to eq(@params['name'])
-      expect(json['sub']).to eq(@params['sub'])
-      expect(json['introduction']).to eq(@params['introduction'])
-      expect(json['picture_url']).to eq(@params['picture_url'])
-    end
-
-    it 'tokenがheaderに入っており、既に存在するparamをPOSTしたとき、POSTのレスポンスコードが422になること' do
-      @params = {
-        'name' => 'post',
-        'sub' => 'subsub',
-        'introduction' => 'this is post',
-        'picture_url' => 'http://postpicture',
-        }
-      FactoryBot.create(:user, sub: 'subsub',)
-      post '/api/v1/users/',headers: @headers, params:@params
-      JSON.parse(response.body)
-      expect(response).to have_http_status(422)
+      expect(json['message']).to eq(@params['message'])
     end
   end
 
-  describe 'PUT /api/v1/users/:sub' do
+  describe 'PUT /api/v1/posts/:sub' do
     it 'tokenがheaderに入っており、指定したsubが存在するとき、PUTのレスポンスコードが200、かつ指定した値と同値のレコードが返ってくること' do
-      user = FactoryBot.create(:user, sub: 'subsubsub')
+      post = FactoryBot.create(:post)
       @params = {
-        'name' => 'put',
-        'introduction' => 'this is put',
-        'picture_url' => 'http://putpicture'
+        'is_deleted' => true,
         }
-      put '/api/v1/users/'+user.sub,headers: @headers, params:@params
+      put '/api/v1/posts/'+post.id.to_s,headers: @headers, params:@params
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json['name']).to eq(@params['name'])
-      expect(json['introduction']).to eq(@params['introduction'])
-      expect(json['picture_url']).to eq(@params['picture_url'])
+      expect(json['is_deleted']).to eq(@params['is_deleted'])
     end
 
     it 'tokenがheaderに入っており、指定したsubが存在しないとき、PUTのレスポンスコードが422になること' do
-      FactoryBot.create(:user, sub: 'subsubsub')
+      FactoryBot.create(:post)
       @params = {
-        'name' => 'put',
-        'introduction' => 'this is put',
-        'picture_url' => 'http://putpicture'
+        'is_deleted' => true,
         }
-      put '/api/v1/users/busbusbus',headers: @headers, params:@params
+      put '/api/v1/posts/notexist',headers: @headers, params:@params
       JSON.parse(response.body)
       expect(response).to have_http_status(422)
     end
   end
 
-  describe 'DELETE /api/v1/users:sub' do
+  describe 'DELETE /api/v1/posts:sub' do
     it 'tokenがheaderに入っており、パラメータ内のsubが存在するとき、DELETEのレスポンスコードが200が返ってくること' do
-      user = FactoryBot.create(:user, sub: 'subsubsubsub')
-      delete '/api/v1/users/'+user.sub,headers: @headers
+      post = FactoryBot.create(:post)
+      delete '/api/v1/posts/'+post.id.to_s,headers: @headers
       expect(response).to have_http_status(200)
     end
 
     it 'tokenがheaderに入っており、パラメータ内のsubが存在しないとき、GETのレスポンスコードが404が返ってくること' do
-      delete '/api/v1/users/notexist',headers: @headers
+      delete '/api/v1/posts/notexist',headers: @headers
       expect(response).to have_http_status(404)
     end
   end

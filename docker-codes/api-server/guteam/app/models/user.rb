@@ -6,9 +6,9 @@ class User < ApplicationRecord
   
     def self.from_token_payload(payload)
       @sub = payload['sub'].gsub(/auth0\|/,"")
-      find_by(sub: @sub)
+      # find_by(sub: @sub)
       #subをキーに検索して、存在しない場合ユーザーを自動的に作成
-      # find_by(sub: @sub) || create!(sub: @sub)
+      find_by(sub: @sub) || create!(sub: @sub)
       # find_by(sub: payload['sub']) || create!(sub: payload['sub'])
     end
 end

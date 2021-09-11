@@ -1,5 +1,5 @@
 class Api::V1::PostsController < SecuredController
-  skip_before_action :authorize_request, only: [:index,:show]
+  # skip_before_action :authorize_request, only: [:index,:show]
 
   def index
     posts = Post.all
@@ -7,8 +7,12 @@ class Api::V1::PostsController < SecuredController
   end
 
   def show
-    post = Post.find(params[:id])
-    render json: post
+    post = Post.find_by_id(params[:id])
+    if post.present?
+      render json: post
+    else
+      render json: post&.errors, status: :not_found
+    end
   end
 
   def create
@@ -21,12 +25,30 @@ class Api::V1::PostsController < SecuredController
     end
   end
 
+  def update
+    post = Post.find_by_id(params[:id])
+    post&.update(put_params)
+    if post&.save
+      render json: post
+    else
+      render json: post&.errors, status: :unprocessable_entity
+    end
+  end
+
   def destroy
-    post = Post.find(params[:id])
-    post.delete
+    post = Post.find_by_id(params[:id])
+    post&.delete
+    if post&.delete
+      render status: :ok
+    else
+      render json: post&.errors, status: :not_found
+    end
   end
 
   private
+  def put_params
+    params.permit(:is_deleted)
+  end
 
   def post_params
     params.permit(:message)
