@@ -13,6 +13,9 @@ import Team from '../../assets/img/team.svg';
 import Direct from '../../assets/img/direct.svg';
 
 const useStyles = makeStyles({
+  content: {
+    textAlign: 'center',
+  },
   txt: {
     display: 'inline-block',
     'text-align': 'left',
@@ -39,7 +42,7 @@ const useStyles = makeStyles({
 const Rows: VFC = () => {
   const classes = useStyles();
   return (
-    <div>
+    <div className={classes.content}>
       <Grid container alignItems="center" justifyContent="center">
         <Grid container alignItems="center">
           <Grid item md={6} justifyContent="center">

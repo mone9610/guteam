@@ -5,6 +5,7 @@ import { setTitle } from 'common/features/pageTitleSlice';
 
 import PostList from 'presentational/template/PostList';
 import ClientFooter from 'presentational/organisms/ClientFooter';
+// 開発環境のみ利用
 import { postData, userData } from 'data/data';
 
 const Timeline: VFC = () => {
@@ -18,8 +19,6 @@ const Timeline: VFC = () => {
 
   return (
     <div>
-      今、かかえている愚痴をつぶやいてみましょう！
-      {/* <Post /> */}
       <PostList posts={postData} users={userData} isLoading={false} />
       <ClientFooter />
     </div>

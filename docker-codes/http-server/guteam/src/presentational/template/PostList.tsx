@@ -3,7 +3,7 @@
 // FC内のpropsの型定義は冗長であるため、無効化
 /* eslint-disable react/prop-types */
 import { VFC } from 'react';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { PostData, User } from 'common/CustomTypes';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -11,13 +11,15 @@ import Spinner from 'presentational/molecules/Spinner';
 import Post from 'presentational/organisms/Post';
 import PostEnd from 'presentational/organisms/PostEnd';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '80vw',
+      textAlign: 'left',
+      flexGrow: 1,
     },
-    inline: {
-      display: 'inline',
+    txt: {
+      margin: theme.spacing(4),
     },
   })
 );
@@ -48,6 +50,7 @@ const PostList: VFC<Props> = (props) => {
         </>
       ) : (
         <>
+          今、かかえている愚痴をつぶやいてみましょう！
           <List className={classes.root}>
             {posts.map((post) => {
               const found = users.find((user) => post.user_id === user.id);
