@@ -20,10 +20,13 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const initialAvatar = process.env.REACT_APP_INITIAL_AVATAR;
+
 type Props = {
   key: number;
-  picture_url: string;
-  name: string;
+  picture_url?: string;
+  name?: string;
+  // name: string;
   message: string;
   created_at: string;
   updated_at?: string;
@@ -74,7 +77,7 @@ const Post: VFC<Props> = (props) => {
         <>
           <ListItem alignItems="flex-start" key={key}>
             <ListItemAvatar>
-              <Avatar alt="×" src={picture_url} />
+              <Avatar alt="" src={picture_url} />
             </ListItemAvatar>
             <ListItemText
               primary={name}

@@ -4,26 +4,33 @@ import { useDispatch } from 'react-redux';
 import { setTitle } from 'common/features/pageTitleSlice';
 
 import PostList from 'presentational/template/PostList';
-import PostEnd from 'presentational/organisms/PostEnd';
 import ClientFooter from 'presentational/organisms/ClientFooter';
 import Post from '../organisms/Post';
 
 const postData = [
   {
-    id: 2,
-    user_id: 4,
-    message: '123456',
+    id: 1,
+    user_id: 2,
+    message: '最初の投稿',
     is_deleted: false,
     created_at: '2021-09-11T01:42:13.094Z',
     updated_at: '2021-09-11T01:42:13.094Z',
   },
   {
-    id: 3,
+    id: 2,
     user_id: 1,
-    message: '7890123',
+    message: '２番目の投稿',
+    is_deleted: false,
+    created_at: '2021-09-12T01:42:13.094Z',
+    updated_at: '2021-09-12T01:42:13.094Z',
+  },
+  {
+    id: 3,
+    user_id: 3,
+    message: '今日は12時間働いた',
     is_deleted: true,
-    created_at: '2021-09-11T01:42:13.094Z',
-    updated_at: '2021-09-11T01:42:13.094Z',
+    created_at: '2021-09-13T01:42:13.094Z',
+    updated_at: '2021-09-13T01:42:13.094Z',
   },
 ];
 
@@ -39,7 +46,7 @@ const userData = [
       'https://guteam-test-20210819.s3.ap-northeast-1.amazonaws.com/profile/test/1630987272522.png',
   },
   {
-    id: 4,
+    id: 2,
     name: 'テストユーザー',
     sub: 'gkRHoBnR8YJq1oJcmdLtPTi9Sf2Mrn4R@clients',
     introduction: 'こんにちわん',
@@ -64,7 +71,6 @@ const Timeline: VFC = () => {
       今、かかえている愚痴をつぶやいてみましょう！
       {/* <Post /> */}
       <PostList posts={postData} users={userData} isLoading={false} />
-      <PostEnd />
       <ClientFooter />
     </div>
   );
