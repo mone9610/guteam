@@ -59,7 +59,7 @@ const Post: VFC<Props> = (props) => {
         <>
           <ListItem alignItems="flex-start" key={key}>
             <ListItemAvatar>
-              <Avatar alt="×" src={picture_url} />
+              <Avatar alt="" src={picture_url} />
             </ListItemAvatar>
             <ListItemText
               primary={name}
