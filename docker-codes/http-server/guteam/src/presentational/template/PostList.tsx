@@ -1,13 +1,7 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+// no-unsafe-member-accessを無効化：any型にメンバーアクセスはあてていないが勝手に起動するため
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable react/destructuring-assignment */
+// FC内のpropsの型定義は冗長であるため、無効化
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-lone-blocks */
 import { VFC } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -37,7 +31,14 @@ type Props = {
 const PostList: VFC<Props> = (props) => {
   const classes = useStyles();
   const { posts, users, isLoading } = props;
-  //   const { isLoading } = isLoading;
+
+  // created_atで降順にソートする
+  posts.sort((a: PostData, b: PostData) => {
+    if (a.created_at > b.created_at) {
+      return -1;
+    }
+    return 1;
+  });
 
   return (
     <div>

@@ -1,4 +1,6 @@
+// FC内のpropsの型定義は冗長であるため、無効化
 /* eslint-disable react/prop-types */
+// railsから取得するオブジェクトのプロパティはキャメルケースのため、無効化
 /* eslint-disable camelcase */
 import { VFC } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
@@ -20,16 +22,13 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const initialAvatar = process.env.REACT_APP_INITIAL_AVATAR;
-
 type Props = {
   key: number;
   picture_url?: string;
   name?: string;
-  // name: string;
   message: string;
   created_at: string;
-  updated_at?: string;
+  updated_at: string;
   is_deleted: boolean;
 };
 
@@ -41,9 +40,18 @@ const Post: VFC<Props> = (props) => {
     name,
     message,
     created_at,
-    updated_at,
+    // updated_at,
     is_deleted,
   } = props;
+
+  // HACK:jsonは文字列として日付を受け取るため、一度Date型に変換して、フォーマットした上で代入している
+  // eslint-disable-next-line react/destructuring-assignment
+  const DateObject = new Date(created_at);
+  const YYYY = DateObject.getFullYear();
+  const MM = 1 + DateObject.getMonth();
+  const DD = DateObject.getDate();
+  const hh = DateObject.getHours();
+  const mm = DateObject.getMinutes();
 
   return (
     <div>
@@ -66,7 +74,7 @@ const Post: VFC<Props> = (props) => {
                     この投稿は削除されました。
                   </Typography>
                   <br />
-                  {updated_at}に削除
+                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
                 </>
               }
             />
@@ -92,7 +100,7 @@ const Post: VFC<Props> = (props) => {
                     {message}
                   </Typography>
                   <br />
-                  {created_at}に投稿
+                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
                 </>
               }
             />

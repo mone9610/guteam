@@ -5,13 +5,12 @@ import { setTitle } from 'common/features/pageTitleSlice';
 
 import PostList from 'presentational/template/PostList';
 import ClientFooter from 'presentational/organisms/ClientFooter';
-import Post from '../organisms/Post';
 
 const postData = [
   {
     id: 1,
     user_id: 2,
-    message: '最初の投稿',
+    message: '最初の投稿。',
     is_deleted: false,
     created_at: '2021-09-11T01:42:13.094Z',
     updated_at: '2021-09-11T01:42:13.094Z',
@@ -53,7 +52,7 @@ const userData = [
     created_at: '2021-09-11T01:42:13.064Z',
     updated_at: '2021-09-11T01:42:13.064Z',
     picture_url:
-      'https://guteam-test-20210819.s3.ap-northeast-1.amazonaws.com/profile/test/1630987272522.png',
+      'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg',
   },
 ];
 
