@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setTitle } from 'common/features/pageTitleSlice';
 
 import PostList from 'presentational/template/PostList';
+import ExtendedPostList from 'container/organisms/PostList';
 import ClientFooter from 'presentational/organisms/ClientFooter';
 // 開発環境のみ利用
 import { postData, userData } from 'data/data';
@@ -19,7 +20,8 @@ const Timeline: VFC = () => {
 
   return (
     <div>
-      <PostList posts={postData} users={userData} isLoading={false} />
+      {/* <PostList posts={postData} users={userData} isLoading={false} /> */}
+      <ExtendedPostList />
       <ClientFooter />
     </div>
   );

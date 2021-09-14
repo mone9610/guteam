@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '80vw',
-      textAlign: 'left',
-      flexGrow: 1,
+      // textAlign: 'left',
+      // flexGrow: 1,
     },
     txt: {
-      margin: theme.spacing(4),
+      margin: theme.spacing(2),
     },
   })
 );
@@ -35,7 +35,7 @@ const PostList: VFC<Props> = (props) => {
   const { posts, users, isLoading } = props;
 
   // created_atで降順にソートする
-  posts.sort((a: PostData, b: PostData) => {
+  posts?.sort((a: PostData, b: PostData) => {
     if (a.created_at > b.created_at) {
       return -1;
     }
@@ -50,10 +50,13 @@ const PostList: VFC<Props> = (props) => {
         </>
       ) : (
         <>
-          今、かかえている愚痴をつぶやいてみましょう！
+          <div className={classes.txt}>
+            今、かかえている愚痴をつぶやいてみましょう！
+          </div>
+
           <List className={classes.root}>
-            {posts.map((post) => {
-              const found = users.find((user) => post.user_id === user.id);
+            {posts?.map((post) => {
+              const found = users?.find((user) => post.user_id === user.id);
               return (
                 <Post
                   key={post.id}
