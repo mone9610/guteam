@@ -20,4 +20,8 @@ export type PostData = {
   updated_at: string;
 };
 
+export type Message = {
+  message: string;
+};
+
 export type {};

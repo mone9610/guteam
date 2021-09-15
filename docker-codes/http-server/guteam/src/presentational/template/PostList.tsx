@@ -15,8 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '80vw',
-      // textAlign: 'left',
-      // flexGrow: 1,
     },
     txt: {
       margin: theme.spacing(2),

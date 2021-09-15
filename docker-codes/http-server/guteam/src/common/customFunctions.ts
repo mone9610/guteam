@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
 
-import { User, PostData } from 'common/CustomTypes';
+import { User, PostData, Message } from 'common/CustomTypes';
 
 // HACK:環境変数から取得した文字列は、string|undefined型になるため、
 // 利用時は型アサーションにてstring型と断定する
@@ -100,7 +100,7 @@ export const putUser = (token: string, sub: string, data: User): any => {
 
 // HACK:promiseの解決を待つために、any型を戻り値としている。
 // axiosにてPostData[]型は保証している。
-export const getPostData = async (token: string): Promise<any> => {
+export const getPosts = async (token: string): Promise<any> => {
   const header = `Bearer ${token}`;
   const url = `${basePath!}/posts`;
 
@@ -116,4 +116,29 @@ export const getPostData = async (token: string): Promise<any> => {
       console.log('err:', err);
     });
   return data;
+};
+
+// HACK:promiseの解決を待つために、any型を戻り値としている。
+export const postPost = async (token: string, data: string): Promise<any> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath!}/posts`;
+
+  const status = await axios
+    .post<Message>(
+      url,
+      {
+        message: data,
+      },
+      {
+        headers: {
+          Authorization: header,
+        },
+        timeout: 10000,
+      }
+    )
+    .then((res) => res.status)
+    .catch((err) => {
+      console.log('err:', err);
+    });
+  return status;
 };
