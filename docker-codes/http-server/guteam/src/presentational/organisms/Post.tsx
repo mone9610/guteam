@@ -50,8 +50,8 @@ const Post: VFC<Props> = (props) => {
   const YYYY = DateObject.getFullYear();
   const MM = 1 + DateObject.getMonth();
   const DD = DateObject.getDate();
-  const hh = DateObject.getHours();
-  const mm = DateObject.getMinutes();
+  const hh = DateObject.getHours().toString().padStart(2, '0');
+  const mm = DateObject.getMinutes().toString().padStart(2, '0');
 
   return (
     <div>
