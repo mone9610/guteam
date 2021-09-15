@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react';
 import axios from 'axios';
 
 import { User, PostData, Message } from 'common/CustomTypes';

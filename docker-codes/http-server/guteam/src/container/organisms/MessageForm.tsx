@@ -8,7 +8,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { postPost } from 'common/customFunctions';
 import { useToken } from 'common/CustomHooks';
-import { setProgress } from 'common/features/progressSlice';
 import { setReload } from 'common/features/reloadSlice';
 
 const MessageForm: VFC = () => {
@@ -18,7 +17,6 @@ const MessageForm: VFC = () => {
   const dispatch = useDispatch();
 
   const send = useCallback(() => {
-    dispatch(setProgress(true));
     void postPost(token, message!).then((res) => {
       if (res === 200) {
         setMessage('');
@@ -30,18 +28,28 @@ const MessageForm: VFC = () => {
     });
   }, [dispatch, message, token]);
 
+  //   Ctrl + Enterでイベントを実行するための関数
+  const handleKeyDown = (event: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (event.keyCode === 13 && event.ctrlKey) {
+      send();
+    }
+  };
+
   return (
     <>
       <TextField
         autoComplete="off"
         id="standard-full-width"
         style={{ margin: 8 }}
-        placeholder="ここにメッセージを入力"
-        helperText="160字以内で入力してください。"
+        placeholder="ここにメッセージを入力(160字以内)"
+        helperText="Ctrl + Enterで送信可能　
+        (※投稿時、本サービスの利用規約に同意したものとみなします。)"
         fullWidth
         autoFocus
         margin="normal"
         value={message}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setMessage(e.target.value)}
         InputLabelProps={{
           shrink: true,
@@ -49,10 +57,7 @@ const MessageForm: VFC = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              <IconButton
-                onClick={() => send()}
-                // onClick={() => postPostData(token)}
-              >
+              <IconButton onClick={() => send()}>
                 <SendIcon />
               </IconButton>
             </InputAdornment>
