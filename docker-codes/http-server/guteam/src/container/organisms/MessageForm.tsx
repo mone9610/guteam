@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react';
+import { VFC, useState, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import TextField from '@material-ui/core/TextField';
@@ -22,8 +22,8 @@ const MessageForm: VFC = () => {
         setMessage('');
         dispatch(setReload(true));
       } else {
-        dispatch(setReload(true));
-        console.log('error');
+        // ToDo:スナックバーに変更予定
+        alert('投稿できませんでした。');
       }
     });
   }, [dispatch, message, token]);
@@ -32,8 +32,18 @@ const MessageForm: VFC = () => {
   const handleKeyDown = (event: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (event.keyCode === 13 && event.ctrlKey) {
+      // HACK:バリデーション機能の仮置き
+      if (message?.length === 0) {
+        return;
+      }
       send();
     }
+  };
+
+  // 入力フォームの変更を検知するための関数
+  const handleChange = (event: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    setMessage(event.target.value);
   };
 
   return (
@@ -42,24 +52,35 @@ const MessageForm: VFC = () => {
         autoComplete="off"
         id="standard-full-width"
         style={{ margin: 8 }}
-        placeholder="ここにメッセージを入力(160字以内)"
-        helperText="Ctrl + Enterで送信可能　
-        (※投稿時、本サービスの利用規約に同意したものとみなします。)"
+        placeholder="160字以内でメッセージを入力"
+        // HACK:バリデーション機能の仮置き
+        helperText={
+          message?.length === 0
+            ? '文字を入力してください'
+            : 'Ctrl + Enterで送信可能'
+        }
         fullWidth
         autoFocus
         margin="normal"
         value={message}
         onKeyDown={handleKeyDown}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleChange}
         InputLabelProps={{
           shrink: true,
         }}
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              <IconButton onClick={() => send()}>
-                <SendIcon />
-              </IconButton>
+              {/* HACK:バリデーションチェック。エラー管理はフォーム内で一元化したい */}
+              {message ? (
+                <IconButton onClick={() => send()}>
+                  <SendIcon />
+                </IconButton>
+              ) : (
+                <IconButton disabled>
+                  <SendIcon />
+                </IconButton>
+              )}
             </InputAdornment>
           ),
         }}
@@ -68,6 +89,9 @@ const MessageForm: VFC = () => {
         inputProps={{
           maxLength: 160,
         }}
+        // HACK:バリデーション仮置き
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...(message?.length === 0 ? { error: true } : { error: false })}
       />
     </>
   );
