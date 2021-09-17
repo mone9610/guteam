@@ -1,5 +1,5 @@
 import { VFC, useState, useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
@@ -9,6 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { postPost } from 'common/customFunctions';
 import { useToken } from 'common/CustomHooks';
 import { setReload } from 'common/features/reloadSlice';
+import { setSnackbarState } from 'common/features/snackbarSlice';
 
 const MessageForm: VFC = () => {
   const token = useToken();
@@ -21,9 +22,23 @@ const MessageForm: VFC = () => {
       if (res === 200) {
         setMessage('');
         dispatch(setReload(true));
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'success',
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            message: '送信に成功しました。',
+          })
+        );
       } else {
-        // ToDo:スナックバーに変更予定
-        alert('投稿できませんでした。');
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            message: `予期せぬエラーが発生しました。(コード：${res})`,
+          })
+        );
       }
     });
   }, [dispatch, message, token]);

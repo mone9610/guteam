@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { VFC } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTitle } from 'common/features/pageTitleSlice';
 
-import PostList from 'presentational/template/PostList';
 import ExtendedPostList from 'container/organisms/PostList';
 import ClientFooter from 'presentational/organisms/ClientFooter';
+
 // 開発環境のみ利用
 import { postData, userData } from 'data/data';
 
 const Timeline: VFC = () => {
   // ToDo:dispatchとtitleの更新を共通化できないか検討
-  const pageTitle = 'タイムライン';
   const dispatch = useDispatch();
+
+  const pageTitle = 'タイムライン';
   const updateTitle = () => {
     dispatch(setTitle(pageTitle));
   };
@@ -20,7 +22,6 @@ const Timeline: VFC = () => {
 
   return (
     <div>
-      {/* <PostList posts={postData} users={userData} isLoading={false} /> */}
       <ExtendedPostList />
       <ClientFooter />
     </div>

@@ -242,7 +242,7 @@ const Profile: VFC = () => {
           <main className={classes.content}>
             <CustomizedSnackbars
               open={status.open}
-              handleClose={handleClose}
+              // handleClose={handleClose}
               type={status.type}
               message={status.message}
             />
