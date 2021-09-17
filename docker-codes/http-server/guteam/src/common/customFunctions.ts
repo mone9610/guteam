@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
-import { User } from 'common/CustomTypes';
 import axios from 'axios';
 
+import { User, PostData, Message } from 'common/CustomTypes';
+
+// HACK:環境変数から取得した文字列は、string|undefined型になるため、
+// 利用時は型アサーションにてstring型と断定する
 const basePath = process.env.REACT_APP_REST_URL;
-// const loading = useContext(LoadingContext);
-// export const [progress, setProgress] = useState(true);
 
 // eslint-disable-next-line import/prefer-default-export
 export const absSubFromUserID = (sub: string): string => {
@@ -31,6 +31,27 @@ export const postUser = (token: string, data: User): any => {
     .catch((err) => {
       console.log('err:', err);
     });
+};
+
+// HACK:promiseの解決を待つために、any型を戻り値としている。
+// axiosにてUser[]型は保証している。
+export const getUsers = async (token: string): Promise<any> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath!}/users`;
+
+  const data = await axios
+    .get<User[]>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log('err:', err);
+    });
+
+  return data;
 };
 
 export const getUser = (token: string, sub: string): any => {
@@ -76,4 +97,47 @@ export const putUser = (token: string, sub: string, data: User): any => {
     });
 };
 
-export {};
+// HACK:promiseの解決を待つために、any型を戻り値としている。
+// axiosにてPostData[]型は保証している。
+export const getPosts = async (token: string): Promise<any> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath!}/posts`;
+
+  const data = await axios
+    .get<PostData>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log('err:', err);
+    });
+  return data;
+};
+
+// HACK:promiseの解決を待つために、any型を戻り値としている。
+export const postPost = async (token: string, data: string): Promise<any> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath!}/posts`;
+
+  const status = await axios
+    .post<Message>(
+      url,
+      {
+        message: data,
+      },
+      {
+        headers: {
+          Authorization: header,
+        },
+        timeout: 10000,
+      }
+    )
+    .then((res) => res.status)
+    .catch((err) => {
+      console.log('err:', err);
+    });
+  return status;
+};

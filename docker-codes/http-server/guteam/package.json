@@ -26,6 +26,7 @@
     "auth0-js": "^9.16.3",
     "axios": "^0.21.1",
     "bootstrap": "5.0.2",
+    "date-fns": "^2.23.0",
     "eslint-plugin-react": "^7.21.5",
     "formik": "^2.2.9",
     "history": "^5.0.1",

@@ -1,6 +1,9 @@
+// FC内のpropsの型定義は冗長であるため、無効化
+/* eslint-disable react/prop-types */
+// railsから取得するオブジェクトのプロパティはキャメルケースのため、無効化
+/* eslint-disable camelcase */
 import { VFC } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -19,58 +22,93 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Post: VFC = () => {
+type Props = {
+  key: number;
+  picture_url?: string;
+  name?: string;
+  message: string;
+  created_at: string;
+  updated_at: string;
+  is_deleted: boolean;
+};
+
+const Post: VFC<Props> = (props) => {
   const classes = useStyles();
+  const {
+    key,
+    picture_url,
+    name,
+    message,
+    created_at,
+    // updated_at,
+    is_deleted,
+  } = props;
+
+  // HACK:jsonは文字列として日付を受け取るため、一度Date型に変換して、フォーマットした上で代入している
+  // eslint-disable-next-line react/destructuring-assignment
+  const DateObject = new Date(created_at);
+  const YYYY = DateObject.getFullYear();
+  const MM = 1 + DateObject.getMonth();
+  const DD = DateObject.getDate();
+  const hh = DateObject.getHours().toString().padStart(2, '0');
+  const mm = DateObject.getMinutes().toString().padStart(2, '0');
 
   return (
-    <List className={classes.root}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="犬" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="犬山従太郎"
-          secondary={
-            <>
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
-                今日は3回回ってワンと言いました。
-              </Typography>
-              <br />
-              2020/08/20に投稿
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="馬" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="馬谷働次郎"
-          secondary={
-            <>
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
-                今日は12時間も働いた。
-              </Typography>
-              <br />
-              2020/08/20に投稿
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-    </List>
+    <div>
+      {is_deleted ? (
+        <>
+          <ListItem alignItems="flex-start" key={key}>
+            <ListItemAvatar>
+              <Avatar alt="" src={picture_url} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={
+                <>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    この投稿は削除されました。
+                  </Typography>
+                  <br />
+                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
+                </>
+              }
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+        </>
+      ) : (
+        <>
+          <ListItem alignItems="flex-start" key={key}>
+            <ListItemAvatar>
+              <Avatar alt="" src={picture_url} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={
+                <>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    {message}
+                  </Typography>
+                  <br />
+                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
+                </>
+              }
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+        </>
+      )}
+    </div>
   );
 };
 

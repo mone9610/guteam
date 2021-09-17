@@ -1,11 +1,7 @@
 import { VFC, createContext } from 'react';
-import { combineReducers } from 'redux';
-import { configureStore } from '@reduxjs/toolkit';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
-import titleSlice from 'common/features/pageTitleSlice';
 
 import ClientDrawer from 'presentational/template/ClientDrawer';
 import Content from 'presentational/template/Content';
@@ -45,8 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-const store = configureStore({ reducer: titleSlice });
 
 const Client: VFC = () => {
   const classes = useStyles();

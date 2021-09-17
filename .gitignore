@@ -2,6 +2,8 @@
 *.drawio
 ##環境変数は非公開
 *.env
+##reactのテスト用のデータは非公開
+data.ts
 ##rails関連
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.
 #

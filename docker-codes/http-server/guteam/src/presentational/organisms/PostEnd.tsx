@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // HACK:Drawerが絶対値で指定しているのに対して、postsは相対値で指定している。要検討
       width: '80vw',
       marginBottom: '10vh',
     },
