@@ -53,7 +53,6 @@ const MessageForm: VFC = () => {
         id="standard-full-width"
         style={{ margin: 8 }}
         placeholder="160字以内でメッセージを入力"
-        // HACK:バリデーション機能の仮置き
         helperText={
           message?.length === 0
             ? '文字を入力してください'
@@ -71,7 +70,6 @@ const MessageForm: VFC = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="start">
-              {/* HACK:バリデーションチェック。エラー管理はフォーム内で一元化したい */}
               {message ? (
                 <IconButton onClick={() => send()}>
                   <SendIcon />
@@ -89,9 +87,6 @@ const MessageForm: VFC = () => {
         inputProps={{
           maxLength: 160,
         }}
-        // HACK:バリデーション仮置き
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...(message?.length === 0 ? { error: true } : { error: false })}
       />
     </>
   );
