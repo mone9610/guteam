@@ -48,7 +48,7 @@ const MessageForm: VFC = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (event.keyCode === 13 && event.ctrlKey) {
       // HACK:バリデーション機能の仮置き
-      if (message?.length === 0) {
+      if (message?.length === 0 || message === undefined) {
         return;
       }
       send();

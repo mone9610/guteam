@@ -6,17 +6,17 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { useDispatch } from 'react-redux';
 import { setSnackbarOpen } from 'common/features/snackbarSlice';
 
-function Alert(props: JSX.IntrinsicAttributes & AlertProps) {
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 type Props = {
   // ToDo:型はあとで決める
   open: any;
   type: any;
   message: any;
 };
+
+const Alert = (props: JSX.IntrinsicAttributes & AlertProps) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <MuiAlert elevation={6} variant="filled" {...props} />
+);
 
 // 戻り値の型は定義不要
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
