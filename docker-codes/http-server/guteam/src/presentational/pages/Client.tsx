@@ -1,10 +1,15 @@
-import { VFC, createContext } from 'react';
+import { VFC } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import ClientDrawer from 'presentational/template/ClientDrawer';
 import Content from 'presentational/template/Content';
+
+import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
+import { useSelector } from 'react-redux';
+
+import { Store } from 'common/CustomTypes';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,8 +49,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Client: VFC = () => {
   const classes = useStyles();
+
+  // HACK:ロジック部分がpresentationalに混在しているが、snackbarStateをpropsに変更する必要性が疑問であるため許容
+  const snackbarJson = useSelector((state: Store) => state.snackbar);
+
   return (
     <div className={classes.root}>
+      <CustomizedSnackbars
+        open={snackbarJson?.open}
+        type={snackbarJson?.type}
+        message={snackbarJson?.message}
+      />
       <ClientDrawer />
       <CssBaseline />
       <main className={classes.content}>

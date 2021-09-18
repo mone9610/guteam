@@ -1,3 +1,8 @@
+import { SnackbarState } from 'common/features/snackbarSlice';
+import { TitleState } from 'common/features/pageTitleSlice';
+import { ProgressState } from 'common/features/progressSlice';
+import { ReloadState } from 'common/features/reloadSlice';
+
 export type User = {
   id: number;
   name: string;
@@ -22,6 +27,13 @@ export type PostData = {
 
 export type Message = {
   message: string;
+};
+
+export type Store = {
+  snackbar?: SnackbarState;
+  title?: TitleState;
+  progress?: ProgressState;
+  reload?: ReloadState;
 };
 
 export type {};
