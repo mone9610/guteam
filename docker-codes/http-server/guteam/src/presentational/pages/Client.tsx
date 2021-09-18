@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Client: VFC = () => {
   const classes = useStyles();
 
+  // HACK:ロジック部分がpresentationalに混在しているが、snackbarStateをpropsに変更する必要性が疑問であるため許容
   const snackbarJson = useSelector((state: Store) => state.snackbar);
 
   return (

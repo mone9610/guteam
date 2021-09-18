@@ -24,6 +24,7 @@ const CustomizedSnackbars = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { open, type, message } = props;
 
+  // HACK:ロジック部分がpresentationalに混在しているが、関数をpropsとして渡す必要性が疑問であるため許容
   const dispatch = useDispatch();
   const handleClose = (event: any, reason?: string) => {
     if (reason === 'clickaway') {
