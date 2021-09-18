@@ -18,6 +18,7 @@ const MessageForm: VFC = () => {
   const dispatch = useDispatch();
 
   const send = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     void postPost(token, message!).then((res) => {
       if (res === 200) {
         setMessage('');
