@@ -55,6 +55,16 @@ export const postUser = (token: string, data: User): any => {
     });
 };
 
+export const processDate = (date: string): string => {
+  const DateObject = new Date(date);
+  const YYYY = DateObject.getFullYear();
+  const MM = 1 + DateObject.getMonth();
+  const DD = DateObject.getDate();
+  const hh = DateObject.getHours().toString().padStart(2, '0');
+  const mm = DateObject.getMinutes().toString().padStart(2, '0');
+  return `${YYYY}/${MM}/${DD} ${hh}:${mm}`;
+};
+
 // HACK:promiseの解決を待つために、any型を戻り値としている。
 // axiosにてUser[]型は保証している。
 export const getUsers = async (token: string): Promise<any> => {

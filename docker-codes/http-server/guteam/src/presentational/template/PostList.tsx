@@ -58,6 +58,7 @@ const PostList: VFC<Props> = (props) => {
               return (
                 <Post
                   key={post.id}
+                  sub={found?.sub}
                   picture_url={found?.picture_url}
                   name={found?.name}
                   message={post.message}
