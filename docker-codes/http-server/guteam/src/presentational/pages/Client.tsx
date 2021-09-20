@@ -7,9 +7,17 @@ import ClientDrawer from 'presentational/template/ClientDrawer';
 import Content from 'presentational/template/Content';
 
 import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
+import ProfileModal from 'presentational/organisms/ProfileModal';
+
 import { useSelector } from 'react-redux';
 
 import { Store } from 'common/CustomTypes';
+
+// なんとかする
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,9 +60,14 @@ const Client: VFC = () => {
 
   // HACK:ロジック部分がpresentationalに混在しているが、snackbarStateをpropsに変更する必要性が疑問であるため許容
   const snackbarJson = useSelector((state: Store) => state.snackbar);
+  const profileModalJson = useSelector((state: Store) => state.profileModal);
 
   return (
     <div className={classes.root}>
+      <ProfileModal
+        open={profileModalJson!.open}
+        user={profileModalJson?.user}
+      />
       <CustomizedSnackbars
         open={snackbarJson?.open}
         type={snackbarJson?.type}

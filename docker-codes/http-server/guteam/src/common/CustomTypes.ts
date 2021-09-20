@@ -2,6 +2,7 @@ import { SnackbarState } from 'common/features/snackbarSlice';
 import { TitleState } from 'common/features/pageTitleSlice';
 import { ProgressState } from 'common/features/progressSlice';
 import { ReloadState } from 'common/features/reloadSlice';
+import { ProfileModalState } from './features/profileModalSlice';
 
 export type User = {
   id: number;
@@ -10,6 +11,10 @@ export type User = {
   introduction: string;
   // eslint-disable-next-line camelcase
   picture_url: string;
+  // eslint-disable-next-line camelcase
+  created_at?: string;
+  // eslint-disable-next-line camelcase
+  updated_at?: string;
 };
 
 export type PostData = {
@@ -34,6 +39,7 @@ export type Store = {
   title?: TitleState;
   progress?: ProgressState;
   reload?: ReloadState;
+  profileModal?: ProfileModalState;
 };
 
 export type {};
