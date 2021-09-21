@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 // railsから取得するjsonの命名規則はキャメルケースであるため、無効化
 /* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { VFC } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
@@ -56,11 +57,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  open: boolean;
+  // ToDo:型はあとで決める
+  open: any;
   user?: User;
 };
 
+// 戻り値の型は定義不要
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const ProfileModal: VFC<Props> = (props) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { open, user } = props;
   const classes = useStyles();
 
