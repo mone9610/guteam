@@ -7,6 +7,8 @@ import ClientDrawer from 'presentational/template/ClientDrawer';
 import Content from 'presentational/template/Content';
 
 import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
+import ProfileModal from 'presentational/organisms/ProfileModal';
+
 import { useSelector } from 'react-redux';
 
 import { Store } from 'common/CustomTypes';
@@ -52,9 +54,19 @@ const Client: VFC = () => {
 
   // HACK:ロジック部分がpresentationalに混在しているが、snackbarStateをpropsに変更する必要性が疑問であるため許容
   const snackbarJson = useSelector((state: Store) => state.snackbar);
+  // HACK : VScode上は問題ないが、コンパイル時にエラーが発生するため、以下のオプションを許容
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-disable @typescript-eslint/no-unsafe-return */
+  const profileModalJson = useSelector((state: Store) => state.profileModal);
 
   return (
     <div className={classes.root}>
+      <ProfileModal
+        // HACK : VScode上は問題ないが、コンパイル時にエラーが発生するため、以下のオプションを許容
+        /* eslint-disable  @typescript-eslint/no-unsafe-member-access */
+        open={profileModalJson?.open}
+        user={profileModalJson?.user}
+      />
       <CustomizedSnackbars
         open={snackbarJson?.open}
         type={snackbarJson?.type}

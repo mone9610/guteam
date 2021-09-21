@@ -7,9 +7,10 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+
+import { processDate } from 'common/customFunctions';
+import CustomListAvatar from 'container/molecules/CustomListAvatar';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -24,6 +25,7 @@ const useStyles = makeStyles(() =>
 
 type Props = {
   key: number;
+  sub?: string;
   picture_url?: string;
   name?: string;
   message: string;
@@ -36,78 +38,60 @@ const Post: VFC<Props> = (props) => {
   const classes = useStyles();
   const {
     key,
+    sub,
     picture_url,
     name,
     message,
     created_at,
-    // updated_at,
+    updated_at,
     is_deleted,
   } = props;
 
-  // HACK:jsonは文字列として日付を受け取るため、一度Date型に変換して、フォーマットした上で代入している
-  // eslint-disable-next-line react/destructuring-assignment
-  const DateObject = new Date(created_at);
-  const YYYY = DateObject.getFullYear();
-  const MM = 1 + DateObject.getMonth();
-  const DD = DateObject.getDate();
-  const hh = DateObject.getHours().toString().padStart(2, '0');
-  const mm = DateObject.getMinutes().toString().padStart(2, '0');
-
   return (
     <div>
-      {is_deleted ? (
-        <>
-          <ListItem alignItems="flex-start" key={key}>
-            <ListItemAvatar>
-              <Avatar alt="" src={picture_url} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={name}
-              secondary={
-                <>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    この投稿は削除されました。
-                  </Typography>
-                  <br />
-                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-        </>
-      ) : (
-        <>
-          <ListItem alignItems="flex-start" key={key}>
-            <ListItemAvatar>
-              <Avatar alt="" src={picture_url} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={name}
-              secondary={
-                <>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    {message}
-                  </Typography>
-                  <br />
-                  {YYYY}/{MM}/{DD} {hh}:{mm}に投稿
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-        </>
-      )}
+      <>
+        <ListItem alignItems="flex-start" key={key}>
+          <CustomListAvatar sub={sub} picture_url={picture_url} />
+          <ListItemText
+            primary={
+              <>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  className={classes.inline}
+                  color="textSecondary"
+                >
+                  {name}
+                </Typography>
+              </>
+            }
+            secondary={
+              <>
+                <Typography
+                  component="span"
+                  variant="body1"
+                  className={classes.inline}
+                  color="textPrimary"
+                >
+                  {is_deleted ? 'この投稿は削除されました。' : message}
+                </Typography>
+                <br />
+                <Typography
+                  component="span"
+                  variant="caption"
+                  className={classes.inline}
+                  color="textSecondary"
+                >
+                  {is_deleted
+                    ? `${processDate(updated_at)}に削除`
+                    : `${processDate(created_at)}に投稿`}
+                </Typography>
+              </>
+            }
+          />
+        </ListItem>
+        <Divider variant="inset" component="li" />
+      </>
     </div>
   );
 };

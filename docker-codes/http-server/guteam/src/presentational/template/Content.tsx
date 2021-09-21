@@ -1,10 +1,10 @@
 import { VFC } from 'react';
-import { Switch, Route, Redirect } from 'react-router';
+import { Switch, Route } from 'react-router';
 
-import Timeline from './Timeline';
-import Community from './Community';
-import Profile from './Profile';
-import AdminUser from './AdminUser';
+import Profile from 'container/template/Profile';
+import Timeline from 'presentational/template/Timeline';
+import Community from 'presentational/template/Community';
+import AdminUser from 'presentational/template/AdminUser';
 
 const Content: VFC = () => (
   <div>
