@@ -3,6 +3,11 @@ import { VFC } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import {
+  createTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from '@material-ui/core/styles';
 
 import LargeSignUpButton from '../molecules/LargeSignUpButton';
 import LargeLoginButton from '../molecules/LargeLoginButton';
@@ -11,6 +16,9 @@ import Timeline from '../../assets/img/timeline.svg';
 import Community from '../../assets/img/community.svg';
 import Team from '../../assets/img/team.svg';
 import Direct from '../../assets/img/direct.svg';
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
 
 const useStyles = makeStyles({
   content: {
@@ -47,8 +55,12 @@ const Rows: VFC = () => {
         <Grid container alignItems="center">
           <Grid item md={6} justifyContent="center">
             <p className={classes.txt}>
-              <Typography variant="h3">愚痴〜ム</Typography>
-              <Typography variant="h4">「愚痴」でつながる新感覚SNS</Typography>
+              <ThemeProvider theme={theme}>
+                <Typography variant="h3">愚痴〜ム</Typography>
+                <Typography variant="h4">
+                  「愚痴」でつながる新感覚SNS
+                </Typography>
+              </ThemeProvider>
               <p>
                 <LargeSignUpButton />
               </p>
@@ -67,29 +79,33 @@ const Rows: VFC = () => {
         </Grid>
         <Grid item md={12} justifyContent="center">
           <p className={classes.display1}>
-            <Typography variant="h3">ストレス社会で戦う人たちへ。</Typography>
-            <Typography variant="h4">
-              学校、職場、家庭、etc・・・
-              <br />
-              言いたいことを誰にも言えず、溜め込んでいませんか？
-              <br />
-              愚痴〜ムでは、日頃の悩みを呟いたり、似たような仲間同士でつながったり、
-              <br />
-              ふだんは話せないようなことを言い合える仲間たちを見つけることができます。
-              <br />
-              登録は無料です。いますぐはじめましょう。
-            </Typography>
+            <ThemeProvider theme={theme}>
+              <Typography variant="h3">ストレス社会で戦う人たちへ。</Typography>
+              <Typography variant="h4">
+                学校、職場、家庭、etc・・・
+                <br />
+                言いたいことを誰にも言えず、溜め込んでいませんか？
+                <br />
+                愚痴〜ムでは、日頃の悩みを呟いたり、似たような仲間同士でつながったり、
+                <br />
+                ふだんは話せないようなことを言い合える仲間たちを見つけることができます。
+                <br />
+                登録は無料です。いますぐはじめましょう。
+              </Typography>
+            </ThemeProvider>
           </p>
         </Grid>
         <Grid container alignItems="center">
           <Grid item md={6} justifyContent="center">
             <p className={classes.txt}>
-              <Typography variant="h3">タイムライン機能</Typography>
-              <Typography variant="h4">
-                リアルタイムで愚痴を
-                <br />
-                吐き出しましょう。
-              </Typography>
+              <ThemeProvider theme={theme}>
+                <Typography variant="h3">タイムライン機能</Typography>
+                <Typography variant="h4">
+                  リアルタイムで愚痴を
+                  <br />
+                  吐き出しましょう。
+                </Typography>
+              </ThemeProvider>
             </p>
           </Grid>
           <Grid item md={6} alignItems="center">
@@ -104,12 +120,14 @@ const Rows: VFC = () => {
           <Grid container alignItems="center">
             <Grid item md={6} justifyContent="center">
               <p className={classes.txt}>
-                <Typography variant="h3">コミュニティ機能</Typography>
-                <Typography variant="h4">
-                  同じ愚痴を抱える人と
-                  <br />
-                  交流しましょう。
-                </Typography>
+                <ThemeProvider theme={theme}>
+                  <Typography variant="h3">コミュニティ機能</Typography>
+                  <Typography variant="h4">
+                    同じ愚痴を抱える人と
+                    <br />
+                    交流しましょう。
+                  </Typography>
+                </ThemeProvider>
               </p>
             </Grid>
             <Grid item md={6} alignItems="center">
@@ -125,12 +143,14 @@ const Rows: VFC = () => {
           <Grid container alignItems="center">
             <Grid item md={6} justifyContent="center">
               <p className={classes.txt}>
-                <Typography variant="h3">チーム機能</Typography>
-                <Typography variant="h4">
-                  気の合う仲間達と
-                  <br />
-                  愚痴を吐き出しあいましょう。
-                </Typography>
+                <ThemeProvider theme={theme}>
+                  <Typography variant="h3">チーム機能</Typography>
+                  <Typography variant="h4">
+                    気の合う仲間達と
+                    <br />
+                    愚痴を吐き出しあいましょう。
+                  </Typography>
+                </ThemeProvider>
               </p>
             </Grid>
             <Grid item md={6} alignItems="center">
@@ -142,12 +162,14 @@ const Rows: VFC = () => {
           <Grid container alignItems="center">
             <Grid item md={6} justifyContent="center">
               <p className={classes.txt}>
-                <Typography variant="h3">ダイレクト機能</Typography>
-                <Typography variant="h4">
-                  信頼できる人と
-                  <br />
-                  愚痴を話し合いましょう。
-                </Typography>
+                <ThemeProvider theme={theme}>
+                  <Typography variant="h3">ダイレクト機能</Typography>
+                  <Typography variant="h4">
+                    信頼できる人と
+                    <br />
+                    愚痴を話し合いましょう。
+                  </Typography>
+                </ThemeProvider>
               </p>
             </Grid>
             <Grid item md={6} alignItems="center">
@@ -161,11 +183,13 @@ const Rows: VFC = () => {
         </Grid>
         <Grid item md={12} justifyContent="center">
           <p className={classes.display2}>
-            <Typography variant="h3">
-              いますぐ愚痴〜ムを始めましょう。
-            </Typography>
-            <br />
-            <Typography variant="h4">登録は簡単です。</Typography>
+            <ThemeProvider theme={theme}>
+              <Typography variant="h3">
+                いますぐ愚痴〜ムを始めましょう。
+              </Typography>
+              <br />
+              <Typography variant="h4">登録は簡単です。</Typography>
+            </ThemeProvider>
             <br />
             <p>
               <LargeSignUpButton />
