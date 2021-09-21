@@ -50,7 +50,7 @@ const ExtendedPostList: VFC = () => {
 
   return (
     <PostList
-      // HACK:postとuserはundefinedになることはない想定のため、型アサーションを利用
+      // ToDo: 型ガードを入れる
       posts={posts!}
       users={users!}
       //   HACK:pJsonから取得する値はboolean型である sliceにて保証しているため、安全でない型定義を許容する

@@ -11,7 +11,7 @@ import ProfileModal from 'presentational/organisms/ProfileModal';
 
 import { useSelector } from 'react-redux';
 
-import { Store } from 'common/CustomTypes';
+import { User, Store } from 'common/CustomTypes';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,13 +64,13 @@ const Client: VFC = () => {
       <ProfileModal
         // HACK : VScode上は問題ないが、コンパイル時にエラーが発生するため、以下のオプションを許容
         /* eslint-disable  @typescript-eslint/no-unsafe-member-access */
-        open={profileModalJson?.open}
-        user={profileModalJson?.user}
+        open={profileModalJson?.open as boolean}
+        user={profileModalJson?.user as User}
       />
       <CustomizedSnackbars
-        open={snackbarJson?.open}
-        type={snackbarJson?.type}
-        message={snackbarJson?.message}
+        open={snackbarJson?.open as boolean}
+        type={snackbarJson?.type as string}
+        message={snackbarJson?.message as string}
       />
       <ClientDrawer />
       <CssBaseline />

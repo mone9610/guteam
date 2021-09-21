@@ -57,8 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  // ToDo:型はあとで決める
-  open: any;
+  open: boolean;
   user?: User;
 };
 
