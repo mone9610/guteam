@@ -29,17 +29,28 @@ const ExtendedPostList: VFC = () => {
 
   const load = useCallback(() => {
     if (token) {
-      void getUsers(token).then((us) => {
-        setUsers(us);
-      });
-      void getPosts(token)
-        .then((ps) => {
-          setPosts(ps);
+      void getUsers(token)
+        .then((us) => {
+          setUsers(us);
         })
         .then(() => {
-          updateProgress(false);
-          updateReload(false);
+          void getPosts(token)
+            .then((ps) => {
+              setPosts(ps);
+            })
+            .then(() => {
+              updateProgress(false);
+              updateReload(false);
+            });
         });
+      // void getPosts(token)
+      //   .then((ps) => {
+      //     setPosts(ps);
+      //   })
+      //   .then(() => {
+      //     updateProgress(false);
+      //     updateReload(false);
+      //   });
     }
   }, [token]);
 
