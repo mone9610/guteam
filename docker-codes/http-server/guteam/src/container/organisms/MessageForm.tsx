@@ -1,5 +1,5 @@
-import { VFC, useState, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { VFC, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
@@ -45,9 +45,8 @@ const MessageForm: VFC = () => {
   }, [dispatch, message, token]);
 
   //   Ctrl + Enterでイベントを実行するための関数
-  const handleKeyDown = (event: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (event.keyCode === 13 && event.ctrlKey) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' && event.ctrlKey) {
       // HACK:バリデーション機能の仮置き
       if (message?.length === 0 || message === undefined) {
         return;
@@ -57,8 +56,7 @@ const MessageForm: VFC = () => {
   };
 
   // 入力フォームの変更を検知するための関数
-  const handleChange = (event: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 

@@ -6,7 +6,6 @@ import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { PostData, User } from 'common/CustomTypes';
-import Skeleton from '@material-ui/lab/Skeleton';
 import Spinner from 'presentational/molecules/Spinner';
 import Post from 'presentational/organisms/Post';
 import PostEnd from 'presentational/organisms/PostEnd';

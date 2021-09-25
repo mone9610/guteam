@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import ReactDOM from 'react-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { Provider } from 'react-redux';
@@ -9,9 +8,9 @@ import './index.css';
 
 import reportWebVitals from './reportWebVitals';
 
-const domain: any = process.env.REACT_APP_AUTH0_DOMAIN;
-const clientId: any = process.env.REACT_APP_AUTH0_CLIENT_ID;
-const audience: any = process.env.REACT_APP_AUTH0_AUDIENCE;
+const domain = process.env.REACT_APP_AUTH0_DOMAIN as string;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID as string;
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 
 ReactDOM.render(
   <Auth0Provider

@@ -23,7 +23,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
 import InfoIcon from '@material-ui/icons/Info';
-import BuildIcon from '@material-ui/icons/Build';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -36,8 +35,6 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
-
-import Avatar from '../molecules/Avatar';
 
 const drawerWidth = 240;
 
@@ -123,10 +120,6 @@ const ClientDrawer: VFC<Props> = (props) => {
   const handleClickSetting = () => {
     setOpenSetting(!openSetting);
   };
-  const [openAdmin, setOpenAdmin] = React.useState(false);
-  const handleClickAdmin = () => {
-    setOpenAdmin(!openAdmin);
-  };
 
   const drawer = (
     <div>
@@ -148,7 +141,10 @@ const ClientDrawer: VFC<Props> = (props) => {
         </ListItem>
         <Collapse in={openCommunity} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem
+            <ListItem button className={classes.nested}>
+              <ListItemText primary="工事中" />
+            </ListItem>
+            {/* <ListItem
               button
               component={Link}
               to="/client/community"
@@ -158,7 +154,7 @@ const ClientDrawer: VFC<Props> = (props) => {
             </ListItem>
             <ListItem button className={classes.nested}>
               <ListItemText primary="家庭" />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Collapse>
         <ListItem button onClick={handleClickTeam}>
@@ -222,31 +218,6 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
-        <ListItem button onClick={handleClickAdmin}>
-          <ListItemIcon>
-            <BuildIcon />
-          </ListItemIcon>
-          <ListItemText primary="管理機能" />
-          {openAdmin ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={openAdmin} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem
-              button
-              className={classes.nested}
-              onClick={() => history.push('/client/admin/user')}
-            >
-              <ListItemText primary="ユーザー管理" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.nested}
-              onClick={() => logout()}
-            >
-              <ListItemText primary="ログアウト" />
-            </ListItem>
-          </List>
-        </Collapse>
       </List>
     </div>
   );

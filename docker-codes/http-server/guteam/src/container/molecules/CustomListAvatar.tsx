@@ -29,7 +29,7 @@ const CustomListAvatar: VFC<Props> = (props) => {
   //   プロフィール用のモーダルを制御する機構
   const dispatch = useDispatch();
   const handleModal = () => {
-    void getUser(token, sub!)
+    void getUser(token, sub as string)
       .then((u) => {
         dispatch(setProfileModalState(u));
       })

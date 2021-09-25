@@ -53,7 +53,7 @@ const Profile: VFC = () => {
   //   認証・subの取得周りを制御
   const token = useToken();
   const { user } = useAuth0();
-  const rawSub: any = user?.sub;
+  const rawSub = user?.sub as string;
   const sub: string = absSubFromUserID(rawSub);
 
   //   ビューと入力フォームの状態管理
@@ -93,10 +93,8 @@ const Profile: VFC = () => {
   }, [sub, token]);
 
   //   画像のアップロード制御
-  //   HACK:event型へのunsafeaccessとUnsafe assignmentを許容
-  /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-  const processImage = async (event: any) => {
+  const processImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
     const sizeLimit = 1024 * 1024 * 1;
     const imageFile = event.target.files[0];
     if (event.target.files[0].size > sizeLimit) {
@@ -126,7 +124,6 @@ const Profile: VFC = () => {
       picture_url: pictureUrl,
     };
     if (token)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       void putUser(token, sub, data).then((res) => {
         if (res === 200) {
           dispatch(
@@ -141,7 +138,6 @@ const Profile: VFC = () => {
             setSnackbarState({
               open: true,
               type: 'error',
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               message: `予期せぬエラーが発生しました。(コード：${res})`,
             })
           );
@@ -221,13 +217,11 @@ const Profile: VFC = () => {
             <p />
             <Grid
               container
-              justify="center"
               justifyContent="center"
               alignContent="center"
-              // direction="row-reverse"
               spacing={2}
             >
-              <Grid item xs={12} justifyContent="center">
+              <Grid item xs={12}>
                 <Button
                   onClick={updateProfile}
                   variant="contained"
