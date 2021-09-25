@@ -13,10 +13,9 @@ const s3config = {
 };
 
 export const uploadFile = async (file: File, sub: string): Promise<string> => {
-  /* Import s3 config object and call the constrcutor */
   const ts = Date.parse(new Date().toISOString());
   const s3 = new ReactS3Client(s3config);
-  const filename = `${sub}/profile/${ts}`; /* Optional */
+  const filename = `${sub}/profile/${ts}`;
   try {
     const res = await s3.uploadFile(file, filename);
     return res.location;
@@ -25,17 +24,16 @@ export const uploadFile = async (file: File, sub: string): Promise<string> => {
   }
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const absSubFromUserID = (sub: string): string => {
   const userID = sub.replace(/auth0\|/g, '');
   return userID;
 };
 
-export const postUser = (token: string, data: User): any => {
+export const postUser = async (token: string, data: User): Promise<number> => {
   const url = `${basePath}/users`;
   const header = `Bearer ${token}`;
 
-  axios
+  const status = await axios
     .post<User>(url, data, {
       headers: {
         Authorization: header,
@@ -45,6 +43,8 @@ export const postUser = (token: string, data: User): any => {
     })
     .then((res) => res.status)
     .catch((err) => `${err as string}`);
+
+  return status as number;
 };
 
 export const processDate = (date: string): string => {
@@ -100,7 +100,6 @@ export const putUser = async (
   data: Partial<User>
 ): Promise<number> => {
   const header = `Bearer ${token}`;
-  // HACK : 型アサーションの記載が正しいかは要確認
   const url = `${basePath}/users/${sub}`;
 
   const status = await axios
@@ -129,7 +128,6 @@ export const getPosts = async (token: string): Promise<PostData[]> => {
   return data;
 };
 
-// HACK:promiseの解決を待つために、any型を戻り値としている。
 export const postPost = async (
   token: string,
   data: string

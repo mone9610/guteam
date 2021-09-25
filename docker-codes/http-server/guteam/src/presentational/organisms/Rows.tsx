@@ -53,7 +53,7 @@ const Rows: VFC = () => {
     <div className={classes.content}>
       <Grid container alignItems="center" justifyContent="center">
         <Grid container alignItems="center">
-          <Grid item md={6} justifyContent="center">
+          <Grid item md={6}>
             <p className={classes.txt}>
               <ThemeProvider theme={theme}>
                 <Typography variant="h3">愚痴〜ム</Typography>
@@ -69,7 +69,7 @@ const Rows: VFC = () => {
               </p>
             </p>
           </Grid>
-          <Grid item md={6} alignItems="center">
+          <Grid item md={6}>
             <img
               className={classes.resizeimage}
               src={Home1}
@@ -77,7 +77,7 @@ const Rows: VFC = () => {
             />
           </Grid>
         </Grid>
-        <Grid item md={12} justifyContent="center">
+        <Grid item md={12}>
           <p className={classes.display1}>
             <ThemeProvider theme={theme}>
               <Typography variant="h3">ストレス社会で戦う人たちへ。</Typography>
@@ -96,7 +96,7 @@ const Rows: VFC = () => {
           </p>
         </Grid>
         <Grid container alignItems="center">
-          <Grid item md={6} justifyContent="center">
+          <Grid item md={6}>
             <p className={classes.txt}>
               <ThemeProvider theme={theme}>
                 <Typography variant="h3">タイムライン機能</Typography>
@@ -108,7 +108,7 @@ const Rows: VFC = () => {
               </ThemeProvider>
             </p>
           </Grid>
-          <Grid item md={6} alignItems="center">
+          <Grid item md={6}>
             <img
               className={classes.resizeimage}
               src={Timeline}
@@ -118,7 +118,7 @@ const Rows: VFC = () => {
         </Grid>
         <Grid container alignItems="center">
           <Grid container alignItems="center">
-            <Grid item md={6} justifyContent="center">
+            <Grid item md={6}>
               <p className={classes.txt}>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h3">コミュニティ機能</Typography>
@@ -130,7 +130,7 @@ const Rows: VFC = () => {
                 </ThemeProvider>
               </p>
             </Grid>
-            <Grid item md={6} alignItems="center">
+            <Grid item md={6}>
               <img
                 className={classes.resizeimage}
                 src={Community}
@@ -141,7 +141,7 @@ const Rows: VFC = () => {
         </Grid>
         <Grid container alignItems="center">
           <Grid container alignItems="center">
-            <Grid item md={6} justifyContent="center">
+            <Grid item md={6}>
               <p className={classes.txt}>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h3">チーム機能</Typography>
@@ -153,14 +153,14 @@ const Rows: VFC = () => {
                 </ThemeProvider>
               </p>
             </Grid>
-            <Grid item md={6} alignItems="center">
+            <Grid item md={6}>
               <img className={classes.resizeimage} src={Team} alt="チーム" />
             </Grid>
           </Grid>
         </Grid>
         <Grid container alignItems="center">
           <Grid container alignItems="center">
-            <Grid item md={6} justifyContent="center">
+            <Grid item md={6}>
               <p className={classes.txt}>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h3">ダイレクト機能</Typography>
@@ -172,7 +172,7 @@ const Rows: VFC = () => {
                 </ThemeProvider>
               </p>
             </Grid>
-            <Grid item md={6} alignItems="center">
+            <Grid item md={6}>
               <img
                 className={classes.resizeimage}
                 src={Direct}
@@ -181,7 +181,7 @@ const Rows: VFC = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={12} justifyContent="center">
+        <Grid item md={12}>
           <p className={classes.display2}>
             <ThemeProvider theme={theme}>
               <Typography variant="h3">

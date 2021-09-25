@@ -50,12 +50,9 @@ const ExtendedPostList: VFC = () => {
 
   return (
     <PostList
-      // ToDo: 型ガードを入れる
-      posts={posts!}
-      users={users!}
-      //   HACK:pJsonから取得する値はboolean型である sliceにて保証しているため、安全でない型定義を許容する
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      isLoading={Object.values(progressJson)[0]}
+      posts={posts as PostData[]}
+      users={users as User[]}
+      isLoading={Object.values(progressJson)[0] as boolean}
     />
   );
 };

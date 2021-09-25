@@ -124,7 +124,6 @@ const Profile: VFC = () => {
       picture_url: pictureUrl,
     };
     if (token)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       void putUser(token, sub, data).then((res) => {
         if (res === 200) {
           dispatch(
@@ -139,7 +138,6 @@ const Profile: VFC = () => {
             setSnackbarState({
               open: true,
               type: 'error',
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               message: `予期せぬエラーが発生しました。(コード：${res})`,
             })
           );
@@ -219,13 +217,11 @@ const Profile: VFC = () => {
             <p />
             <Grid
               container
-              justify="center"
               justifyContent="center"
               alignContent="center"
-              // direction="row-reverse"
               spacing={2}
             >
-              <Grid item xs={12} justifyContent="center">
+              <Grid item xs={12}>
                 <Button
                   onClick={updateProfile}
                   variant="contained"
