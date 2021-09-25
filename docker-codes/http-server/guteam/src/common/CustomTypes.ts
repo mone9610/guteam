@@ -5,7 +5,7 @@ import { ReloadState } from 'common/features/reloadSlice';
 import { ProfileModalState } from './features/profileModalSlice';
 
 export type User = {
-  id: number;
+  id?: number;
   name: string;
   sub: string;
   introduction: string;
