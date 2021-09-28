@@ -51,5 +51,6 @@ test:
 production:
   <<: *default
   database: guteam_production
-  username: guteam
+  username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['GUTEAM_DATABASE_PASSWORD'] %>
+   host: <%= ENV['DB_HOST'] %>
