@@ -8,7 +8,8 @@ COPY ./guteam /guteam
 RUN bundle install
 
 COPY ./guteam/entrypoint.sh /usr/bin/
-RUN rails db:migrate
+# HACK:そもそもsecret_keyを使わないが、起動時に必須なのでdotenvに記載
+RUN KEY=`bundle exec rake secret` &&  echo SECRET_KEY_BASE=$KEY >> .env
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
