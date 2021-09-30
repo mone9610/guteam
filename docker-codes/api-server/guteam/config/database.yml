@@ -49,7 +49,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: guteam_production
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['GUTEAM_DATABASE_PASSWORD'] %>
