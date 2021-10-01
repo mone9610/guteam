@@ -55,4 +55,4 @@ production:
   database: guteam_production
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['GUTEAM_DATABASE_PASSWORD'] %>
-   host: <%= ENV['DB_HOST'] %>
+  host: <%= ENV['DB_HOST'] %>

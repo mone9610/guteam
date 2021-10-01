@@ -2,6 +2,8 @@
 *.drawio
 ##環境変数は非公開
 *.env
+*.env.development
+*.env.production
 ##reactのテスト用のデータは非公開
 data.ts
 ##rails関連
