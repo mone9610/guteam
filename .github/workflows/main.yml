@@ -3,6 +3,8 @@ on:
   push:
       branches:
         - main
+      paths:
+        - 'docker-codes/http-server/**'
 env:
   NODE_VERSION: '14.x' 
 
