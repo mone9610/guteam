@@ -7,26 +7,44 @@ env:
   NODE_VERSION: '14.x' 
 
 jobs:
-  build:
+  react-build-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Change Dir
-        run: cd ./docker-codes/http-server/guteam
+        
       - name: Install Dependencies
-        run: pwd && ls -l && yarn install
+        run: cd ./docker-codes/http-server/guteam && yarn install
+        
       - name: Build
-        run: pwd && ls -l && yarn build
+        run: cd ./docker-codes/http-server/guteam && yarn build
+        
+      - name: Create dotenv file
+        run: |
+          touch .env
+          echo "REACT_APP_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "REACT_APP_AUTH0_AUDIENCE=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}" >> .env
+          echo "REACT_APP_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }}" >> .env
+          echo "REACT_APP_INITIAL_AVATAR=${{ secrets.REACT_APP_INITIAL_AVATAR }}" >> .env
+          echo "REACT_APP_REGION=${{ secrets.REACT_APP_REGION }}" >> .env
+          echo "REACT_APP_REST_URL=${{ secrets.REACT_APP_REST_URL }}" >> .env
+          echo "REACT_APP_S3_BUCKET=${{ secrets.REACT_APP_S3_BUCKET }}" >> .env
+          echo "REACT_APP_SECRET_ACCESS_KEY=${{ secrets.REACT_APP_SECRET_ACCESS_KEY }}" >> .env
+        
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GUTEAM_S3: ${{ secrets.GUTEAM_S3 }}
         run: |
-          pwd && ls -l && aws s3 cp --recursive --region ap-northeast-1 ./build s3://$GUTEAM_S3
+          cd ./docker-codes/http-server/guteam && aws s3 cp --recursive --region ap-northeast-1 ./build s3://$GUTEAM_S3
+          
       - name: Clear CloudFront Cache
+        uses: chetan/invalidate-cloudfront-action@v1.2
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           CLOUD_FRONT_DID: ${{ secrets.CLOUD_FRONT_DID }}
-        run: |
-          pwd && ls -l && aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_DID --paths "/*"
+          PATHS: "/*"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
