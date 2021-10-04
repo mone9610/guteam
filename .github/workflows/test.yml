@@ -1,0 +1,30 @@
+name: Build React on S3
+on:
+  push:
+      branches:
+        - main
+env:
+  NODE_VERSION: '14.x' 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: pwd && ls -l && cd ./docker-codes/http-server/guteam && pwd && ls -l && yarn install
+      - name: Build
+        run: pwd && ls -l && cd ./docker-codes/http-server/guteam && pwd && ls -l && yarn build
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GUTEAM_S3: ${{ secrets.GUTEAM_S3 }}
+        run: |
+          pwd && ls -l && cd ./docker-codes/http-server/guteam && aws s3 cp --recursive --region ap-northeast-1 ./build s3://$GUTEAM_S3
+      - name: Clear CloudFront Cache
+        env:
+          CLOUD_FRONT_DID: ${{ secrets.CLOUD_FRONT_DID }}
+        run: |
+          pwd && ls -l && cd ./docker-codes/http-server/guteam  && aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_DID --paths "/*"
