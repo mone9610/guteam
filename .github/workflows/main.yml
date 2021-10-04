@@ -18,6 +18,7 @@ jobs:
         
       - name: Create dotenv file
         run: |
+          cd ./docker-codes/http-server/guteam
           touch .env
           echo "REACT_APP_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}" >> .env
