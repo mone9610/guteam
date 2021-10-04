@@ -15,18 +15,18 @@ jobs:
       - name: Change Dir
         run: cd ./docker-codes/http-server/guteam
       - name: Install Dependencies
-        run: yarn install
+        run: pwd && ls -l && yarn install
       - name: Build
-        run: yarn
+        run: pwd && ls -l && yarn build
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GUTEAM_S3: ${{ secrets.GUTEAM_S3 }}
         run: |
-          aws s3 cp --recursive --region ap-northeast-1 ./build s3://$GUTEAM_S3
-      - name: Clear Cache
+          pwd && ls -l && aws s3 cp --recursive --region ap-northeast-1 ./build s3://$GUTEAM_S3
+      - name: Clear CloudFront Cache
         env:
           CLOUD_FRONT_DID: ${{ secrets.CLOUD_FRONT_DID }}
         run: |
-          aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_DID --paths "/*"
+          pwd && ls -l && aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_DID --paths "/*"
