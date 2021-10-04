@@ -10,7 +10,7 @@ jobs:
     docker:
       - image: circleci/node:9.11
     steps:
-      - run: PATH=$PATH:/home/circleci/.local/bin; export PATH && sudo apt-get -y -qq update && sudo apt-get -y -qq install python3 python3-dev && sudo curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py --user && pip install awscli --upgrade --user
+      - run: PATH=$PATH:/home/circleci/.local/bin; export PATH && sudo apt-get -y -qq update && sudo apt-get -y -qq install python3 python3-dev && sudo curl -O https://bootstrap.pypa.io/pip/3.4/get-pip.py && python3 get-pip.py --user && pip install awscli --upgrade --user
       - checkout
       - run: yarn build
       - run : cd docker-codes/http-server/guteam/
