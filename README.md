@@ -66,10 +66,10 @@ https://guteam.net/
     - docker-compose version 1.27.4
     - Terraform(予定)
 - XaaS
-    - [Auth0](https://auth0.com/jp)
+    - [auth0](https://auth0.com/jp)
     - [GitHub](https://github.co.jp/)
-    - [Line Notify](https://notify-bot.line.me/ja/)
-    - Circle CI(予定)
+        - GitHub Actions
+    - [LINE Notify](https://notify-bot.line.me/ja/)
 ### 論理構成図
 ![使い方②](docs/img/architecture.jpeg)
 ### E-R図
