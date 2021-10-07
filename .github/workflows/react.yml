@@ -1,4 +1,4 @@
-name: Build React on S3
+name: React CI/CD
 on:
   push:
       branches:
