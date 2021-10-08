@@ -57,6 +57,7 @@ https://guteam.net/
 - サーバーサイド
     - ruby 2.6.8p205 
     - Rails 6.1.4  
+    - rspec-core 3.10.1
     - Python 2.7(Lambda関数にて使用)
 - インフラ
     - AWS

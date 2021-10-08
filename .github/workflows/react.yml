@@ -1,10 +1,11 @@
-name: Build React on S3
+name: CI/CD React
 on:
-  push:
-      branches:
-        - main
-      paths:
-        - 'docker-codes/http-server/**'
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+    paths:
+      - 'docker-codes/http-server/**'
 env:
   NODE_VERSION: '14.x' 
 
