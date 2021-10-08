@@ -5,9 +5,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { createBrowserHistory } from 'history';
 
-import Home from './presentational/pages/Home';
-import Client from './presentational/pages/Client';
-import { ProtectedRoute } from './common/ProtectedRoute';
+import Home from 'presentational/pages/Home';
+import Client from 'presentational/pages/Client';
+import { ProtectedRoute } from 'common/ProtectedRoute';
+import Terms from 'presentational/pages/Terms';
 
 const customTheme = createTheme({
   palette: {
@@ -34,6 +35,7 @@ const App: VFC = () => {
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/terms" component={Terms} />
               <ProtectedRoute path="/client" component={Client} />
             </Switch>
           </BrowserRouter>

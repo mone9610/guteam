@@ -22,7 +22,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
-import InfoIcon from '@material-ui/icons/Info';
+// import InfoIcon from '@material-ui/icons/Info';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -186,11 +187,17 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
-        <ListItem button>
+        {/* <ListItem button>
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="お知らせ" />
+        </ListItem> */}
+        <ListItem button onClick={() => history.push('/terms')}>
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="利用規約" />
         </ListItem>
         <ListItem button onClick={handleClickSetting}>
           <ListItemIcon>
