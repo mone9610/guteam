@@ -24,6 +24,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
 // import InfoIcon from '@material-ui/icons/Info';
 import DescriptionIcon from '@material-ui/icons/Description';
+import LockIcon from '@material-ui/icons/Lock';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -193,12 +194,6 @@ const ClientDrawer: VFC<Props> = (props) => {
           </ListItemIcon>
           <ListItemText primary="お知らせ" />
         </ListItem> */}
-        <ListItem button onClick={() => history.push('/terms')}>
-          <ListItemIcon>
-            <DescriptionIcon />
-          </ListItemIcon>
-          <ListItemText primary="利用規約" />
-        </ListItem>
         <ListItem button onClick={handleClickSetting}>
           <ListItemIcon>
             <SettingsIcon />
@@ -225,6 +220,18 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
+        <ListItem button onClick={() => history.push('/docs/terms')}>
+          <ListItemIcon>
+            <DescriptionIcon />
+          </ListItemIcon>
+          <ListItemText primary="利用規約" />
+        </ListItem>
+        <ListItem button onClick={() => history.push('/docs/policies')}>
+          <ListItemIcon>
+            <LockIcon />
+          </ListItemIcon>
+          <ListItemText primary="個人情報保護方針" />
+        </ListItem>
       </List>
     </div>
   );

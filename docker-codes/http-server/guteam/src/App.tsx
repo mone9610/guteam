@@ -9,6 +9,7 @@ import Home from 'presentational/pages/Home';
 import Client from 'presentational/pages/Client';
 import { ProtectedRoute } from 'common/ProtectedRoute';
 import Terms from 'presentational/pages/Terms';
+import Policies from 'presentational/pages/Policies';
 
 const customTheme = createTheme({
   palette: {
@@ -35,8 +36,9 @@ const App: VFC = () => {
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/terms" component={Terms} />
               <ProtectedRoute path="/client" component={Client} />
+              <Route exact path="/docs/terms" component={Terms} />
+              <Route exact path="/docs/policies" component={Policies} />
             </Switch>
           </BrowserRouter>
         </ThemeProvider>
