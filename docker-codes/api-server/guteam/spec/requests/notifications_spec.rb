@@ -42,7 +42,7 @@ RSpec.describe 'Notifications', type: :request do
     end
 
     it 'tokenがheaderに入っており、パラメータ内のsubが存在しないとき、GETのレスポンスコードが404が返ってくること' do
-      get '/api/v1/posts/notexist', headers: @headers
+      get '/api/v1/notifications/notexist', headers: @headers
       expect(response).to have_http_status(404)
     end
   end

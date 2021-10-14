@@ -3,11 +3,11 @@ import { VFC } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle } from 'common/features/pageTitleSlice';
 
-import NotificationItemList from 'presentational/template/NotificationItemList';
+import ExtendedNotificationItemList from 'container/template/NotificationItemList';
 
-// 開発環境のみ利用
-import { notificationData, userData } from 'data/notification';
-import { NotificationData } from 'common/CustomTypes';
+// // 開発環境のみ利用
+// import { notificationData, userData } from 'data/notification';
+// import { NotificationData } from 'common/CustomTypes';
 
 const Timeline: VFC = () => {
   // ToDo:dispatchとtitleの更新を共通化できないか検討
@@ -21,11 +21,7 @@ const Timeline: VFC = () => {
 
   return (
     <div>
-      <NotificationItemList
-        notificationItems={notificationData as NotificationData[]}
-        users={userData}
-        isLoading={false}
-      />
+      <ExtendedNotificationItemList />
     </div>
   );
 };

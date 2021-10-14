@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ReactS3Client from 'react-aws-s3-typescript';
 
-import { User, PostData, Message } from 'common/CustomTypes';
+import { User, PostData, Message, NotificationData } from 'common/CustomTypes';
 
 const basePath = process.env.REACT_APP_REST_URL as string;
 
@@ -150,4 +150,25 @@ export const postPost = async (
     )
     .then((res) => res.status);
   return status;
+};
+
+export const getNotifications = async (
+  token: string,
+  id: number
+): Promise<NotificationData[]> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/notifications/${id}`;
+
+  const data = await axios
+    .get<NotificationData[]>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      err as string;
+    });
+  return data as NotificationData[];
 };
