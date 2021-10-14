@@ -34,28 +34,28 @@ const ExtendedNotificationItemList: VFC = () => {
 
   const load = useCallback(() => {
     if (token) {
-      void getUser(token, sub)
-        .then((u) => {
-          setCurrentUser(u);
-        })
-        .then(() => {
-          void getUsers(token).then((us) => {
-            setUsers(us);
-          });
-          void getNotifications(token, currentUser?.id as number).then((ns) => {
-            setNotifications(ns);
-          });
-        })
-        .then(() => {
-          updateProgress(false);
+      void getUser(token, sub).then((u) => {
+        setCurrentUser(u);
+      });
+      if (currentUser?.id) {
+        void getUsers(token).then((us) => {
+          setUsers(us);
         });
+        void getNotifications(token, currentUser?.id)
+          .then((ns) => {
+            setNotifications(ns);
+          })
+          .then(() => {
+            updateProgress(false);
+          });
+      }
     }
-  }, [token]);
+  }, [token, currentUser?.id]);
 
   useEffect(() => {
     updateProgress(true);
     void load();
-  }, [token]);
+  }, [token, currentUser?.id]);
 
   return (
     <NotificationItemList
