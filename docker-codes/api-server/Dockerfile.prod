@@ -6,12 +6,12 @@ RUN apt-get update -qq && apt-get install -y nodejs mariadb-client
 WORKDIR /guteam
 COPY ./guteam /guteam
 RUN bundle install
-# createとloadは管理サーバーより行う
-RUN rails db:migrate
 
 COPY ./guteam/entrypoint.sh /usr/bin/
 # HACK:そもそもsecret_keyを使わないが、起動時に必須なのでdotenvに記載
 RUN KEY=`bundle exec rake secret` &&  echo SECRET_KEY_BASE=$KEY >> .env
+# createとloadは管理サーバーより行う
+RUN rails db:migrate
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
