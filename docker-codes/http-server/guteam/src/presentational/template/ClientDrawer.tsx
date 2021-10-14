@@ -25,6 +25,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 // import InfoIcon from '@material-ui/icons/Info';
 import DescriptionIcon from '@material-ui/icons/Description';
 import LockIcon from '@material-ui/icons/Lock';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -188,12 +189,12 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
-        {/* <ListItem button>
+        <ListItem button onClick={() => history.push('/client/notification')}>
           <ListItemIcon>
-            <InfoIcon />
+            <NotificationsIcon />
           </ListItemIcon>
           <ListItemText primary="お知らせ" />
-        </ListItem> */}
+        </ListItem>
         <ListItem button onClick={handleClickSetting}>
           <ListItemIcon>
             <SettingsIcon />

@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router';
 
 import Profile from 'container/template/Profile';
 import Timeline from 'presentational/template/Timeline';
+import Notification from 'presentational/template/Notification';
 
 const Content: VFC = () => (
   <div>
@@ -15,6 +16,9 @@ const Content: VFC = () => (
       </Route>
       <Route path="/client/profile">
         <Profile />
+      </Route>
+      <Route path="/client/notification">
+        <Notification />
       </Route>
     </Switch>
   </div>

@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_25_083948) do
+ActiveRecord::Schema.define(version: 2021_10_14_065731) do
+
+  create_table "notifications", charset: "utf8mb4", force: :cascade do |t|
+    t.string "message"
+    t.bigint "from_user_id"
+    t.bigint "to_user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "posts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false

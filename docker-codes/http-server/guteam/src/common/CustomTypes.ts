@@ -1,3 +1,4 @@
+/* eslint-disable  camelcase */
 import { SnackbarState } from 'common/features/snackbarSlice';
 import { TitleState } from 'common/features/pageTitleSlice';
 import { ProgressState } from 'common/features/progressSlice';
@@ -9,24 +10,26 @@ export type User = {
   name: string;
   sub: string;
   introduction: string;
-  // eslint-disable-next-line camelcase
   picture_url: string;
-  // eslint-disable-next-line camelcase
   created_at?: string;
-  // eslint-disable-next-line camelcase
   updated_at?: string;
 };
 
 export type PostData = {
   id: number;
-  // eslint-disable-next-line camelcase
   user_id: number;
   message: string;
-  // eslint-disable-next-line camelcase
   is_deleted: boolean;
-  // eslint-disable-next-line camelcase
   created_at: string;
-  // eslint-disable-next-line camelcase
+  updated_at: string;
+};
+
+export type NotificationData = {
+  id: number;
+  message: string;
+  from_user_id: number;
+  to_user_id: number;
+  created_at: string;
   updated_at: string;
 };
 

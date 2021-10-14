@@ -6,6 +6,8 @@ RUN apt-get update -qq && apt-get install -y nodejs mariadb-client
 WORKDIR /guteam
 COPY ./guteam /guteam
 RUN bundle install
+# createとloadは管理サーバーより行う
+RUN rails db:migrate
 
 COPY ./guteam/entrypoint.sh /usr/bin/
 # HACK:そもそもsecret_keyを使わないが、起動時に必須なのでdotenvに記載
