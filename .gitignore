@@ -6,6 +6,9 @@
 *.env.production
 ##reactのテスト用のデータは非公開
 data.ts
+##
+lambda.json
+
 ##rails関連
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.
 #
