@@ -9,7 +9,9 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
-import { processDate } from 'common/customFunctions';
+import moment from 'moment';
+import 'moment/locale/ja';
+
 import CustomListAvatar from 'container/molecules/CustomListAvatar';
 
 const useStyles = makeStyles(() =>
@@ -83,8 +85,8 @@ const Post: VFC<Props> = (props) => {
                   color="textSecondary"
                 >
                   {is_deleted
-                    ? `${processDate(updated_at)}に削除`
-                    : `${processDate(created_at)}に投稿`}
+                    ? moment(updated_at).fromNow()
+                    : moment(created_at).fromNow()}
                 </Typography>
               </>
             }
