@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: theme.spacing(4),
+      margin: theme.spacing(1, 0, 3),
     },
     imgCircleEditable: {
       borderRadius: '50%',

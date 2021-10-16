@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       [theme.breakpoints.up('lg')]: {
         width: '40vw',
-        height: '80vh',
+        height: '85vh',
       },
       [theme.breakpoints.up('xl')]: {
         width: '40vw',
@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imgCircleEditable: {
       borderRadius: '50%',
-      width: '75px',
-      height: '75px',
+      width: '100px',
+      height: '100px',
     },
     container: {
       display: 'flex',
