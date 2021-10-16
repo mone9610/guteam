@@ -22,9 +22,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
-// import InfoIcon from '@material-ui/icons/Info';
-import DescriptionIcon from '@material-ui/icons/Description';
-import LockIcon from '@material-ui/icons/Lock';
+import WebAssetIcon from '@material-ui/icons/WebAsset';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -122,6 +120,10 @@ const ClientDrawer: VFC<Props> = (props) => {
   const [openSetting, setOpenSetting] = React.useState(false);
   const handleClickSetting = () => {
     setOpenSetting(!openSetting);
+  };
+  const [openDocs, setOpenDocs] = React.useState(false);
+  const handleClickDocs = () => {
+    setOpenDocs(!openDocs);
   };
 
   const drawer = (
@@ -221,18 +223,31 @@ const ClientDrawer: VFC<Props> = (props) => {
           </List>
         </Collapse>
         <Divider />
-        <ListItem button onClick={() => history.push('/docs/terms')}>
+        <ListItem button onClick={handleClickDocs}>
           <ListItemIcon>
-            <DescriptionIcon />
+            <WebAssetIcon color="action" />
           </ListItemIcon>
-          <ListItemText primary="利用規約" />
+          <ListItemText primary="" secondary="愚痴〜ムについて" />
+          {openDocs ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <ListItem button onClick={() => history.push('/docs/policies')}>
-          <ListItemIcon>
-            <LockIcon />
-          </ListItemIcon>
-          <ListItemText primary="個人情報保護方針" />
-        </ListItem>
+        <Collapse in={openDocs} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/docs/terms')}
+            >
+              <ListItemText secondary="利用規約" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={() => history.push('/docs/policies')}
+            >
+              <ListItemText secondary="個人情報保護方針" />
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
     </div>
   );
