@@ -31,18 +31,26 @@ const useStyles = makeStyles((theme: Theme) =>
         height: '75vh',
       },
       [theme.breakpoints.up('md')]: {
+        width: '75vw',
+        height: '80vh',
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: '40vw',
+        height: '80vh',
+      },
+      [theme.breakpoints.up('xl')]: {
         width: '40vw',
         height: '75vh',
       },
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(3, 2, 3),
+      padding: theme.spacing(2, 2, 2),
     },
     imgCircleEditable: {
       borderRadius: '50%',
-      width: '100px',
-      height: '100px',
+      width: '75px',
+      height: '75px',
     },
     container: {
       display: 'flex',
