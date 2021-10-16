@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { postPost } from 'common/customFunctions';
-import { useToken } from 'common/CustomHooks';
+import { useToken, useSize } from 'common/CustomHooks';
 import { setReload } from 'common/features/reloadSlice';
 import { setSnackbarState } from 'common/features/snackbarSlice';
 
@@ -16,6 +16,8 @@ const MessageForm: VFC = () => {
   const [message, setMessage] = useState<string>();
 
   const dispatch = useDispatch();
+
+  const isMobileSize = useSize();
 
   const send = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -68,12 +70,16 @@ const MessageForm: VFC = () => {
         style={{ margin: 8 }}
         placeholder="160字以内でメッセージを入力"
         helperText={
+          // モバイルサイズかどうかを判定し、helpertextを切り替える
+          // eslint-disable-next-line no-nested-ternary
           message?.length === 0
             ? '文字を入力してください'
+            : isMobileSize
+            ? 'ボタンをタップして送信'
             : 'Ctrl + Enterで送信可能'
         }
         fullWidth
-        autoFocus
+        autoFocus={!isMobileSize}
         margin="normal"
         value={message}
         onKeyDown={handleKeyDown}
