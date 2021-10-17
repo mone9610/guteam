@@ -23,7 +23,7 @@ jobs:
         run: |
           cd ./docker-codes/http-server/guteam
           touch .env
-          echo "REACT_APP_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "REACT_APP_ACCESS_KEY=${{ secrets.REACT_APP_ACCESS_KEY }}" >> .env
           echo "REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}" >> .env
           echo "REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}" >> .env
           echo "REACT_APP_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }}" >> .env
