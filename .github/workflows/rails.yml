@@ -123,7 +123,7 @@ jobs:
     - name: Run migration
       uses: sinsoku/amazon-ecs-run-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
         container: ${{ env.CONTAINER_NAME }}
         command: '["rails", "db:migrate"]'
         service: ${{ env.ECS_SERVICE }}
