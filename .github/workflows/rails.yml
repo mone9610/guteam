@@ -4,8 +4,8 @@ on:
     branches:
       - main
     types: [closed]
-    paths:
-      - 'docker-codes/api-server/**'
+    # paths:
+      # - 'docker-codes/api-server/**'
 jobs:
   build-and-test:
     name: Build and Test
@@ -68,7 +68,7 @@ jobs:
       ECR_REPOSITORY: guteam-production          
       ECS_SERVICE: guteam-prod-ecs-service-rails 
       ECS_CLUSTER: guteam-prod
-      ECS_TASK_DEFINITION: ./infrastructure/aws/guteam-prod-ecs-taskd-rails.json
+      ECS_TASK_DEFINITION: ./infrastructure/aws/ecs/guteam-prod-ecs-taskd-rails.json
       CONTAINER_NAME: guteam-prod-ecs-container-rails
 
     steps:
@@ -119,6 +119,16 @@ jobs:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
+
+    - name: Run migration
+      uses: sinsoku/amazon-ecs-run-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container: ${{ env.CONTAINER_NAME }}
+        command: '["rails", "db:migrate"]'
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-stopped: true
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
