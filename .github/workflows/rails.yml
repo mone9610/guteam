@@ -120,10 +120,18 @@ jobs:
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
+      # NOTE: ARNを foo:1 のような文字列に変換する
+    - name: Get Task String
+      id: split-task-def
+      uses: jungwinter/split@v1
+      with:
+        msg: ${{ steps.task-def.outputs.task-definition }}
+        seperator: /  
+
     - name: Run migration
       uses: sinsoku/amazon-ecs-run-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.split-task-def.outputs._1 }}
         container: ${{ env.CONTAINER_NAME }}
         command: '["rails", "db:migrate"]'
         service: ${{ env.ECS_SERVICE }}
