@@ -120,12 +120,19 @@ jobs:
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
+    # NOTE: Migration用のtaskdefを新規に生成する
+    - name: Create Task Definition
+      id: create-task-def
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+
       # NOTE: ARNを foo:1 のような文字列に変換する
     - name: Get Task String
       id: split-task-def
       uses: jungwinter/split@v1
       with:
-        msg: ${{ steps.task-def.outputs.task-definition-arn }}
+        msg: ${{ steps.create-task-def.outputs.task-definition-arn }}
         seperator: /  
 
     - name: Run migration
