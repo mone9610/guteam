@@ -125,7 +125,7 @@ jobs:
       id: split-task-def
       uses: jungwinter/split@v1
       with:
-        msg: ${{ steps.task-def.outputs.task-definition }}
+        msg: ${{ steps.task-def.outputs.task-definition-arn }}
         seperator: /  
 
     - name: Run migration
