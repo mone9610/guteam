@@ -10,7 +10,7 @@ import {
   getUsers,
   getUser,
 } from 'common/customFunctions';
-
+import { setSnackbarState } from 'common/features/snackbarSlice';
 import { ProgressState, setProgress } from 'common/features/progressSlice';
 import { useAuth0 } from '@auth0/auth0-react';
 import NotificationItemList from 'presentational/template/NotificationItemList';
@@ -35,12 +35,25 @@ const ExtendedNotificationItemList: VFC = () => {
   const load = useCallback(() => {
     if (token) {
       void getUser(token, sub).then((u) => {
-        setCurrentUser(u);
+        if (u === undefined) {
+          dispatch(
+            setSnackbarState({
+              open: true,
+              type: 'error',
+              message:
+                'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+            })
+          );
+          updateProgress(false);
+        } else {
+          setCurrentUser(u);
+        }
       });
       if (currentUser?.id) {
         void getUsers(token).then((us) => {
           setUsers(us);
         });
+
         void getNotifications(token, currentUser?.id)
           .then((ns) => {
             setNotifications(ns);

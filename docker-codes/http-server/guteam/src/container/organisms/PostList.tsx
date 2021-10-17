@@ -9,6 +9,7 @@ import { getPosts, getUsers } from 'common/customFunctions';
 
 import { ProgressState, setProgress } from 'common/features/progressSlice';
 import { ReloadState, setReload } from 'common/features/reloadSlice';
+import { setSnackbarState } from 'common/features/snackbarSlice';
 
 const ExtendedPostList: VFC = () => {
   const token = useToken();
@@ -41,16 +42,20 @@ const ExtendedPostList: VFC = () => {
             .then(() => {
               updateProgress(false);
               updateReload(false);
+            })
+            .catch(() => {
+              updateProgress(false);
+              updateReload(false);
+              dispatch(
+                setSnackbarState({
+                  open: true,
+                  type: 'error',
+                  message:
+                    'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+                })
+              );
             });
         });
-      // void getPosts(token)
-      //   .then((ps) => {
-      //     setPosts(ps);
-      //   })
-      //   .then(() => {
-      //     updateProgress(false);
-      //     updateReload(false);
-      //   });
     }
   }, [token]);
 

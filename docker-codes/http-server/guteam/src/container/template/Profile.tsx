@@ -84,7 +84,18 @@ const Profile: VFC = () => {
     if (token) {
       void getUser(token, sub)
         .then((u) => {
-          setUserData(u);
+          if (u === undefined) {
+            dispatch(
+              setSnackbarState({
+                open: true,
+                type: 'error',
+                message:
+                  'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+              })
+            );
+          } else {
+            setUserData(u);
+          }
         })
         .then(() => {
           updateProgress(false);
@@ -98,19 +109,24 @@ const Profile: VFC = () => {
     const sizeLimit = 1024 * 1024 * 1;
     const imageFile = event.target.files[0];
     if (event.target.files[0].size > sizeLimit) {
-      setSnackbarState({
-        open: true,
-        type: 'error',
-        message: 'ファイルサイズは1MB以下にしてください',
-      });
-    } else {
-      const loc = await uploadFile(imageFile, sub);
-      if (loc === undefined) {
+      dispatch(
         setSnackbarState({
           open: true,
           type: 'error',
-          message: 'アップロードに失敗しました。',
-        });
+          message: 'ファイルサイズは1MB以下にしてください',
+        })
+      );
+    } else {
+      const loc = await uploadFile(imageFile, sub);
+      if (loc === undefined) {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'アップロードに失敗しました。しばらく時間をおいて再試行してください。',
+          })
+        );
       } else {
         setPictureUrl(loc);
       }
@@ -138,7 +154,7 @@ const Profile: VFC = () => {
             setSnackbarState({
               open: true,
               type: 'error',
-              message: `予期せぬエラーが発生しました。(コード：${res})`,
+              message: `プロフィールの更新に失敗しました。しばらく時間をおいて再試行してください。`,
             })
           );
         }

@@ -109,8 +109,11 @@ export const putUser = async (
       },
       timeout: 10000,
     })
-    .then((res) => res.status);
-  return status;
+    .then((res) => res.status)
+    .catch((err) => {
+      err as number;
+    });
+  return status as number;
 };
 
 export const getPosts = async (token: string): Promise<PostData[]> => {
