@@ -4,8 +4,8 @@ on:
     branches:
       - main
     types: [closed]
-    # paths:
-      # - 'docker-codes/api-server/**'
+    paths:
+      - 'docker-codes/api-server/**'
 jobs:
   build-and-test:
     name: Build and Test
