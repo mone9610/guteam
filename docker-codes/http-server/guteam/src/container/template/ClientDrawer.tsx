@@ -1,7 +1,20 @@
+// HACK : VScode上は問題ないが、Redux ToolKit利用時、コンパイルエラーが発生するため、以下のオプションを許容
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import React, { VFC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { TitleState } from 'common/features/pageTitleSlice';
+
+import {
+  setCommunityOpen,
+  setTeamOpen,
+  setDirectOpen,
+  setSettingOpen,
+  setDocOpen,
+} from 'common/features/accordionSlice';
+import { Store } from 'common/CustomTypes';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,6 +49,9 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
+
+import AccordionMenu from 'presentational/organisms/AccordionMenu';
+import { communityData } from 'data/communities';
 
 const drawerWidth = 240;
 
@@ -93,6 +109,7 @@ const ClientDrawer: VFC<Props> = (props) => {
   const { logout } = useAuth0();
   // eslint-disable-next-line react/prop-types
   const { window } = props;
+  const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -101,29 +118,31 @@ const ClientDrawer: VFC<Props> = (props) => {
     setMobileOpen(!mobileOpen);
   };
 
+  // NOTE:タイトル初期化用
   const titleJson = useSelector((state: TitleState) => state.title);
   const title = Object.values(titleJson)[0];
 
-  // HACK:サイドバーのオープン制御のstate。もっといい書き方はないか探す
-  const [openCommunity, setOpenCommunity] = React.useState(false);
+  // NOTE:サイドバーのメニューを制御する
+  const accordionJson = useSelector((state: Store) => state.accordion);
+  const communityOpen = accordionJson?.communityOpen;
+  const teamOpen = accordionJson?.teamOpen;
+  const directOpen = accordionJson?.directOpen;
+  const settingOpen = accordionJson?.settingOpen;
+  const docOpen = accordionJson?.docOpen;
   const handleClickCommunity = () => {
-    setOpenCommunity(!openCommunity);
+    dispatch(setCommunityOpen(!communityOpen));
   };
-  const [openTeam, setOpenTeam] = React.useState(false);
   const handleClickTeam = () => {
-    setOpenTeam(!openTeam);
+    dispatch(setTeamOpen(!teamOpen));
   };
-  const [openDirect, setOpenDirect] = React.useState(false);
   const handleClickDirect = () => {
-    setOpenDirect(!openDirect);
+    dispatch(setDirectOpen(!directOpen));
   };
-  const [openSetting, setOpenSetting] = React.useState(false);
   const handleClickSetting = () => {
-    setOpenSetting(!openSetting);
+    dispatch(setSettingOpen(!settingOpen));
   };
-  const [openDocs, setOpenDocs] = React.useState(false);
   const handleClickDocs = () => {
-    setOpenDocs(!openDocs);
+    dispatch(setDocOpen(!docOpen));
   };
 
   const drawer = (
@@ -142,34 +161,19 @@ const ClientDrawer: VFC<Props> = (props) => {
             <ForumIcon />
           </ListItemIcon>
           <ListItemText primary="コミュニティ" />
-          {openCommunity ? <ExpandLess /> : <ExpandMore />}
+          {communityOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openCommunity} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="工事中" />
-            </ListItem>
-            {/* <ListItem
-              button
-              component={Link}
-              to="/client/community"
-              className={classes.nested}
-            >
-              <ListItemText primary="社会" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="家庭" />
-            </ListItem> */}
-          </List>
+        <Collapse in={communityOpen} timeout="auto" unmountOnExit>
+          <AccordionMenu menu={communityData} path="community" />
         </Collapse>
         <ListItem button onClick={handleClickTeam}>
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
           <ListItemText primary="チーム" />
-          {openTeam ? <ExpandLess /> : <ExpandMore />}
+          {teamOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openTeam} timeout="auto" unmountOnExit>
+        <Collapse in={teamOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
@@ -181,9 +185,9 @@ const ClientDrawer: VFC<Props> = (props) => {
             <EmailIcon />
           </ListItemIcon>
           <ListItemText primary="ダイレクト" />
-          {openDirect ? <ExpandLess /> : <ExpandMore />}
+          {directOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openDirect} timeout="auto" unmountOnExit>
+        <Collapse in={directOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem button className={classes.nested}>
               <ListItemText primary="工事中" />
@@ -202,9 +206,9 @@ const ClientDrawer: VFC<Props> = (props) => {
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary="設定" />
-          {openSetting ? <ExpandLess /> : <ExpandMore />}
+          {settingOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openSetting} timeout="auto" unmountOnExit>
+        <Collapse in={settingOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem
               button
@@ -228,9 +232,9 @@ const ClientDrawer: VFC<Props> = (props) => {
             <WebAssetIcon color="action" />
           </ListItemIcon>
           <ListItemText primary="" secondary="愚痴〜ムについて" />
-          {openDocs ? <ExpandLess /> : <ExpandMore />}
+          {docOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openDocs} timeout="auto" unmountOnExit>
+        <Collapse in={docOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem
               button

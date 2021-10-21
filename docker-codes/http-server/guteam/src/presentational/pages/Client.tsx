@@ -3,7 +3,7 @@ import { VFC } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import ClientDrawer from 'presentational/template/ClientDrawer';
+import ClientDrawer from 'container/template/ClientDrawer';
 import Content from 'presentational/template/Content';
 
 import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';

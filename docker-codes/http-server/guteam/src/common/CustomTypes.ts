@@ -3,6 +3,7 @@ import { SnackbarState } from 'common/features/snackbarSlice';
 import { TitleState } from 'common/features/pageTitleSlice';
 import { ProgressState } from 'common/features/progressSlice';
 import { ReloadState } from 'common/features/reloadSlice';
+import { AccordionState } from 'common/features/accordionSlice';
 import { ProfileModalState } from './features/profileModalSlice';
 
 export type User = {
@@ -33,6 +34,17 @@ export type NotificationData = {
   updated_at: string;
 };
 
+export type ThreadData = {
+  id: number;
+  title: string;
+  description: string;
+  owner: string;
+  community_id: number;
+  picture_url: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Message = {
   message: string;
 };
@@ -43,6 +55,7 @@ export type Store = {
   progress?: ProgressState;
   reload?: ReloadState;
   profileModal?: ProfileModalState;
+  accordion?: AccordionState;
 };
 
 export type {};
