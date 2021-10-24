@@ -34,17 +34,6 @@ export type NotificationData = {
   updated_at: string;
 };
 
-export type ThreadData = {
-  id: number;
-  title: string;
-  description: string;
-  owner: string;
-  community_id: number;
-  picture_url: string;
-  created_at: string;
-  updated_at: string;
-};
-
 export type Message = {
   message: string;
 };
@@ -56,6 +45,28 @@ export type Store = {
   reload?: ReloadState;
   profileModal?: ProfileModalState;
   accordion?: AccordionState;
+};
+
+export type CommunityData = {
+  id: number;
+  title: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ThreadData = {
+  id: number;
+  community_id: number;
+  user_id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ThreadPostData = PostData & {
+  community_thread_id: number;
 };
 
 export type {};

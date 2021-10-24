@@ -1,7 +1,16 @@
+/* eslint-disable camelcase */
 import axios from 'axios';
 import ReactS3Client from 'react-aws-s3-typescript';
 
-import { User, PostData, Message, NotificationData } from 'common/CustomTypes';
+import {
+  User,
+  PostData,
+  Message,
+  NotificationData,
+  CommunityData,
+  ThreadData,
+  ThreadPostData,
+} from 'common/CustomTypes';
 
 const basePath = process.env.REACT_APP_REST_URL as string;
 
@@ -174,4 +183,140 @@ export const getNotifications = async (
       err as string;
     });
   return data as NotificationData[];
+};
+
+// ---
+export const getCommunities = async (
+  token: string
+): Promise<CommunityData[]> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/communities`;
+
+  const response = await axios
+    .get<CommunityData[]>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+export const getCommunityThreads = async (
+  token: string
+): Promise<ThreadData[]> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/community_threads`;
+
+  const response = await axios
+    .get<ThreadData[]>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+export const getCommunityThread = async (
+  token: string,
+  community_thread_id: number
+): Promise<ThreadData> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/community_threads/${community_thread_id}`;
+
+  const response = await axios
+    .get<ThreadData>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+type PostCommunityThreadBody = Pick<
+  ThreadData,
+  'community_id' | 'title' | 'description' | 'image_url'
+>;
+
+export const postCommunityThread = async (
+  token: string,
+  body: PostCommunityThreadBody
+): Promise<ThreadData> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/community_threads`;
+
+  const response = await axios
+    .post<ThreadData>(url, body, {
+      headers: {
+        Authorization: header,
+        ContentType: 'application/json; charset=utf-8',
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+export const getThreadPosts = async (
+  token: string
+): Promise<ThreadPostData[]> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/thread_posts`;
+
+  const response = await axios
+    .get<ThreadPostData[]>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+export const getThreadPost = async (
+  token: string,
+  community_thread_id: number
+): Promise<ThreadPostData> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/thread_posts/${community_thread_id}`;
+
+  const response = await axios
+    .get<ThreadPostData>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
+type PostThreadPostBody = Pick<
+  ThreadPostData,
+  'community_thread_id' | 'message'
+>;
+
+export const postThreadPost = async (
+  token: string,
+  body: PostThreadPostBody
+): Promise<ThreadPostData> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/thread_posts`;
+
+  const response = await axios
+    .post<ThreadPostData>(url, body, {
+      headers: {
+        Authorization: header,
+        ContentType: 'application/json; charset=utf-8',
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
 };

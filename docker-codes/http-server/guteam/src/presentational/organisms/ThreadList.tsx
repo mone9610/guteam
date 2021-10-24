@@ -42,7 +42,7 @@ const ThreadList: VFC<Props> = (props) => {
 
   return (
     <div>
-      {isLoading ? (
+      {/* {isLoading ? (
         <>
           <Spinner />
         </>
@@ -67,7 +67,7 @@ const ThreadList: VFC<Props> = (props) => {
             ))}
           </List>
         </>
-      )}
+      )} */}
     </div>
   );
 };
