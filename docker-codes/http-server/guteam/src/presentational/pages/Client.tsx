@@ -12,6 +12,7 @@ import ProfileModal from 'presentational/organisms/ProfileModal';
 import { useSelector } from 'react-redux';
 
 import { User, Store } from 'common/CustomTypes';
+import { useCommunities } from 'common/CustomHooks';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,7 +59,7 @@ const Client: VFC = () => {
   /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   /* eslint-disable @typescript-eslint/no-unsafe-return */
   const profileModalJson = useSelector((state: Store) => state.profileModal);
-
+  void useCommunities();
   return (
     <div className={classes.root}>
       <ProfileModal

@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CommunityData } from 'common/CustomTypes';
 
 export type AccordionState = {
   communityOpen: boolean;
+  communityList: CommunityData[];
   teamOpen: boolean;
   directOpen: boolean;
   settingOpen: boolean;
@@ -10,6 +12,7 @@ export type AccordionState = {
 
 const initialState: AccordionState = {
   communityOpen: false,
+  communityList: [],
   teamOpen: false,
   directOpen: false,
   settingOpen: false,
@@ -23,6 +26,13 @@ export const accordionSlice = createSlice({
     setCommunityOpen(state: AccordionState, action: PayloadAction<boolean>) {
       // eslint-disable-next-line no-param-reassign
       state.communityOpen = action.payload;
+    },
+    setCommunityList(
+      state: AccordionState,
+      action: PayloadAction<CommunityData[]>
+    ) {
+      // eslint-disable-next-line no-param-reassign
+      state.communityList = action.payload;
     },
     setTeamOpen(state: AccordionState, action: PayloadAction<boolean>) {
       // eslint-disable-next-line no-param-reassign
@@ -46,6 +56,7 @@ export const accordionSlice = createSlice({
 export default accordionSlice.reducer;
 export const {
   setCommunityOpen,
+  setCommunityList,
   setTeamOpen,
   setDirectOpen,
   setSettingOpen,

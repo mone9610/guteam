@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // FC内のpropsの型定義は冗長であるため、無効化
 /* eslint-disable react/prop-types */
 import { VFC } from 'react';
@@ -7,14 +8,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-type Menu = {
-  id: number;
-  name: string;
-};
+import { CommunityData } from 'common/CustomTypes';
 
 type Props = {
-  menu: Menu[];
-  path: string;
+  menu: CommunityData[];
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,18 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AccordionMenu: VFC<Props> = (props) => {
+const CommunityList: VFC<Props> = (props) => {
   const history = useHistory();
-  const { menu, path } = props;
+  const { menu } = props;
   const classes = useStyles();
-
-  // idで昇順にソートする
-  menu?.sort((a: Menu, b: Menu) => {
-    if (a.id < b.id) {
-      return -1;
-    }
-    return 1;
-  });
 
   return (
     <List component="div" disablePadding>
@@ -44,7 +33,7 @@ const AccordionMenu: VFC<Props> = (props) => {
         <ListItem button className={classes.nested} key={m.id}>
           <ListItemText
             primary={m.name}
-            onClick={() => history.push(`/client/${path}/${m.id}`)}
+            onClick={() => history.push(`/client/community/${m.id}`)}
           />
         </ListItem>
       ))}
@@ -52,4 +41,4 @@ const AccordionMenu: VFC<Props> = (props) => {
   );
 };
 
-export default AccordionMenu;
+export default CommunityList;

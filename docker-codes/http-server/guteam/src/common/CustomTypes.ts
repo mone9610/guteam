@@ -47,9 +47,11 @@ export type Store = {
   accordion?: AccordionState;
 };
 
+// ---
+
 export type CommunityData = {
   id: number;
-  title: string;
+  name: string;
   created_at: string;
   updated_at: string;
 };

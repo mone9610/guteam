@@ -14,7 +14,7 @@ import {
   setSettingOpen,
   setDocOpen,
 } from 'common/features/accordionSlice';
-import { Store } from 'common/CustomTypes';
+import { CommunityData, Store } from 'common/CustomTypes';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -50,8 +50,7 @@ import {
   createStyles,
 } from '@material-ui/core/styles';
 
-import AccordionMenu from 'presentational/organisms/AccordionMenu';
-import { communityData } from 'data/communities';
+import CommunityList from 'presentational/organisms/CommunityList';
 
 const drawerWidth = 240;
 
@@ -125,6 +124,7 @@ const ClientDrawer: VFC<Props> = (props) => {
   // NOTE:サイドバーのメニューを制御する
   const accordionJson = useSelector((state: Store) => state.accordion);
   const communityOpen = accordionJson?.communityOpen;
+  const communityList = accordionJson?.communityList;
   const teamOpen = accordionJson?.teamOpen;
   const directOpen = accordionJson?.directOpen;
   const settingOpen = accordionJson?.settingOpen;
@@ -163,8 +163,9 @@ const ClientDrawer: VFC<Props> = (props) => {
           <ListItemText primary="コミュニティ" />
           {communityOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={communityOpen} timeout="auto" unmountOnExit>
-          <AccordionMenu menu={communityData} path="community" />
+        {/* <Collapse in={communityOpen} timeout="auto" unmountOnExit> */}
+        <Collapse in={communityOpen} timeout="auto">
+          <CommunityList menu={communityList as CommunityData[]} />
         </Collapse>
         <ListItem button onClick={handleClickTeam}>
           <ListItemIcon>

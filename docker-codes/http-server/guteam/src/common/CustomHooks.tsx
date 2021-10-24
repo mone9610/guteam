@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Theme, useMediaQuery } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+
+import { CommunityData } from 'common/CustomTypes';
+import { getCommunities } from 'common/customFunctions';
+import { setCommunityList } from './features/accordionSlice';
 
 export const useToken = (): string => {
   const { getAccessTokenSilently } = useAuth0();
@@ -22,6 +27,30 @@ export const useSize = (): boolean => {
     theme.breakpoints.down('xs')
   );
   return isMobileSize;
+};
+
+export const useCommunities = (): CommunityData[] => {
+  const token = useToken();
+  const [communities, setCommunities] = useState<CommunityData[]>();
+  const dispatch = useDispatch();
+
+  const load = useCallback(() => {
+    if (token) {
+      void getCommunities(token).then((cs) => {
+        setCommunities(cs);
+        const updateCommunities = (state: CommunityData[]) => {
+          dispatch(setCommunityList(state));
+        };
+        void updateCommunities(cs);
+      });
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    void load();
+  }, [load, token]);
+
+  return communities as CommunityData[];
 };
 
 export {};
