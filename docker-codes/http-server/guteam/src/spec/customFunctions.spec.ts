@@ -56,7 +56,7 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET community_threads (INDEX)', () => {
+  describe('GET community_threads(no query params)', () => {
     it('should succeed', async () => {
       mock
         .onGet(`${basePath}/community_threads`)
@@ -70,17 +70,30 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET community_threads by id', () => {
+  describe('GET community_threads(with query params)', () => {
     it('should succeed', async () => {
       mock
-        .onGet(`${basePath}/community_threads/${2}`)
-        .reply(200, communityThreadsData.slice(1, 2));
+        .onGet(`${basePath}/community_threads?community_id=2`)
+        .reply(200, communityThreadsData.slice(1, 3));
 
-      const response = await getCommunityThread('hogehoge', '2');
+      const response = await getCommunityThreads('hogehoge', '2');
       const mockData = communityThreadsData;
 
       expect(response[0].community_id).toBe(mockData[1].community_id);
-      expect(response[0].community_id).toBe(mockData[2].community_id);
+      expect(response[1].community_id).toBe(mockData[2].community_id);
+    });
+  });
+
+  describe('GET community_thread', () => {
+    it('should succeed', async () => {
+      mock
+        .onGet(`${basePath}/community_threads/${1}`)
+        .reply(200, communityThreadsData[0]);
+
+      const response = await getCommunityThread('hogehoge', '1');
+      const mockData = communityThreadsData;
+
+      expect(response.id).toBe(mockData[0].id);
     });
   });
 
@@ -105,7 +118,7 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET thread_posts', () => {
+  describe('GET thread_posts (no query params)', () => {
     it('should succeed', async () => {
       mock.onGet(`${basePath}/thread_posts`).reply(200, threadsPostsData);
 
@@ -117,13 +130,31 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET thread_post by id', () => {
+  describe('GET thread_posts (with query params)', () => {
     it('should succeed', async () => {
-      mock.onGet(`${basePath}/thread_posts/2`).reply(200, threadsPostsData[2]);
+      mock
+        .onGet(`${basePath}/thread_posts?community_thread_id=1`)
+        .reply(200, threadsPostsData.slice(0, 2));
 
-      const response = await getThreadPost('hogehoge', '2');
-      const mockId = threadsPostsData[2].community_thread_id;
-      const responseId = response.community_thread_id;
+      const response = await getThreadPosts('hogehoge', '1');
+      const mockData = threadsPostsData;
+
+      expect(response[0].community_thread_id).toBe(
+        mockData[0].community_thread_id
+      );
+      expect(response[1].community_thread_id).toBe(
+        mockData[1].community_thread_id
+      );
+    });
+  });
+
+  describe('GET thread_post', () => {
+    it('should succeed', async () => {
+      mock.onGet(`${basePath}/thread_posts/1`).reply(200, threadsPostsData[0]);
+
+      const response = await getThreadPost('hogehoge', '1');
+      const mockId = threadsPostsData[0].id;
+      const responseId = response.id;
 
       expect(responseId).toBe(mockId);
     });

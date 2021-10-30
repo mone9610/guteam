@@ -222,10 +222,18 @@ export const getCommunity = async (
 };
 
 export const getCommunityThreads = async (
-  token: string
+  token: string,
+  community_id?: string
 ): Promise<ThreadData[]> => {
   const header = `Bearer ${token}`;
-  const url = `${basePath}/community_threads`;
+  const urlHandler = () => {
+    if (community_id === undefined) {
+      return `${basePath}/community_threads`;
+    }
+    return `${basePath}/community_threads?community_id=${community_id}`;
+  };
+
+  const url = urlHandler();
 
   const response = await axios
     .get<ThreadData[]>(url, {
@@ -240,13 +248,13 @@ export const getCommunityThreads = async (
 
 export const getCommunityThread = async (
   token: string,
-  community_id: string
-): Promise<ThreadData[]> => {
+  id: string
+): Promise<ThreadData> => {
   const header = `Bearer ${token}`;
-  const url = `${basePath}/community_threads/${community_id}`;
+  const url = `${basePath}/community_threads/${id}`;
 
   const response = await axios
-    .get<ThreadData[]>(url, {
+    .get<ThreadData>(url, {
       headers: {
         Authorization: header,
       },
@@ -281,10 +289,17 @@ export const postCommunityThread = async (
 };
 
 export const getThreadPosts = async (
-  token: string
+  token: string,
+  community_thread_id?: string
 ): Promise<ThreadPostData[]> => {
   const header = `Bearer ${token}`;
-  const url = `${basePath}/thread_posts`;
+  const urlHandler = () => {
+    if (community_thread_id === undefined) {
+      return `${basePath}/thread_posts`;
+    }
+    return `${basePath}/thread_posts?community_thread_id=${community_thread_id}`;
+  };
+  const url = urlHandler();
 
   const response = await axios
     .get<ThreadPostData[]>(url, {
@@ -299,13 +314,13 @@ export const getThreadPosts = async (
 
 export const getThreadPost = async (
   token: string,
-  community_thread_id: string
-): Promise<ThreadPostData[]> => {
+  id: string
+): Promise<ThreadPostData> => {
   const header = `Bearer ${token}`;
-  const url = `${basePath}/thread_posts/${community_thread_id}`;
+  const url = `${basePath}/thread_posts/${id}`;
 
   const response = await axios
-    .get<ThreadPostData[]>(url, {
+    .get<ThreadPostData>(url, {
       headers: {
         Authorization: header,
       },
