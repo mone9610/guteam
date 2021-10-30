@@ -8,9 +8,11 @@
 import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import { ThreadData } from 'common/CustomTypes';
+
+import { ThreadData, CommunityData } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import Thread from 'presentational/organisms/Thread';
+import ThreadsFooter from 'presentational/organisms/ThreadsFooter';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,12 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = {
   threads: ThreadData[];
+  community: string;
   isLoading: boolean;
 };
 
 const ThreadList: VFC<Props> = (props) => {
   const classes = useStyles();
-  const { threads, isLoading } = props;
+  const { threads, community, isLoading } = props;
 
   // updated_atで降順にソートする
   threads?.sort((a: ThreadData, b: ThreadData) => {
@@ -42,32 +45,30 @@ const ThreadList: VFC<Props> = (props) => {
 
   return (
     <div>
-      {/* {isLoading ? (
+      {isLoading ? (
         <>
           <Spinner />
         </>
       ) : (
         <>
           <div className={classes.txt}>
-            気になるスレッドを確認してみましょう！
+            {community}に関する、気になるスレッドを確認してみましょう！
           </div>
 
           <List className={classes.root}>
             {threads?.map((thread) => (
               <Thread
-                key={thread.id}
-                title={thread.title}
-                description={thread.description}
-                owner={thread.owner}
+                id={thread.id}
                 community_id={thread.community_id}
-                picture_url={thread.picture_url}
+                title={thread.title}
+                image_url={thread.image_url}
                 created_at={thread.created_at}
-                updated_at={thread.updated_at}
               />
             ))}
           </List>
+          <ThreadsFooter />
         </>
-      )} */}
+      )}
     </div>
   );
 };

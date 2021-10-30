@@ -1,7 +1,16 @@
 class Api::V1::CommunityThreadsController < SecuredController
   def index
-    community_threads = CommunityThread.all
-    render json: community_threads
+    if params[:community_id].blank?
+      community_threads = CommunityThread.all
+      render json: community_threads
+    else
+      community_threads = CommunityThread.where(community_id: params[:community_id])
+      if community_threads.present?
+        render json: community_threads
+      else
+        render json: { status: 404 }, status: :not_found
+      end
+    end
   end
 
   def show
@@ -9,7 +18,7 @@ class Api::V1::CommunityThreadsController < SecuredController
     if community_thread.present?
       render json: community_thread
     else
-      render json: community_thread&.errors, status: :not_found
+      render json: { status: 404 }, status: :not_found
     end
   end
 

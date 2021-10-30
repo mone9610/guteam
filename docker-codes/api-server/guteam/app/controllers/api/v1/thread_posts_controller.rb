@@ -1,15 +1,24 @@
 class Api::V1::ThreadPostsController < SecuredController
   def index
-    thread_posts = ThreadPost.all
-    render json: thread_posts
+    if params[:community_thread_id].blank?
+      thread_posts = ThreadPost.all
+      render json: thread_posts
+    else
+      thread_posts = ThreadPost.where(community_thread_id: params[:community_thread_id])
+      if thread_posts.present?
+        render json: thread_posts
+      else
+        render json: { status: 404 }, status: :not_found
+      end
+    end
   end
 
   def show
-    thread_posts = ThreadPost.find_by(community_thread_id: params[:id])
-    if thread_posts.present?
-      render json: thread_posts
+    thread_post = ThreadPost.find_by_id(params[:id])
+    if thread_post.present?
+      render json: thread_post
     else
-      render json: thread_posts&.errors, status: :not_found
+      render json: { status: 404 }, status: :not_found
     end
   end
 

@@ -21,20 +21,30 @@ RSpec.describe 'CommunityThreads', type: :request do
       expect(response).to have_http_status(200)
       expect(json.length).to eq(5)
     end
+  end
 
-    it 'tokenがheaderに入っていないとき、GETのレスポンスコードが401' do
-      get '/api/v1/community_threads', headers: { 'Authorization' => 'hogehoge' }
-      expect(response).to have_http_status(401)
+  describe 'GET /api/v1/community_threads?community_id=1' do
+    it 'tokenがheaderに入っており、クエリパラメータに1が設定されているときGETのレスポンスコードが200、かつ1件のデータが返ってくること' do
+      community_thread = FactoryBot.create(:community_thread)
+      get "/api/v1/community_threads?community_id=#{community_thread.community_id}", headers: @headers
+      json = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(json.length).to eq(1)
+    end
+
+    it 'tokenがheaderに入っており、クエリパラメータに999が設定されているときGETのレスポンスコードが404' do
+      FactoryBot.create(:community_thread)
+      get '/api/v1/community_threads?community_id=999', headers: @headers
+      expect(response).to have_http_status(404)
     end
   end
 
   describe 'GET /api/v1/community_threads/:id' do
-    it 'tokenがheaderに入っており、パラメータのidが存在するとき、GETのレスポンスコードが200、かつidが一致する1件のデータが返ってくること' do
+    it 'tokenがheaderに入っており、パラメータのidが存在するとき、GETのレスポンスコードが200、レスポンスのidが一致すること' do
       community_thread = FactoryBot.create(:community_thread)
       get "/api/v1/community_threads/#{community_thread.id}", headers: @headers
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json.length).to eq(8)
       expect(json['id']).to eq(community_thread.id)
     end
 

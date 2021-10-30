@@ -3,14 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setTitle } from 'common/features/pageTitleSlice';
-import ThreadList from 'presentational/organisms/ThreadList';
-
-import { ThreadData } from 'common/CustomTypes';
-
-// 開発環境のみ利用
-// import communityThreadsData from 'data/community_threads';
-// import { postData, userData } from 'data/timeline';
-// import PostList from './PostList';
+import ExtendedThreadList from 'container/organisms/ThreadList';
+import ExtendedThreadPostList from 'container/organisms/ThreadPostList';
 
 const Community: VFC = () => {
   // ToDo:dispatchとtitleの更新を共通化できないか検討
@@ -25,12 +19,11 @@ const Community: VFC = () => {
 
   return (
     <div>
-      {/* {communityid && threadid ? (
-        仮置き
-        <PostList posts={postData} users={userData} isLoading={false} />
+      {communityid && threadid ? (
+        <ExtendedThreadPostList />
       ) : (
-        <ThreadList threads={communityThreadsData} isLoading={false} />
-      )} */}
+        <ExtendedThreadList />
+      )}
     </div>
   );
 };

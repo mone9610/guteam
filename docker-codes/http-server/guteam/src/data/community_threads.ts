@@ -20,4 +20,14 @@ export const communityThreadsData = [
     created_at: '2021-09-11T01:42:13.094Z',
     updated_at: '2021-09-11T01:42:13.094Z',
   },
+  {
+    id: 3,
+    community_id: 2,
+    user_id: 2,
+    title: '日本脱出計画',
+    description: '自己防衛おじさんについて語り合う',
+    image_url: 'localhost',
+    created_at: '2021-09-11T01:42:13.094Z',
+    updated_at: '2021-09-11T01:42:13.094Z',
+  },
 ];

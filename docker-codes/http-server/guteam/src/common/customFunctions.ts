@@ -203,6 +203,24 @@ export const getCommunities = async (
   return response;
 };
 
+export const getCommunity = async (
+  token: string,
+  id: string
+): Promise<CommunityData> => {
+  const header = `Bearer ${token}`;
+  const url = `${basePath}/communities/${id}`;
+
+  const response = await axios
+    .get<CommunityData>(url, {
+      headers: {
+        Authorization: header,
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+  return response;
+};
+
 export const getCommunityThreads = async (
   token: string
 ): Promise<ThreadData[]> => {
@@ -222,13 +240,13 @@ export const getCommunityThreads = async (
 
 export const getCommunityThread = async (
   token: string,
-  community_thread_id: number
-): Promise<ThreadData> => {
+  community_id: string
+): Promise<ThreadData[]> => {
   const header = `Bearer ${token}`;
-  const url = `${basePath}/community_threads/${community_thread_id}`;
+  const url = `${basePath}/community_threads/${community_id}`;
 
   const response = await axios
-    .get<ThreadData>(url, {
+    .get<ThreadData[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -281,13 +299,13 @@ export const getThreadPosts = async (
 
 export const getThreadPost = async (
   token: string,
-  community_thread_id: number
-): Promise<ThreadPostData> => {
+  community_thread_id: string
+): Promise<ThreadPostData[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/thread_posts/${community_thread_id}`;
 
   const response = await axios
-    .get<ThreadPostData>(url, {
+    .get<ThreadPostData[]>(url, {
       headers: {
         Authorization: header,
       },

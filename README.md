@@ -76,7 +76,7 @@ https://guteam.net/
 ### 論理構成図
 ![使い方②](docs/img/architecture.jpeg)
 ### E-R図
-![E-R図](docs/img/ER.jpeg)
+![E-R図](docs/img/ER1.jpeg)
 
 ## 機能一覧
 1. サインアップ/ログイン/ログアウト機能  

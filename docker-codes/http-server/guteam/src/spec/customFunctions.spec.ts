@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {
   absSubFromUserID,
   getCommunities,
+  getCommunity,
   getCommunityThreads,
   getCommunityThread,
   postCommunityThread,
@@ -43,7 +44,19 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET community_threads', () => {
+  describe('GET community', () => {
+    it('should succeed', async () => {
+      mock.onGet(`${basePath}/communities/1`).reply(200, communityData[0]);
+
+      const response = await getCommunity('hogehoge', '1');
+      const mockId = communityData[0].id;
+      const responseId = response.id;
+
+      expect(responseId).toBe(mockId);
+    });
+  });
+
+  describe('GET community_threads (INDEX)', () => {
     it('should succeed', async () => {
       mock
         .onGet(`${basePath}/community_threads`)
@@ -57,17 +70,17 @@ describe('Rails API handlers(feature:community)', () => {
     });
   });
 
-  describe('GET community_thread by id', () => {
+  describe('GET community_threads by id', () => {
     it('should succeed', async () => {
       mock
-        .onGet(`${basePath}/community_threads/1`)
-        .reply(200, communityThreadsData[0]);
+        .onGet(`${basePath}/community_threads/${2}`)
+        .reply(200, communityThreadsData.slice(1, 2));
 
-      const response = await getCommunityThread('hogehoge', 1);
-      const mockId = communityThreadsData[0].id;
-      const responseId = response.id;
+      const response = await getCommunityThread('hogehoge', '2');
+      const mockData = communityThreadsData;
 
-      expect(responseId).toBe(mockId);
+      expect(response[0].community_id).toBe(mockData[1].community_id);
+      expect(response[0].community_id).toBe(mockData[2].community_id);
     });
   });
 
@@ -108,7 +121,7 @@ describe('Rails API handlers(feature:community)', () => {
     it('should succeed', async () => {
       mock.onGet(`${basePath}/thread_posts/2`).reply(200, threadsPostsData[2]);
 
-      const response = await getThreadPost('hogehoge', 2);
+      const response = await getThreadPost('hogehoge', '2');
       const mockId = threadsPostsData[2].community_thread_id;
       const responseId = response.community_thread_id;
 

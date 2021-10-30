@@ -9,7 +9,7 @@ auth='Bearer ' + @access_token
 RSpec.describe 'ThreadsPosts', type: :request do
   before do
     @headers = {
-      'Authorization' => auth,
+      'Authorization' => auth
     }
   end
   describe 'GET /api/v1/thread_posts' do
@@ -20,21 +20,31 @@ RSpec.describe 'ThreadsPosts', type: :request do
       expect(response).to have_http_status(200)
       expect(json.length).to eq(5)
     end
+  end
 
-    it 'tokenがheaderに入っていないとき、GETのレスポンスコードが401' do
-      get '/api/v1/thread_posts', headers: { 'Authorization' => "hogehoge" }
-      expect(response).to have_http_status(401)
+  describe 'GET /api/v1/thread_posts?community_thread_id=x' do
+    it 'tokenがheaderに入っており、クエリパラメータが設定されているときGETのレスポンスコードが200、かつ1件のデータが返ってくること' do
+      thread_post = FactoryBot.create(:thread_post)
+      get "/api/v1/thread_posts?community_thread_id=#{thread_post.community_thread_id}", headers: @headers
+      json = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(json.length).to eq(1)
+    end
+
+    it 'tokenがheaderに入っており、クエリパラメータに999が設定されているときGETのレスポンスコードが404' do
+      FactoryBot.create(:community_thread)
+      get '/api/v1/thread_posts?community_thread_id=999', headers: @headers
+      expect(response).to have_http_status(404)
     end
   end
 
   describe 'GET /api/v1/thread_posts/:id' do
     it 'tokenがheaderに入っており、パラメータのthread_idが存在するとき、GETのレスポンスコードが200、かつthread_idが一致する1件のデータが返ってくること' do
       thread_post = FactoryBot.create(:thread_post)
-      get "/api/v1/thread_posts/#{thread_post.community_thread_id}", headers: @headers
+      get "/api/v1/thread_posts/#{thread_post.id}", headers: @headers
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json.length).to eq(7)
-      expect(json['community_thread_id']).to eq(thread_post.community_thread_id)
+      expect(json['id']).to eq(thread_post.id)
     end
 
     it 'tokenがheaderに入っており、パラメータのidが存在しないとき、GETのレスポンスコードが404になること' do
