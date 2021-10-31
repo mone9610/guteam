@@ -3,7 +3,7 @@
 // railsから取得するオブジェクトのプロパティはキャメルケースのため、無効化
 /* eslint-disable camelcase */
 import { VFC } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -34,7 +34,9 @@ type Props = Pick<
 const Thread: VFC<Props> = (props) => {
   const classes = useStyles();
   const history = useHistory();
+  const { communityid } = useParams<{ communityid: string }>();
   const { id, title, image_url, created_at } = props;
+  const initialThumbnail = process.env.REACT_APP_INITIAL_THUMBNAIL;
 
   return (
     <div>
@@ -42,10 +44,10 @@ const Thread: VFC<Props> = (props) => {
         <ListItem
           button
           key={id}
-          onClick={() => history.push(`/client/community/1/${id}`)}
+          onClick={() => history.push(`/client/community/${communityid}/${id}`)}
         >
           <ListItemAvatar>
-            <Avatar alt="" src={image_url} />
+            <Avatar alt="" src={image_url ?? initialThumbnail} />
           </ListItemAvatar>
           <ListItemText
             secondary={

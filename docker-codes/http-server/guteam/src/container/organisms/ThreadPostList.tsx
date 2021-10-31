@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ThreadPostList from 'presentational/template/ThreadPostList';
-import { User, ThreadPostData } from 'common/CustomTypes';
+import { User, ThreadPostData, ThreadData } from 'common/CustomTypes';
 import { useToken } from 'common/CustomHooks';
-import { getThreadPost, getUsers } from 'common/customFunctions';
+import {
+  getThreadPosts,
+  getUsers,
+  getCommunityThread,
+} from 'common/customFunctions';
 
 import { ProgressState, setProgress } from 'common/features/progressSlice';
 import { ReloadState, setReload } from 'common/features/reloadSlice';
@@ -19,6 +23,7 @@ const ExtendedThreadPostList: VFC = () => {
 
   const [users, setUsers] = useState<User[]>();
   const [threadPosts, setThreadPosts] = useState<ThreadPostData[]>();
+  const [threadInfo, setThreadInfo] = useState<ThreadData>();
 
   const dispatch = useDispatch();
   const progressJson = useSelector((state: ProgressState) => state.progress);
@@ -39,7 +44,7 @@ const ExtendedThreadPostList: VFC = () => {
           setUsers(us);
         })
         .then(() => {
-          void getThreadPost(token, threadid)
+          void getThreadPosts(token, threadid)
             .then((tp) => {
               setThreadPosts(tp);
             })
@@ -51,6 +56,9 @@ const ExtendedThreadPostList: VFC = () => {
               updateProgress(false);
               updateReload(false);
             });
+          void getCommunityThread(token, threadid).then((ct) => {
+            setThreadInfo(ct);
+          });
         })
         .catch(() => {
           updateProgress(false);
@@ -75,7 +83,7 @@ const ExtendedThreadPostList: VFC = () => {
   return (
     <>
       <ThreadPostList
-        // threadInfo={}
+        threadInfo={threadInfo as ThreadData}
         posts={threadPosts as ThreadPostData[]}
         users={users as User[]}
         isLoading={Object.values(progressJson)[0] as boolean}

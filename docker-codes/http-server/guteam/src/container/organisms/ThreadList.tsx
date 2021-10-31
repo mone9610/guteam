@@ -3,7 +3,7 @@ import { VFC, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { getCommunity, getCommunityThread } from 'common/customFunctions';
+import { getCommunity, getCommunityThreads } from 'common/customFunctions';
 import { useToken } from 'common/CustomHooks';
 import { CommunityData, ThreadData } from 'common/CustomTypes';
 import { ProgressState, setProgress } from 'common/features/progressSlice';
@@ -44,7 +44,7 @@ const ExtendedThreadList: VFC = () => {
       });
     }
     if (community?.id) {
-      void getCommunityThread(token, communityid).then((cts) => {
+      void getCommunityThreads(token, communityid).then((cts) => {
         setThreads(cts);
         updateProgress(false);
       });
@@ -57,11 +57,13 @@ const ExtendedThreadList: VFC = () => {
   }, [token, community?.id]);
 
   return (
-    <ThreadList
-      threads={threads as ThreadData[]}
-      community={community?.name as string}
-      isLoading={Object.values(progressJson)[0] as boolean}
-    />
+    <>
+      <ThreadList
+        threads={threads as ThreadData[]}
+        community={community?.name as string}
+        isLoading={Object.values(progressJson)[0] as boolean}
+      />
+    </>
   );
 };
 

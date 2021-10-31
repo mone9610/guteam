@@ -8,11 +8,13 @@
 import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
-import { ThreadData, CommunityData } from 'common/CustomTypes';
+import { ThreadData } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import Thread from 'presentational/organisms/Thread';
 import ThreadsFooter from 'presentational/organisms/ThreadsFooter';
+import ThreadEnd from 'presentational/organisms/ThreadEnd';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +54,9 @@ const ThreadList: VFC<Props> = (props) => {
       ) : (
         <>
           <div className={classes.txt}>
-            {community}に関する、気になるスレッドを確認してみましょう！
+            <Typography variant="h6">
+              {community}に関する、気になるスレッドを確認してみましょう！
+            </Typography>
           </div>
 
           <List className={classes.root}>
@@ -66,6 +70,7 @@ const ThreadList: VFC<Props> = (props) => {
               />
             ))}
           </List>
+          <ThreadEnd />
           <ThreadsFooter />
         </>
       )}

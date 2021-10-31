@@ -14,8 +14,8 @@ import LargeLoginButton from '../molecules/LargeLoginButton';
 import Home1 from '../../assets/img/home1.jpg';
 import Timeline from '../../assets/img/timeline.svg';
 import Community from '../../assets/img/community.svg';
-import Team from '../../assets/img/team.svg';
-import Direct from '../../assets/img/direct.svg';
+// import Team from '../../assets/img/team.svg';
+// import Direct from '../../assets/img/direct.svg';
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -139,7 +139,7 @@ const Rows: VFC = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container alignItems="center">
+        {/* <Grid container alignItems="center">
           <Grid container alignItems="center">
             <Grid item md={6}>
               <p className={classes.txt}>
@@ -180,7 +180,7 @@ const Rows: VFC = () => {
               />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item md={12}>
           <p className={classes.display2}>
             <ThemeProvider theme={theme}>

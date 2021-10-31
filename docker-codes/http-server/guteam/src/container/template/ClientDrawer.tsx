@@ -9,8 +9,8 @@ import { TitleState } from 'common/features/pageTitleSlice';
 
 import {
   setCommunityOpen,
-  setTeamOpen,
-  setDirectOpen,
+  // setTeamOpen,
+  // setDirectOpen,
   setSettingOpen,
   setDocOpen,
 } from 'common/features/accordionSlice';
@@ -30,8 +30,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import MenuIcon from '@material-ui/icons/Menu';
 import ForumIcon from '@material-ui/icons/Forum';
-import GroupIcon from '@material-ui/icons/Group';
-import EmailIcon from '@material-ui/icons/Email';
+// import GroupIcon from '@material-ui/icons/Group';
+// import EmailIcon from '@material-ui/icons/Email';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -125,19 +125,19 @@ const ClientDrawer: VFC<Props> = (props) => {
   const accordionJson = useSelector((state: Store) => state.accordion);
   const communityOpen = accordionJson?.communityOpen;
   const communityList = accordionJson?.communityList;
-  const teamOpen = accordionJson?.teamOpen;
-  const directOpen = accordionJson?.directOpen;
+  // const teamOpen = accordionJson?.teamOpen;
+  // const directOpen = accordionJson?.directOpen;
   const settingOpen = accordionJson?.settingOpen;
   const docOpen = accordionJson?.docOpen;
   const handleClickCommunity = () => {
     dispatch(setCommunityOpen(!communityOpen));
   };
-  const handleClickTeam = () => {
-    dispatch(setTeamOpen(!teamOpen));
-  };
-  const handleClickDirect = () => {
-    dispatch(setDirectOpen(!directOpen));
-  };
+  // const handleClickTeam = () => {
+  //   dispatch(setTeamOpen(!teamOpen));
+  // };
+  // const handleClickDirect = () => {
+  //   dispatch(setDirectOpen(!directOpen));
+  // };
   const handleClickSetting = () => {
     dispatch(setSettingOpen(!settingOpen));
   };
@@ -167,7 +167,7 @@ const ClientDrawer: VFC<Props> = (props) => {
         <Collapse in={communityOpen} timeout="auto">
           <CommunityList menu={communityList as CommunityData[]} />
         </Collapse>
-        <ListItem button onClick={handleClickTeam}>
+        {/* <ListItem button onClick={handleClickTeam}>
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
@@ -194,7 +194,7 @@ const ClientDrawer: VFC<Props> = (props) => {
               <ListItemText primary="工事中" />
             </ListItem>
           </List>
-        </Collapse>
+        </Collapse> */}
         <Divider />
         <ListItem button onClick={() => history.push('/client/notification')}>
           <ListItemIcon>

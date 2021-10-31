@@ -1,4 +1,5 @@
 import { VFC } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
@@ -24,15 +25,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ThreadsFooter: VFC = () => {
   const classes = useStyles();
-  const preventDefault = (event: React.SyntheticEvent) =>
-    event.preventDefault();
+  const history = useHistory();
+  const { communityid } = useParams<{ communityid: string }>();
 
   return (
     <div className={classes.content}>
       <Grid container justifyContent="center" alignContent="center" spacing={2}>
         <Grid item xs={12}>
           <Button
-            onClick={preventDefault}
+            onClick={() => history.push(`/client/community/${communityid}/new`)}
             variant="contained"
             size="large"
             color="primary"

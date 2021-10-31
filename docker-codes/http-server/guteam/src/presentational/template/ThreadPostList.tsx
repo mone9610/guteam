@@ -4,6 +4,7 @@
 /* eslint-disable react/prop-types */
 import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import { ThreadData, ThreadPostData, User } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  // threadInfo:Pick<ThreadData,'title'|'description'>
+  threadInfo: ThreadData;
   posts: ThreadPostData[];
   users: User[];
   isLoading: boolean;
@@ -30,11 +31,11 @@ type Props = {
 
 const ThreadPostList: VFC<Props> = (props) => {
   const classes = useStyles();
-  const { posts, users, isLoading } = props;
+  const { threadInfo, posts, users, isLoading } = props;
 
-  // created_atで降順にソートする
+  // created_atで昇順にソートする
   posts?.sort((a: ThreadPostData, b: ThreadPostData) => {
-    if (a.created_at > b.created_at) {
+    if (a.created_at < b.created_at) {
       return -1;
     }
     return 1;
@@ -49,7 +50,10 @@ const ThreadPostList: VFC<Props> = (props) => {
       ) : (
         <>
           <div className={classes.txt}>
-            今、かかえている愚痴をつぶやいてみましょう！
+            <Typography variant="h6">{threadInfo?.title}</Typography>
+            <Typography variant="subtitle1">
+              {threadInfo?.description}
+            </Typography>
           </div>
 
           <List className={classes.root}>

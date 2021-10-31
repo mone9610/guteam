@@ -117,7 +117,7 @@ const Profile: VFC = () => {
         })
       );
     } else {
-      const loc = await uploadFile(imageFile, sub);
+      const loc = await uploadFile(imageFile, sub,"profile");
       if (loc === undefined) {
         dispatch(
           setSnackbarState({

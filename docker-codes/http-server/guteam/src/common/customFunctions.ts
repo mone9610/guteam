@@ -21,10 +21,14 @@ const s3config = {
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY as string,
 };
 
-export const uploadFile = async (file: File, sub: string): Promise<string> => {
+export const uploadFile = async (
+  file: File,
+  sub: string,
+  dir: string
+): Promise<string> => {
   const ts = Date.parse(new Date().toISOString());
   const s3 = new ReactS3Client(s3config);
-  const filename = `${sub}/profile/${ts}`;
+  const filename = `${sub}/${dir}/${ts}`;
   try {
     const res = await s3.uploadFile(file, filename);
     return res.location;
