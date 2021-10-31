@@ -3,6 +3,7 @@ import { SnackbarState } from 'common/features/snackbarSlice';
 import { TitleState } from 'common/features/pageTitleSlice';
 import { ProgressState } from 'common/features/progressSlice';
 import { ReloadState } from 'common/features/reloadSlice';
+import { AccordionState } from 'common/features/accordionSlice';
 import { ProfileModalState } from './features/profileModalSlice';
 
 export type User = {
@@ -43,6 +44,31 @@ export type Store = {
   progress?: ProgressState;
   reload?: ReloadState;
   profileModal?: ProfileModalState;
+  accordion?: AccordionState;
+};
+
+// ---
+
+export type CommunityData = {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ThreadData = {
+  id: number;
+  community_id: number;
+  user_id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ThreadPostData = PostData & {
+  community_thread_id: number;
 };
 
 export type {};

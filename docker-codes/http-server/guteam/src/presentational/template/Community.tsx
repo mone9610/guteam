@@ -1,42 +1,36 @@
+/* eslint-disable no-nested-ternary */
 import { VFC } from 'react';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import Divider from '@material-ui/core/Divider';
-
-import Thread from '../organisms/Tread';
-import PostEnd from '../organisms/PostEnd';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    content: {
-      flexGrow: 1,
-      overflow: 'auto',
-      'text-align': 'left',
-    },
-    txt: {
-      display: 'inline-block',
-      'text-align': 'left',
-      margin: '10px',
-    },
-  })
-);
+import { setTitle } from 'common/features/pageTitleSlice';
+import ExtendedThreadList from 'container/organisms/ThreadList';
+import ExtendedThreadPostList from 'container/organisms/ThreadPostList';
+import NewThread from 'container/template/NewThread';
 
 const Community: VFC = () => {
-  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { communityid, threadid } =
+    useParams<{ communityid: string; threadid: string }>();
+  const pageTitle = 'コミュニティ';
+  const updateTitle = () => {
+    dispatch(setTitle(pageTitle));
+  };
+  void updateTitle();
 
   return (
     <div>
-      <main className={classes.content}>
-        <div className={classes.txt}>
-          トピックについて話し合いましょう！
-          <br />
-          ※コミュニティは全ユーザーに公開されます。
-        </div>
-        <Thread />
-        <p />
-        <Divider variant="fullWidth" />
-      </main>
-      <PostEnd />
+      {communityid && threadid ? (
+        threadid === 'new' ? (
+          <NewThread />
+        ) : (
+          <ExtendedThreadPostList />
+        )
+      ) : (
+        <>
+          <ExtendedThreadList />
+        </>
+      )}
     </div>
   );
 };

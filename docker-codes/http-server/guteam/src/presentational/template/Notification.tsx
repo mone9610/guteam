@@ -10,7 +10,6 @@ import ExtendedNotificationItemList from 'container/template/NotificationItemLis
 // import { NotificationData } from 'common/CustomTypes';
 
 const Timeline: VFC = () => {
-  // ToDo:dispatchとtitleの更新を共通化できないか検討
   const dispatch = useDispatch();
 
   const pageTitle = 'お知らせ';

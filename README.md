@@ -52,6 +52,8 @@ https://guteam.net/
     - react@17.0.2
     - node v14.17.4
     - yarn  1.22.11
+        - jest:26.6.3
+        - reduxjs/toolkit:1.6.1
     - typescript@3.9.7
     - Material-UI  [v4.0](https://v4.mui.com/)
 - サーバーサイド
@@ -74,7 +76,7 @@ https://guteam.net/
 ### 論理構成図
 ![使い方②](docs/img/architecture.jpeg)
 ### E-R図
-![E-R図](docs/img/ER.jpeg)
+![E-R図](docs/img/ER1.jpeg)
 
 ## 機能一覧
 1. サインアップ/ログイン/ログアウト機能  

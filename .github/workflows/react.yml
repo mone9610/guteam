@@ -33,6 +33,9 @@ jobs:
           echo "REACT_APP_S3_BUCKET=${{ secrets.REACT_APP_S3_BUCKET }}" >> .env
           echo "REACT_APP_SECRET_ACCESS_KEY=${{ secrets.REACT_APP_SECRET_ACCESS_KEY }}" >> .env
       
+      - name: Test
+        run: cd ./docker-codes/http-server/guteam && yarn test
+
       - name: Build
         run: cd ./docker-codes/http-server/guteam && yarn build
         

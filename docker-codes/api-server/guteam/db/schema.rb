@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_14_065731) do
+ActiveRecord::Schema.define(version: 2021_10_21_030215) do
+
+  create_table "communities", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "community_threads", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "community_id", null: false
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.string "description"
+    t.string "image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_community_threads_on_community_id"
+    t.index ["user_id"], name: "index_community_threads_on_user_id"
+  end
 
   create_table "notifications", charset: "utf8mb4", force: :cascade do |t|
     t.string "message"
@@ -29,6 +47,17 @@ ActiveRecord::Schema.define(version: 2021_10_14_065731) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "thread_posts", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "community_thread_id", null: false
+    t.bigint "user_id", null: false
+    t.string "message"
+    t.boolean "is_deleted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_thread_id"], name: "index_thread_posts_on_community_thread_id"
+    t.index ["user_id"], name: "index_thread_posts_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "sub"
@@ -39,5 +68,9 @@ ActiveRecord::Schema.define(version: 2021_10_14_065731) do
     t.index ["sub"], name: "index_users_on_sub", unique: true
   end
 
+  add_foreign_key "community_threads", "communities"
+  add_foreign_key "community_threads", "users"
   add_foreign_key "posts", "users"
+  add_foreign_key "thread_posts", "community_threads"
+  add_foreign_key "thread_posts", "users"
 end

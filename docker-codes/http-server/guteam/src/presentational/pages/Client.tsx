@@ -3,7 +3,7 @@ import { VFC } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import ClientDrawer from 'presentational/template/ClientDrawer';
+import ClientDrawer from 'container/template/ClientDrawer';
 import Content from 'presentational/template/Content';
 
 import CustomizedSnackbars from 'presentational/molecules/CustomizedSnackbars';
@@ -12,6 +12,7 @@ import ProfileModal from 'presentational/organisms/ProfileModal';
 import { useSelector } from 'react-redux';
 
 import { User, Store } from 'common/CustomTypes';
+import { useCommunities } from 'common/CustomHooks';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,7 +59,7 @@ const Client: VFC = () => {
   /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   /* eslint-disable @typescript-eslint/no-unsafe-return */
   const profileModalJson = useSelector((state: Store) => state.profileModal);
-
+  void useCommunities();
   return (
     <div className={classes.root}>
       <ProfileModal
