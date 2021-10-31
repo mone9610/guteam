@@ -82,7 +82,7 @@ const CommunityMessageForm: VFC = () => {
             : 'Ctrl + Enterで送信可能'
         }
         fullWidth
-        autoFocus={!isMobileSize}
+        // autoFocus={!isMobileSize}
         margin="normal"
         value={m}
         onKeyDown={handleKeyDown}
