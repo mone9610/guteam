@@ -44,10 +44,14 @@ const ExtendedThreadList: VFC = () => {
       });
     }
     if (community?.id) {
-      void getCommunityThreads(token, communityid).then((cts) => {
-        setThreads(cts);
-        updateProgress(false);
-      });
+      void getCommunityThreads(token, communityid)
+        .then((cts) => {
+          setThreads(cts);
+          updateProgress(false);
+        })
+        .catch(() => {
+          updateProgress(false);
+        });
     }
   }, [community?.id, token]);
 
