@@ -32,6 +32,7 @@ jobs:
           echo "REACT_APP_REST_URL=${{ secrets.REACT_APP_REST_URL }}" >> .env
           echo "REACT_APP_S3_BUCKET=${{ secrets.REACT_APP_S3_BUCKET }}" >> .env
           echo "REACT_APP_SECRET_ACCESS_KEY=${{ secrets.REACT_APP_SECRET_ACCESS_KEY }}" >> .env
+          echo "REACT_APP_INITIAL_THUMBNAIL=${{ secrets.REACT_APP_INITIAL_THUMBNAIL }}" >> .env          
       
       - name: Test
         run: cd ./docker-codes/http-server/guteam && yarn test
