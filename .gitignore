@@ -4,8 +4,6 @@
 *.env
 *.env.development
 *.env.production
-##reactのテスト用のデータは非公開
-data.ts
 ##
 lambda.json
 
