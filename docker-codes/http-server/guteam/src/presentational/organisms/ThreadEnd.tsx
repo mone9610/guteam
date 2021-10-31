@@ -22,7 +22,7 @@ const ThreadEnd: VFC = () => {
   return (
     <List className={classes.root}>
       <ListItem alignItems="flex-start">
-        <ListItemText primary="これ以上のスレッドはありません" />
+        <ListItemText primary="これ以上のスレッドはありません。" />
       </ListItem>
     </List>
   );
