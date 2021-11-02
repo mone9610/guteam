@@ -11,7 +11,7 @@ import ProfileModal from 'presentational/organisms/ProfileModal';
 
 import { useSelector } from 'react-redux';
 
-import { User, Store } from 'common/CustomTypes';
+import { UserType, StoreType } from 'common/CustomTypes';
 import { useCommunities } from 'common/CustomHooks';
 
 const drawerWidth = 240;
@@ -54,11 +54,13 @@ const Client: VFC = () => {
   const classes = useStyles();
 
   // HACK:ロジック部分がpresentationalに混在しているが、snackbarStateをpropsに変更する必要性が疑問であるため許容
-  const snackbarJson = useSelector((state: Store) => state.snackbar);
+  const snackbarJson = useSelector((state: StoreType) => state.snackbar);
   // HACK : VScode上は問題ないが、コンパイル時にエラーが発生するため、以下のオプションを許容
   /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   /* eslint-disable @typescript-eslint/no-unsafe-return */
-  const profileModalJson = useSelector((state: Store) => state.profileModal);
+  const profileModalJson = useSelector(
+    (state: StoreType) => state.profileModal
+  );
   void useCommunities();
   return (
     <div className={classes.root}>
@@ -66,7 +68,7 @@ const Client: VFC = () => {
         // HACK : VScode上は問題ないが、コンパイル時にエラーが発生するため、以下のオプションを許容
         /* eslint-disable  @typescript-eslint/no-unsafe-member-access */
         open={profileModalJson?.open as boolean}
-        user={profileModalJson?.user as User}
+        user={profileModalJson?.user as UserType}
       />
       <CustomizedSnackbars
         open={snackbarJson?.open as boolean}

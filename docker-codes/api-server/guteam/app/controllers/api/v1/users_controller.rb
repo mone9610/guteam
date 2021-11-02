@@ -49,10 +49,10 @@ class Api::V1::UsersController < SecuredController
       private
     
       def post_params
-        params.permit(:name,:sub,:introduction,:picture_url)
+        params.permit(:name,:sub,:introduction,:image_url)
       end
 
       def put_params
-        params.permit(:name,:introduction,:picture_url)
+        params.permit(:name,:introduction,:image_url)
       end
 end

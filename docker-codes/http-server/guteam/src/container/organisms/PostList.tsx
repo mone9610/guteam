@@ -3,7 +3,7 @@ import { VFC, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PostList from 'presentational/template/PostList';
-import { User, PostData } from 'common/CustomTypes';
+import { UserType, PostType } from 'common/CustomTypes';
 import { useToken } from 'common/CustomHooks';
 import { getPosts, getUsers } from 'common/customFunctions';
 
@@ -13,8 +13,8 @@ import { setSnackbarState } from 'common/features/snackbarSlice';
 
 const ExtendedPostList: VFC = () => {
   const token = useToken();
-  const [users, setUsers] = useState<User[]>();
-  const [posts, setPosts] = useState<PostData[]>();
+  const [users, setUsers] = useState<UserType[]>();
+  const [posts, setPosts] = useState<PostType[]>();
 
   const dispatch = useDispatch();
   const progressJson = useSelector((state: ProgressState) => state.progress);
@@ -66,8 +66,8 @@ const ExtendedPostList: VFC = () => {
 
   return (
     <PostList
-      posts={posts as PostData[]}
-      users={users as User[]}
+      posts={posts as PostType[]}
+      users={users as UserType[]}
       isLoading={Object.values(progressJson)[0] as boolean}
     />
   );

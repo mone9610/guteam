@@ -6,7 +6,7 @@ import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
-import { ThreadData, ThreadPostData, User } from 'common/CustomTypes';
+import { ThreadType, ThreadPostType, UserType } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import ThreadPost from 'presentational/organisms/ThreadPost';
 import PostEnd from 'presentational/organisms/PostEnd';
@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  threadInfo: ThreadData;
-  posts: ThreadPostData[];
-  users: User[];
+  threadInfo: ThreadType;
+  posts: ThreadPostType[];
+  users: UserType[];
   isLoading: boolean;
 };
 
@@ -34,7 +34,7 @@ const ThreadPostList: VFC<Props> = (props) => {
   const { threadInfo, posts, users, isLoading } = props;
 
   // created_atで昇順にソートする
-  posts?.sort((a: ThreadPostData, b: ThreadPostData) => {
+  posts?.sort((a: ThreadPostType, b: ThreadPostType) => {
     if (a.created_at < b.created_at) {
       return -1;
     }
@@ -63,7 +63,7 @@ const ThreadPostList: VFC<Props> = (props) => {
                 <ThreadPost
                   key={post.id}
                   sub={found?.sub}
-                  picture_url={found?.picture_url}
+                  image_url={found?.image_url}
                   name={found?.name}
                   message={post.message}
                   is_deleted={post.is_deleted}

@@ -33,7 +33,7 @@ export const userData = [
     introduction: 'こんにちは',
     created_at: '2021-09-09T09:20:53.133Z',
     updated_at: '2021-09-09T09:20:53.133Z',
-    picture_url:
+    image_url:
       'https://guteam-test-20210819.s3.ap-northeast-1.amazonaws.com/profile/test/1630987272522.png',
   },
   {
@@ -43,7 +43,7 @@ export const userData = [
     introduction: 'こんにちわん',
     created_at: '2021-09-11T01:42:13.064Z',
     updated_at: '2021-09-11T01:42:13.064Z',
-    picture_url:
+    image_url:
       'https://user-images.githubusercontent.com/64692797/131617276-b5222ddb-25ac-4877-93d6-7e5432229512.jpg',
   },
 ];

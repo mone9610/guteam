@@ -3,13 +3,13 @@ import axios from 'axios';
 import ReactS3Client from 'react-aws-s3-typescript';
 
 import {
-  User,
-  PostData,
-  Message,
-  NotificationData,
-  CommunityData,
-  ThreadData,
-  ThreadPostData,
+  UserType,
+  PostType,
+  MessageType,
+  NotificationType,
+  CommunityType,
+  ThreadType,
+  ThreadPostType,
 } from 'common/CustomTypes';
 
 const basePath = process.env.REACT_APP_REST_URL as string;
@@ -42,12 +42,15 @@ export const absSubFromUserID = (sub: string): string => {
   return userID;
 };
 
-export const postUser = async (token: string, data: User): Promise<number> => {
+export const postUser = async (
+  token: string,
+  data: UserType
+): Promise<number> => {
   const url = `${basePath}/users`;
   const header = `Bearer ${token}`;
 
   const status = await axios
-    .post<User>(url, data, {
+    .post<UserType>(url, data, {
       headers: {
         Authorization: header,
         ContentType: 'application/json; charset=utf-8',
@@ -70,12 +73,12 @@ export const processDate = (date: string): string => {
   return `${YYYY}/${MM}/${DD} ${hh}:${mm}`;
 };
 
-export const getUsers = async (token: string): Promise<User[]> => {
+export const getUsers = async (token: string): Promise<UserType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users`;
 
   const data = await axios
-    .get<User[]>(url, {
+    .get<UserType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -86,15 +89,18 @@ export const getUsers = async (token: string): Promise<User[]> => {
       err as string;
     });
 
-  return data as User[];
+  return data as UserType[];
 };
 
-export const getUser = async (token: string, sub: string): Promise<User> => {
+export const getUser = async (
+  token: string,
+  sub: string
+): Promise<UserType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
   const data = await axios
-    .get<User>(url, {
+    .get<UserType>(url, {
       headers: {
         Authorization: header,
       },
@@ -104,19 +110,19 @@ export const getUser = async (token: string, sub: string): Promise<User> => {
     .catch((err) => {
       err as string;
     });
-  return data as User;
+  return data as UserType;
 };
 
 export const putUser = async (
   token: string,
   sub: string,
-  data: Partial<User>
+  data: Partial<UserType>
 ): Promise<number> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
   const status = await axios
-    .put<User>(url, data, {
+    .put<UserType>(url, data, {
       headers: {
         Authorization: header,
       },
@@ -129,12 +135,12 @@ export const putUser = async (
   return status as number;
 };
 
-export const getPosts = async (token: string): Promise<PostData[]> => {
+export const getPosts = async (token: string): Promise<PostType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;
 
   const data = await axios
-    .get<PostData[]>(url, {
+    .get<PostType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -152,7 +158,7 @@ export const postPost = async (
   const url = `${basePath}/posts`;
 
   const status = await axios
-    .post<Message>(
+    .post<MessageType>(
       url,
       {
         message: data,
@@ -171,12 +177,12 @@ export const postPost = async (
 export const getNotifications = async (
   token: string,
   id: number
-): Promise<NotificationData[]> => {
+): Promise<NotificationType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/notifications/${id}`;
 
   const data = await axios
-    .get<NotificationData[]>(url, {
+    .get<NotificationType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -186,18 +192,18 @@ export const getNotifications = async (
     .catch((err) => {
       err as string;
     });
-  return data as NotificationData[];
+  return data as NotificationType[];
 };
 
 // ---
 export const getCommunities = async (
   token: string
-): Promise<CommunityData[]> => {
+): Promise<CommunityType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/communities`;
 
   const response = await axios
-    .get<CommunityData[]>(url, {
+    .get<CommunityType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -210,12 +216,12 @@ export const getCommunities = async (
 export const getCommunity = async (
   token: string,
   id: string
-): Promise<CommunityData> => {
+): Promise<CommunityType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/communities/${id}`;
 
   const response = await axios
-    .get<CommunityData>(url, {
+    .get<CommunityType>(url, {
       headers: {
         Authorization: header,
       },
@@ -228,7 +234,7 @@ export const getCommunity = async (
 export const getCommunityThreads = async (
   token: string,
   community_id?: string
-): Promise<ThreadData[]> => {
+): Promise<ThreadType[]> => {
   const header = `Bearer ${token}`;
   const urlHandler = () => {
     if (community_id === undefined) {
@@ -240,7 +246,7 @@ export const getCommunityThreads = async (
   const url = urlHandler();
 
   const response = await axios
-    .get<ThreadData[]>(url, {
+    .get<ThreadType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -253,12 +259,12 @@ export const getCommunityThreads = async (
 export const getCommunityThread = async (
   token: string,
   id: string
-): Promise<ThreadData> => {
+): Promise<ThreadType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/community_threads/${id}`;
 
   const response = await axios
-    .get<ThreadData>(url, {
+    .get<ThreadType>(url, {
       headers: {
         Authorization: header,
       },
@@ -269,19 +275,19 @@ export const getCommunityThread = async (
 };
 
 type PostCommunityThreadBody = Pick<
-  ThreadData,
+  ThreadType,
   'community_id' | 'title' | 'description' | 'image_url'
 >;
 
 export const postCommunityThread = async (
   token: string,
   body: PostCommunityThreadBody
-): Promise<ThreadData> => {
+): Promise<ThreadType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/community_threads`;
 
   const response = await axios
-    .post<ThreadData>(url, body, {
+    .post<ThreadType>(url, body, {
       headers: {
         Authorization: header,
         ContentType: 'application/json; charset=utf-8',
@@ -295,7 +301,7 @@ export const postCommunityThread = async (
 export const getThreadPosts = async (
   token: string,
   community_thread_id?: string
-): Promise<ThreadPostData[]> => {
+): Promise<ThreadPostType[]> => {
   const header = `Bearer ${token}`;
   const urlHandler = () => {
     if (community_thread_id === undefined) {
@@ -306,7 +312,7 @@ export const getThreadPosts = async (
   const url = urlHandler();
 
   const response = await axios
-    .get<ThreadPostData[]>(url, {
+    .get<ThreadPostType[]>(url, {
       headers: {
         Authorization: header,
       },
@@ -319,12 +325,12 @@ export const getThreadPosts = async (
 export const getThreadPost = async (
   token: string,
   id: string
-): Promise<ThreadPostData> => {
+): Promise<ThreadPostType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/thread_posts/${id}`;
 
   const response = await axios
-    .get<ThreadPostData>(url, {
+    .get<ThreadPostType>(url, {
       headers: {
         Authorization: header,
       },
@@ -335,19 +341,19 @@ export const getThreadPost = async (
 };
 
 type PostThreadPostBody = Pick<
-  ThreadPostData,
+  ThreadPostType,
   'community_thread_id' | 'message'
 >;
 
 export const postThreadPost = async (
   token: string,
   body: PostThreadPostBody
-): Promise<ThreadPostData> => {
+): Promise<ThreadPostType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/thread_posts`;
 
   const response = await axios
-    .post<ThreadPostData>(url, body, {
+    .post<ThreadPostType>(url, body, {
       headers: {
         Authorization: header,
         ContentType: 'application/json; charset=utf-8',

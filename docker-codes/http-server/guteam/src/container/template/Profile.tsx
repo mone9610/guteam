@@ -13,7 +13,7 @@ import { setTitle } from 'common/features/pageTitleSlice';
 import { ProgressState, setProgress } from 'common/features/progressSlice';
 import { setSnackbarState } from 'common/features/snackbarSlice';
 
-import { User } from 'common/CustomTypes';
+import { UserType } from 'common/CustomTypes';
 import {
   absSubFromUserID,
   getUser,
@@ -57,12 +57,12 @@ const Profile: VFC = () => {
   const sub: string = absSubFromUserID(rawSub);
 
   //   ビューと入力フォームの状態管理
-  const [userData, setUserData] = useState<User>();
+  const [userData, setUserData] = useState<UserType>();
   const [inputName, setInputName] = useState(userData?.name);
   const [inputIntroduction, setInputIntroduction] = useState(
     userData?.introduction
   );
-  const [pictureUrl, setPictureUrl] = useState(userData?.picture_url);
+  const [imageUrl, setImageUrl] = useState(userData?.image_url);
 
   //   ページタイトルのアップデート
   const pageTitle = 'プロフィール';
@@ -117,7 +117,7 @@ const Profile: VFC = () => {
         })
       );
     } else {
-      const loc = await uploadFile(imageFile, sub,"profile");
+      const loc = await uploadFile(imageFile, sub, 'profile');
       if (loc === undefined) {
         dispatch(
           setSnackbarState({
@@ -128,7 +128,7 @@ const Profile: VFC = () => {
           })
         );
       } else {
-        setPictureUrl(loc);
+        setImageUrl(loc);
       }
     }
   };
@@ -137,7 +137,7 @@ const Profile: VFC = () => {
     const data = {
       name: inputName,
       introduction: inputIntroduction,
-      picture_url: pictureUrl,
+      image_url: imageUrl,
     };
     if (token)
       void putUser(token, sub, data).then((res) => {
@@ -177,8 +177,8 @@ const Profile: VFC = () => {
           <main className={classes.content}>
             <br />
             <img
-              src={pictureUrl ?? userData?.picture_url ?? initialAvatar}
-              alt={userData?.picture_url ?? '未設定'}
+              src={imageUrl ?? userData?.image_url ?? initialAvatar}
+              alt={userData?.image_url ?? '未設定'}
               className={classes.imgCircleEditable}
             />
             <p />

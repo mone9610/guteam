@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CommunityData } from 'common/CustomTypes';
+import { CommunityType } from 'common/CustomTypes';
 
 export type AccordionState = {
   communityOpen: boolean;
-  communityList: CommunityData[];
+  communityList: CommunityType[];
   teamOpen: boolean;
   directOpen: boolean;
   settingOpen: boolean;
@@ -29,7 +29,7 @@ export const accordionSlice = createSlice({
     },
     setCommunityList(
       state: AccordionState,
-      action: PayloadAction<CommunityData[]>
+      action: PayloadAction<CommunityType[]>
     ) {
       // eslint-disable-next-line no-param-reassign
       state.communityList = action.payload;

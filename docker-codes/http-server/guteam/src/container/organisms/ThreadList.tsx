@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { getCommunity, getCommunityThreads } from 'common/customFunctions';
 import { useToken } from 'common/CustomHooks';
-import { CommunityData, ThreadData } from 'common/CustomTypes';
+import { CommunityType, ThreadType } from 'common/CustomTypes';
 import { ProgressState, setProgress } from 'common/features/progressSlice';
 import { setSnackbarState } from 'common/features/snackbarSlice';
 
@@ -22,8 +22,8 @@ const ExtendedThreadList: VFC = () => {
 
   const { communityid } = useParams<{ communityid: string }>();
 
-  const [community, setCommunity] = useState<CommunityData>();
-  const [threads, setThreads] = useState<ThreadData[]>();
+  const [community, setCommunity] = useState<CommunityType>();
+  const [threads, setThreads] = useState<ThreadType[]>();
 
   const load = useCallback(() => {
     if (token) {
@@ -63,7 +63,7 @@ const ExtendedThreadList: VFC = () => {
   return (
     <>
       <ThreadList
-        threads={threads as ThreadData[]}
+        threads={threads as ThreadType[]}
         community={community?.name as string}
         isLoading={Object.values(progressJson)[0] as boolean}
       />

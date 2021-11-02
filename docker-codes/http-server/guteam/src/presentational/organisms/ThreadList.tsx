@@ -10,7 +10,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 
-import { ThreadData } from 'common/CustomTypes';
+import { ThreadType } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import Thread from 'presentational/organisms/Thread';
 import ThreadsFooter from 'presentational/organisms/ThreadsFooter';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  threads: ThreadData[];
+  threads: ThreadType[];
   community: string;
   isLoading: boolean;
 };
@@ -38,7 +38,7 @@ const ThreadList: VFC<Props> = (props) => {
   const { threads, community, isLoading } = props;
 
   // updated_atで降順にソートする
-  threads?.sort((a: ThreadData, b: ThreadData) => {
+  threads?.sort((a: ThreadType, b: ThreadType) => {
     if (a.updated_at > b.updated_at) {
       return -1;
     }

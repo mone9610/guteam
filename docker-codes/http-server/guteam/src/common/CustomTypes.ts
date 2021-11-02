@@ -6,17 +6,17 @@ import { ReloadState } from 'common/features/reloadSlice';
 import { AccordionState } from 'common/features/accordionSlice';
 import { ProfileModalState } from './features/profileModalSlice';
 
-export type User = {
+export type UserType = {
   id?: number;
   name: string;
   sub: string;
   introduction: string;
-  picture_url: string;
+  image_url: string;
   created_at?: string;
   updated_at?: string;
 };
 
-export type PostData = {
+export type PostType = {
   id: number;
   user_id: number;
   message: string;
@@ -25,7 +25,7 @@ export type PostData = {
   updated_at: string;
 };
 
-export type NotificationData = {
+export type NotificationType = {
   id: number;
   message: string;
   from_user_id: number;
@@ -34,11 +34,11 @@ export type NotificationData = {
   updated_at: string;
 };
 
-export type Message = {
+export type MessageType = {
   message: string;
 };
 
-export type Store = {
+export type StoreType = {
   snackbar?: SnackbarState;
   title?: TitleState;
   progress?: ProgressState;
@@ -49,14 +49,14 @@ export type Store = {
 
 // ---
 
-export type CommunityData = {
+export type CommunityType = {
   id: number;
   name: string;
   created_at: string;
   updated_at: string;
 };
 
-export type ThreadData = {
+export type ThreadType = {
   id: number;
   community_id: number;
   user_id: number;
@@ -67,7 +67,7 @@ export type ThreadData = {
   updated_at: string;
 };
 
-export type ThreadPostData = PostData & {
+export type ThreadPostType = PostType & {
   community_thread_id: number;
 };
 

@@ -2,7 +2,7 @@
 import { VFC, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { User, NotificationData } from 'common/CustomTypes';
+import { UserType, NotificationType } from 'common/CustomTypes';
 import { useToken } from 'common/CustomHooks';
 import {
   absSubFromUserID,
@@ -21,9 +21,9 @@ const ExtendedNotificationItemList: VFC = () => {
   const rawSub = user?.sub as string;
   const sub: string = absSubFromUserID(rawSub);
 
-  const [currentUser, setCurrentUser] = useState<User>();
-  const [users, setUsers] = useState<User[]>();
-  const [notifications, setNotifications] = useState<NotificationData[]>();
+  const [currentUser, setCurrentUser] = useState<UserType>();
+  const [users, setUsers] = useState<UserType[]>();
+  const [notifications, setNotifications] = useState<NotificationType[]>();
 
   const dispatch = useDispatch();
   const progressJson = useSelector((state: ProgressState) => state.progress);
@@ -72,8 +72,8 @@ const ExtendedNotificationItemList: VFC = () => {
 
   return (
     <NotificationItemList
-      notificationItems={notifications as NotificationData[]}
-      users={users as User[]}
+      notificationItems={notifications as NotificationType[]}
+      users={users as UserType[]}
       isLoading={Object.values(progressJson)[0] as boolean}
     />
   );

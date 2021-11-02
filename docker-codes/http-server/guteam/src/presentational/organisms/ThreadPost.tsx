@@ -28,7 +28,7 @@ const useStyles = makeStyles(() =>
 type Props = {
   key: number;
   sub?: string;
-  picture_url?: string;
+  image_url?: string;
   name?: string;
   message: string;
   created_at: string;
@@ -41,7 +41,7 @@ const ThreadPost: VFC<Props> = (props) => {
   const {
     key,
     sub,
-    picture_url,
+    image_url,
     name,
     message,
     created_at,
@@ -53,7 +53,7 @@ const ThreadPost: VFC<Props> = (props) => {
     <div>
       <>
         <ListItem alignItems="flex-start" key={key}>
-          <CustomListAvatar sub={sub} picture_url={picture_url} />
+          <CustomListAvatar sub={sub} image_url={image_url} />
           <ListItemText
             primary={
               <>

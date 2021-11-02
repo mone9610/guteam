@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
-import { ThreadData } from 'common/CustomTypes';
+import { ThreadType } from 'common/CustomTypes';
 import { processDate } from 'common/customFunctions';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() =>
 );
 
 type Props = Pick<
-  ThreadData,
+  ThreadType,
   'id' | 'community_id' | 'title' | 'image_url' | 'created_at'
 >;
 
