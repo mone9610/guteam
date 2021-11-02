@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Theme, useMediaQuery } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
-import { CommunityData } from 'common/CustomTypes';
+import { CommunityType } from 'common/CustomTypes';
 import { getCommunities } from 'common/customFunctions';
 import { setCommunityList } from './features/accordionSlice';
 
@@ -29,16 +29,16 @@ export const useSize = (): boolean => {
   return isMobileSize;
 };
 
-export const useCommunities = (): CommunityData[] => {
+export const useCommunities = (): CommunityType[] => {
   const token = useToken();
-  const [communities, setCommunities] = useState<CommunityData[]>();
+  const [communities, setCommunities] = useState<CommunityType[]>();
   const dispatch = useDispatch();
 
   const load = useCallback(() => {
     if (token) {
       void getCommunities(token).then((cs) => {
         setCommunities(cs);
-        const updateCommunities = (state: CommunityData[]) => {
+        const updateCommunities = (state: CommunityType[]) => {
           dispatch(setCommunityList(state));
         };
         void updateCommunities(cs);
@@ -50,7 +50,7 @@ export const useCommunities = (): CommunityData[] => {
     void load();
   }, [load, token]);
 
-  return communities as CommunityData[];
+  return communities as CommunityType[];
 };
 
 export {};

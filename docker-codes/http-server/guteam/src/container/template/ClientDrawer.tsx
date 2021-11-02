@@ -14,7 +14,7 @@ import {
   setSettingOpen,
   setDocOpen,
 } from 'common/features/accordionSlice';
-import { CommunityData, Store } from 'common/CustomTypes';
+import { CommunityType, StoreType } from 'common/CustomTypes';
 
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -122,7 +122,7 @@ const ClientDrawer: VFC<Props> = (props) => {
   const title = Object.values(titleJson)[0];
 
   // NOTE:サイドバーのメニューを制御する
-  const accordionJson = useSelector((state: Store) => state.accordion);
+  const accordionJson = useSelector((state: StoreType) => state.accordion);
   const communityOpen = accordionJson?.communityOpen;
   const communityList = accordionJson?.communityList;
   // const teamOpen = accordionJson?.teamOpen;
@@ -165,7 +165,7 @@ const ClientDrawer: VFC<Props> = (props) => {
         </ListItem>
         {/* <Collapse in={communityOpen} timeout="auto" unmountOnExit> */}
         <Collapse in={communityOpen} timeout="auto">
-          <CommunityList menu={communityList as CommunityData[]} />
+          <CommunityList menu={communityList as CommunityType[]} />
         </Collapse>
         {/* <ListItem button onClick={handleClickTeam}>
           <ListItemIcon>

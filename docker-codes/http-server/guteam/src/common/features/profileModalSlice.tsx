@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from 'common/CustomTypes';
+import { UserType } from 'common/CustomTypes';
 
 export type ProfileModalState = {
   open: boolean;
-  user: User;
+  user: UserType;
 };
 
 const initialState: ProfileModalState = {
@@ -11,7 +11,7 @@ const initialState: ProfileModalState = {
   user: {
     id: 0,
     name: 'ほぎゃああ',
-    picture_url: '',
+    image_url: '',
     introduction: '',
     sub: '',
   },
@@ -30,12 +30,12 @@ export const profileModalSlice = createSlice({
     },
     setProfileModalState(
       state: ProfileModalState,
-      action: PayloadAction<User>
+      action: PayloadAction<UserType>
     ) {
       // eslint-disable-next-line no-param-reassign
       state.user.name = action.payload.name;
       // eslint-disable-next-line no-param-reassign
-      state.user.picture_url = action.payload.picture_url;
+      state.user.image_url = action.payload.image_url;
       // eslint-disable-next-line no-param-reassign
       state.user.introduction = action.payload.introduction;
       // eslint-disable-next-line no-param-reassign

@@ -17,14 +17,14 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 
 type Props = {
-  picture_url?: string;
+  image_url?: string;
   name?: string;
   sub?: string;
 };
 
 const CustomListAvatar: VFC<Props> = (props) => {
   const token = useToken();
-  const { sub, picture_url } = props;
+  const { sub, image_url } = props;
 
   //   プロフィール用のモーダルを制御する機構
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const CustomListAvatar: VFC<Props> = (props) => {
   return (
     <ListItemAvatar>
       <IconButton onClick={handleModal}>
-        <Avatar alt="" src={picture_url} />
+        <Avatar alt="" src={image_url} />
       </IconButton>
     </ListItemAvatar>
   );

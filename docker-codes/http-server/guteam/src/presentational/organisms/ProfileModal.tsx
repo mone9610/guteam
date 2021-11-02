@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { useDispatch } from 'react-redux';
 
-import { User } from 'common/CustomTypes';
+import { UserType } from 'common/CustomTypes';
 import { setProfileModalOpen } from 'common/features/profileModalSlice';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = {
   open: boolean;
-  user?: User;
+  user?: UserType;
 };
 
 // 戻り値の型は定義不要
@@ -92,7 +92,7 @@ const ProfileModal: VFC<Props> = (props) => {
       </Grid>
       <Grid container className={classes.container}>
         <img
-          src={user?.picture_url}
+          src={user?.image_url}
           alt=""
           className={classes.imgCircleEditable}
         />

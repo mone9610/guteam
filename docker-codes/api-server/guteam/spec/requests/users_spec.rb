@@ -50,7 +50,7 @@ RSpec.describe 'Users', type: :request do
         'name' => 'post',
         'sub' => 'subsub',
         'introduction' => 'this is post',
-        'picture_url' => 'http://postpicture'
+        'image_url' => 'http://postimage'
         }
       post '/api/v1/users/',headers: @headers, params:@params
       json = JSON.parse(response.body)
@@ -58,7 +58,7 @@ RSpec.describe 'Users', type: :request do
       expect(json['name']).to eq(@params['name'])
       expect(json['sub']).to eq(@params['sub'])
       expect(json['introduction']).to eq(@params['introduction'])
-      expect(json['picture_url']).to eq(@params['picture_url'])
+      expect(json['image_url']).to eq(@params['image_url'])
     end
 
     it 'tokenがheaderに入っており、既に存在するparamをPOSTしたとき、POSTのレスポンスコードが422になること' do
@@ -66,7 +66,7 @@ RSpec.describe 'Users', type: :request do
         'name' => 'post',
         'sub' => 'subsub',
         'introduction' => 'this is post',
-        'picture_url' => 'http://postpicture',
+        'image_url' => 'http://postimage',
         }
       FactoryBot.create(:user, sub: 'subsub',)
       post '/api/v1/users/',headers: @headers, params:@params
@@ -81,14 +81,14 @@ RSpec.describe 'Users', type: :request do
       @params = {
         'name' => 'put',
         'introduction' => 'this is put',
-        'picture_url' => 'http://putpicture'
+        'image_url' => 'http://putimage'
         }
       put '/api/v1/users/'+user.sub,headers: @headers, params:@params
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(json['name']).to eq(@params['name'])
       expect(json['introduction']).to eq(@params['introduction'])
-      expect(json['picture_url']).to eq(@params['picture_url'])
+      expect(json['image_url']).to eq(@params['image_url'])
     end
 
     it 'tokenがheaderに入っており、指定したsubが存在しないとき、PUTのレスポンスコードが422になること' do
@@ -96,7 +96,7 @@ RSpec.describe 'Users', type: :request do
       @params = {
         'name' => 'put',
         'introduction' => 'this is put',
-        'picture_url' => 'http://putpicture'
+        'image_url' => 'http://putimage'
         }
       put '/api/v1/users/busbusbus',headers: @headers, params:@params
       JSON.parse(response.body)

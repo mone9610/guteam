@@ -7,7 +7,7 @@ import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
-import { NotificationData, User } from 'common/CustomTypes';
+import { NotificationType, UserType } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import NotificationItem from 'presentational/organisms/NotificationItem';
 
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  notificationItems: NotificationData[];
-  users: User[];
+  notificationItems: NotificationType[];
+  users: UserType[];
   isLoading: boolean;
 };
 
@@ -33,7 +33,7 @@ const NotificationItemList: VFC<Props> = (props) => {
   const { notificationItems, users, isLoading } = props;
 
   // created_atで降順にソートする
-  notificationItems?.sort((a: NotificationData, b: NotificationData) => {
+  notificationItems?.sort((a: NotificationType, b: NotificationType) => {
     if (a.created_at > b.created_at) {
       return -1;
     }
@@ -57,7 +57,7 @@ const NotificationItemList: VFC<Props> = (props) => {
                 <NotificationItem
                   key={notificationItem.id}
                   sub={found?.sub as string}
-                  picture_url={found?.picture_url as string}
+                  image_url={found?.image_url as string}
                   message={notificationItem.message}
                   created_at={notificationItem.created_at}
                 />

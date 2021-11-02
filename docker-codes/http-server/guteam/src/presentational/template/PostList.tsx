@@ -5,7 +5,7 @@
 import { VFC } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import { PostData, User } from 'common/CustomTypes';
+import { PostType, UserType } from 'common/CustomTypes';
 import Spinner from 'presentational/molecules/Spinner';
 import Post from 'presentational/organisms/Post';
 import PostEnd from 'presentational/organisms/PostEnd';
@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  posts: PostData[];
-  users: User[];
+  posts: PostType[];
+  users: UserType[];
   isLoading: boolean;
 };
 
@@ -32,7 +32,7 @@ const PostList: VFC<Props> = (props) => {
   const { posts, users, isLoading } = props;
 
   // created_atで降順にソートする
-  posts?.sort((a: PostData, b: PostData) => {
+  posts?.sort((a: PostType, b: PostType) => {
     if (a.created_at > b.created_at) {
       return -1;
     }
@@ -58,7 +58,7 @@ const PostList: VFC<Props> = (props) => {
                 <Post
                   key={post.id}
                   sub={found?.sub}
-                  picture_url={found?.picture_url}
+                  image_url={found?.image_url}
                   name={found?.name}
                   message={post.message}
                   is_deleted={post.is_deleted}

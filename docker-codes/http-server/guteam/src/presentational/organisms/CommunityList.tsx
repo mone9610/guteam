@@ -8,10 +8,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { CommunityData } from 'common/CustomTypes';
+import { CommunityType } from 'common/CustomTypes';
 
 type Props = {
-  menu: CommunityData[];
+  menu: CommunityType[];
 };
 
 const useStyles = makeStyles((theme: Theme) =>

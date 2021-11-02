@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ThreadPostList from 'presentational/template/ThreadPostList';
-import { User, ThreadPostData, ThreadData } from 'common/CustomTypes';
+import { UserType, ThreadPostType, ThreadType } from 'common/CustomTypes';
 import { useToken } from 'common/CustomHooks';
 import {
   getThreadPosts,
@@ -21,9 +21,9 @@ const ExtendedThreadPostList: VFC = () => {
   const token = useToken();
   const { threadid } = useParams<{ threadid: string }>();
 
-  const [users, setUsers] = useState<User[]>();
-  const [threadPosts, setThreadPosts] = useState<ThreadPostData[]>();
-  const [threadInfo, setThreadInfo] = useState<ThreadData>();
+  const [users, setUsers] = useState<UserType[]>();
+  const [threadPosts, setThreadPosts] = useState<ThreadPostType[]>();
+  const [threadInfo, setThreadInfo] = useState<ThreadType>();
 
   const dispatch = useDispatch();
   const progressJson = useSelector((state: ProgressState) => state.progress);
@@ -83,9 +83,9 @@ const ExtendedThreadPostList: VFC = () => {
   return (
     <>
       <ThreadPostList
-        threadInfo={threadInfo as ThreadData}
-        posts={threadPosts as ThreadPostData[]}
-        users={users as User[]}
+        threadInfo={threadInfo as ThreadType}
+        posts={threadPosts as ThreadPostType[]}
+        users={users as UserType[]}
         isLoading={Object.values(progressJson)[0] as boolean}
       />
       <CommunityClientFooter />

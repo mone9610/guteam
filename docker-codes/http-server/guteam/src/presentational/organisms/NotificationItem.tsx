@@ -26,20 +26,20 @@ const useStyles = makeStyles(() =>
 type Props = {
   key: number;
   sub: string;
-  picture_url: string;
+  image_url: string;
   message: string;
   created_at: string;
 };
 
 const NotificationItem: VFC<Props> = (props) => {
   const classes = useStyles();
-  const { key, sub, picture_url, message, created_at } = props;
+  const { key, sub, image_url, message, created_at } = props;
 
   return (
     <div>
       <>
         <ListItem key={key}>
-          <CustomListAvatar sub={sub} picture_url={picture_url} />
+          <CustomListAvatar sub={sub} image_url={image_url} />
           <ListItemText
             primary={
               <>
