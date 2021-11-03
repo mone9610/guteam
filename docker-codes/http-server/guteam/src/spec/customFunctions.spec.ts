@@ -3,6 +3,12 @@ import MockAdapter from 'axios-mock-adapter';
 
 import {
   absSubFromUserID,
+  processDate,
+  getUsers,
+  getUser,
+  getPosts,
+  postPost,
+  getNotifications,
   getCommunities,
   getCommunity,
   getCommunityThreads,
@@ -11,12 +17,21 @@ import {
   getThreadPosts,
   getThreadPost,
   postThreadPost,
+  putUser,
+  postUser,
 } from 'common/customFunctions';
+import { userData } from 'data/users';
+import { postData } from 'data/posts';
+import { notificationData } from 'data/notification';
 import { communityData } from 'data/communities';
 import { communityThreadsData } from 'data/community_threads';
 import { threadsPostsData } from 'data/threads_posts';
 
 const basePath = process.env.REACT_APP_REST_URL as string;
+const mock = new MockAdapter(axios);
+afterEach(() => {
+  mock.reset();
+});
 
 describe('absSubFromUserID', () => {
   it('should suceed', () => {
@@ -26,12 +41,131 @@ describe('absSubFromUserID', () => {
   });
 });
 
-describe('Rails API handlers(feature:community)', () => {
-  const mock = new MockAdapter(axios);
-  afterEach(() => {
-    mock.reset();
+describe('processDate', () => {
+  it('should suceed', () => {
+    const date = '2021-01-02 12:34:56.0000';
+    const processedDate = processDate(date);
+    expect(processedDate).toBe('2021/1/2 12:34');
+  });
+});
+
+describe('Rails API handlers(feature:profile)', () => {
+  describe('GET users', () => {
+    it('should succeed', async () => {
+      mock.onGet(`${basePath}/users`).reply(200, userData);
+
+      const response = await getUsers('hogehoge');
+      const mockLength = userData.length;
+      const responseLength = response.length;
+
+      expect(responseLength).toBe(mockLength);
+    });
   });
 
+  describe('GET user', () => {
+    it('should succeed', async () => {
+      mock
+        .onGet(`${basePath}/users/${userData[0].sub}`)
+        .reply(200, userData[0]);
+
+      const response = await getUser('hogehoge', userData[0].sub);
+      const mockSub = userData[0].sub;
+      const responseSub = response.sub;
+
+      expect(responseSub).toBe(mockSub);
+    });
+  });
+
+  describe('PUT user', () => {
+    const body = {
+      name: 'hello',
+      introduction: 'world',
+      image_url: 'http://hogehoge.com',
+    };
+    it('should succeed', async () => {
+      mock
+        .onPut(`${basePath}/users/${userData[0].sub}`, body)
+        .reply(200, userData[2]);
+
+      const response = await putUser('hogehoge', userData[0].sub, body);
+      const mockData = userData[2];
+
+      expect(response.sub).toBe(mockData.sub);
+      expect(response.name).toBe(mockData.name);
+      expect(response.introduction).toBe(mockData.introduction);
+      expect(response.image_url).toBe(mockData.image_url);
+    });
+  });
+
+  describe('POST user', () => {
+    const body = {
+      name: 'HELLO',
+      sub: 'piyopiyopiyo',
+      introduction: 'WORLD',
+      image_url: 'http://hugahuga.com',
+    };
+    it('should succeed', async () => {
+      mock.onPost(`${basePath}/users`, body).reply(200, userData[3]);
+
+      const response = await postUser('hogehoge', body);
+      const mockData = userData[3];
+
+      expect(response.sub).toBe(mockData.sub);
+      expect(response.name).toBe(mockData.name);
+      expect(response.introduction).toBe(mockData.introduction);
+      expect(response.image_url).toBe(mockData.image_url);
+    });
+  });
+});
+
+describe('Rails API handlers(feature:timeline)', () => {
+  describe('GET posts', () => {
+    it('should succeed', async () => {
+      mock.onGet(`${basePath}/posts`).reply(200, postData);
+
+      const response = await getPosts('hogehoge');
+      const mockLength = postData.length;
+      const responseLength = response.length;
+
+      expect(responseLength).toBe(mockLength);
+    });
+  });
+
+  describe('POST post', () => {
+    it('should succeed', async () => {
+      const body = {
+        message: '2番目の投稿',
+      };
+      mock.onPost(`${basePath}/posts`).reply(200, postData[1]);
+
+      const response = await postPost('hogehoge', body);
+      const mockData = postData[1].message;
+
+      expect(response.message).toBe(mockData);
+    });
+  });
+});
+
+describe('Rails API handlers(feature:notification)', () => {
+  describe('GET notifications', () => {
+    it('should succeed', async () => {
+      mock
+        .onGet(`${basePath}/notifications/${notificationData[1].to_user_id}`)
+        .reply(200, notificationData);
+
+      const response = await getNotifications(
+        'hogehoge',
+        notificationData[1].to_user_id
+      );
+      const mockLength = postData.length;
+      const responseLength = response.length;
+
+      expect(responseLength).toBe(mockLength);
+    });
+  });
+});
+
+describe('Rails API handlers(feature:community)', () => {
   describe('GET communities', () => {
     it('should succeed', async () => {
       mock.onGet(`${basePath}/communities`).reply(200, communityData);
