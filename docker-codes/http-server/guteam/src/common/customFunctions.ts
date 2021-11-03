@@ -85,10 +85,12 @@ export const getUser = async (
   return response;
 };
 
+type PutUserBody = Pick<UserType, 'name' | 'introduction' | 'image_url'>;
+
 export const putUser = async (
   token: string,
   sub: string,
-  data: Pick<UserType, 'name' | 'introduction' | 'image_url'>
+  data: PutUserBody
 ): Promise<UserType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
@@ -141,7 +143,7 @@ export const getPosts = async (token: string): Promise<PostType[]> => {
 
 export const postPost = async (
   token: string,
-  body: Pick<PostType, 'message'>
+  body: string
 ): Promise<PostType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;

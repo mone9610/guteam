@@ -3,7 +3,7 @@ import { UserType } from 'common/CustomTypes';
 
 export type ProfileModalState = {
   open: boolean;
-  user: UserType;
+  user: Pick<UserType, 'id' | 'name' | 'image_url' | 'sub' | 'introduction'>;
 };
 
 const initialState: ProfileModalState = {

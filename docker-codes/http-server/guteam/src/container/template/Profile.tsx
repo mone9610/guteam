@@ -135,13 +135,13 @@ const Profile: VFC = () => {
 
   const updateProfile = () => {
     const data = {
-      name: inputName,
-      introduction: inputIntroduction,
-      image_url: imageUrl,
+      name: inputName as string,
+      introduction: inputIntroduction as string,
+      image_url: imageUrl as string,
     };
     if (token)
-      void putUser(token, sub, data).then((res) => {
-        if (res === 200) {
+      void putUser(token, sub, data)
+        .then(() => {
           dispatch(
             setSnackbarState({
               open: true,
@@ -149,7 +149,8 @@ const Profile: VFC = () => {
               message: 'プロフィールの更新に成功しました。',
             })
           );
-        } else {
+        })
+        .catch(() => {
           dispatch(
             setSnackbarState({
               open: true,
@@ -157,8 +158,7 @@ const Profile: VFC = () => {
               message: `プロフィールの更新に失敗しました。しばらく時間をおいて再試行してください。`,
             })
           );
-        }
-      });
+        });
   };
 
   useEffect(() => {
