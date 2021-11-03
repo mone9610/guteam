@@ -7,13 +7,13 @@ import { AccordionState } from 'common/features/accordionSlice';
 import { ProfileModalState } from './features/profileModalSlice';
 
 export type UserType = {
-  id?: number;
+  id: number;
   name: string;
   sub: string;
   introduction: string;
   image_url: string;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type PostType = {
@@ -34,10 +34,6 @@ export type NotificationType = {
   updated_at: string;
 };
 
-export type MessageType = {
-  message: string;
-};
-
 export type StoreType = {
   snackbar?: SnackbarState;
   title?: TitleState;
@@ -46,8 +42,6 @@ export type StoreType = {
   profileModal?: ProfileModalState;
   accordion?: AccordionState;
 };
-
-// ---
 
 export type CommunityType = {
   id: number;

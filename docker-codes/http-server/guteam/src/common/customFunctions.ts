@@ -5,7 +5,6 @@ import ReactS3Client from 'react-aws-s3-typescript';
 import {
   UserType,
   PostType,
-  MessageType,
   NotificationType,
   CommunityType,
   ThreadType,
@@ -42,27 +41,6 @@ export const absSubFromUserID = (sub: string): string => {
   return userID;
 };
 
-export const postUser = async (
-  token: string,
-  data: UserType
-): Promise<number> => {
-  const url = `${basePath}/users`;
-  const header = `Bearer ${token}`;
-
-  const status = await axios
-    .post<UserType>(url, data, {
-      headers: {
-        Authorization: header,
-        ContentType: 'application/json; charset=utf-8',
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.status)
-    .catch((err) => `${err as string}`);
-
-  return status as number;
-};
-
 export const processDate = (date: string): string => {
   const DateObject = new Date(date);
   const YYYY = DateObject.getFullYear();
@@ -77,19 +55,16 @@ export const getUsers = async (token: string): Promise<UserType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users`;
 
-  const data = await axios
+  const response = await axios
     .get<UserType[]>(url, {
       headers: {
         Authorization: header,
       },
       timeout: 10000,
     })
-    .then((res) => res.data)
-    .catch((err) => {
-      err as string;
-    });
+    .then((res) => res.data);
 
-  return data as UserType[];
+  return response;
 };
 
 export const getUser = async (
@@ -99,47 +74,63 @@ export const getUser = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
-  const data = await axios
+  const response = await axios
     .get<UserType>(url, {
       headers: {
         Authorization: header,
       },
       timeout: 10000,
     })
-    .then((res) => res.data)
-    .catch((err) => {
-      err as string;
-    });
-  return data as UserType;
+    .then((res) => res.data);
+  return response;
 };
+
+type PutUserBody = Pick<UserType, 'name' | 'introduction' | 'image_url'>;
 
 export const putUser = async (
   token: string,
   sub: string,
-  data: Partial<UserType>
-): Promise<number> => {
+  data: PutUserBody
+): Promise<UserType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
-  const status = await axios
+  const response = await axios
     .put<UserType>(url, data, {
       headers: {
         Authorization: header,
       },
       timeout: 10000,
     })
-    .then((res) => res.status)
-    .catch((err) => {
-      err as number;
-    });
-  return status as number;
+    .then((res) => res.data);
+  return response;
+};
+
+export const postUser = async (
+  token: string,
+  data: Pick<UserType, 'name' | 'sub' | 'introduction' | 'image_url'>
+): Promise<UserType> => {
+  const url = `${basePath}/users`;
+  const header = `Bearer ${token}`;
+
+  const response = await axios
+    .post<UserType>(url, data, {
+      headers: {
+        Authorization: header,
+        ContentType: 'application/json; charset=utf-8',
+      },
+      timeout: 10000,
+    })
+    .then((res) => res.data);
+
+  return response;
 };
 
 export const getPosts = async (token: string): Promise<PostType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;
 
-  const data = await axios
+  const response = await axios
     .get<PostType[]>(url, {
       headers: {
         Authorization: header,
@@ -147,21 +138,21 @@ export const getPosts = async (token: string): Promise<PostType[]> => {
       timeout: 10000,
     })
     .then((res) => res.data);
-  return data;
+  return response;
 };
 
 export const postPost = async (
   token: string,
-  data: string
-): Promise<number> => {
+  body: string
+): Promise<PostType> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;
 
-  const status = await axios
-    .post<MessageType>(
+  const response = await axios
+    .post<PostType>(
       url,
       {
-        message: data,
+        message: body,
       },
       {
         headers: {
@@ -170,8 +161,8 @@ export const postPost = async (
         timeout: 10000,
       }
     )
-    .then((res) => res.status);
-  return status;
+    .then((res) => res.data);
+  return response;
 };
 
 export const getNotifications = async (
@@ -181,21 +172,17 @@ export const getNotifications = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/notifications/${id}`;
 
-  const data = await axios
+  const response = await axios
     .get<NotificationType[]>(url, {
       headers: {
         Authorization: header,
       },
       timeout: 10000,
     })
-    .then((res) => res.data)
-    .catch((err) => {
-      err as string;
-    });
-  return data as NotificationType[];
+    .then((res) => res.data);
+  return response;
 };
 
-// ---
 export const getCommunities = async (
   token: string
 ): Promise<CommunityType[]> => {
