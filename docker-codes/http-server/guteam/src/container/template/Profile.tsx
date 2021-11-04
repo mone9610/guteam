@@ -80,26 +80,23 @@ const Profile: VFC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const isLoading = Object.values(progressJson)[0];
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     if (token) {
-      void getUser(token, sub)
-        .then((u) => {
-          if (u === undefined) {
-            dispatch(
-              setSnackbarState({
-                open: true,
-                type: 'error',
-                message:
-                  'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
-              })
-            );
-          } else {
-            setUserData(u);
-          }
-        })
-        .then(() => {
-          updateProgress(false);
-        });
+      try {
+        const u = await getUser(token, sub);
+        setUserData(u);
+        updateProgress(false);
+      } catch {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+          })
+        );
+        updateProgress(false);
+      }
     }
   }, [sub, token]);
 
@@ -133,32 +130,31 @@ const Profile: VFC = () => {
     }
   };
 
-  const updateProfile = () => {
+  const updateProfile = async () => {
     const data = {
       name: inputName as string,
       introduction: inputIntroduction as string,
       image_url: imageUrl as string,
     };
     if (token)
-      void putUser(token, sub, data)
-        .then(() => {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'success',
-              message: 'プロフィールの更新に成功しました。',
-            })
-          );
-        })
-        .catch(() => {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'error',
-              message: `プロフィールの更新に失敗しました。しばらく時間をおいて再試行してください。`,
-            })
-          );
-        });
+      try {
+        void (await putUser(token, sub, data));
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'success',
+            message: 'プロフィールの更新に成功しました。',
+          })
+        );
+      } catch {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message: `プロフィールの更新に失敗しました。しばらく時間をおいて再試行してください。`,
+          })
+        );
+      }
   };
 
   useEffect(() => {

@@ -93,7 +93,7 @@ const NewThread: VFC = () => {
     }
   };
 
-  const updateProfile = () => {
+  const updateProfile = async () => {
     const data = {
       title: inputTitle as string,
       description: inputDescription as string,
@@ -101,26 +101,25 @@ const NewThread: VFC = () => {
       community_id: Number(communityid),
     };
     if (token)
-      void postCommunityThread(token, data)
-        .then(() => {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'success',
-              message: 'スレッドの作成に成功しました。',
-            })
-          );
-          history.push(`/client/community/${communityid}`);
-        })
-        .catch(() => {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'error',
-              message: `スレッドの作成に失敗しました。`,
-            })
-          );
-        });
+      try {
+        void (await postCommunityThread(token, data));
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'success',
+            message: 'スレッドの作成に成功しました。',
+          })
+        );
+        history.push(`/client/community/${communityid}`);
+      } catch {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message: `スレッドの作成に失敗しました。しばらく時間をおいて再試行してください。`,
+          })
+        );
+      }
   };
 
   return (

@@ -37,41 +37,34 @@ const ExtendedThreadPostList: VFC = () => {
     dispatch(setReload(state));
   };
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     if (token) {
-      void getUsers(token)
-        .then((us) => {
-          setUsers(us);
-        })
-        .then(() => {
-          void getThreadPosts(token, threadid)
-            .then((tp) => {
-              setThreadPosts(tp);
-            })
-            .then(() => {
-              updateProgress(false);
-              updateReload(false);
-            })
-            .catch(() => {
-              updateProgress(false);
-              updateReload(false);
-            });
-          void getCommunityThread(token, threadid).then((ct) => {
-            setThreadInfo(ct);
-          });
-        })
-        .catch(() => {
-          updateProgress(false);
-          updateReload(false);
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'error',
-              message:
-                'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
-            })
-          );
-        });
+      try {
+        const ct = await getCommunityThread(token, threadid);
+        setThreadInfo(ct);
+      } catch {
+        updateProgress(false);
+        updateReload(false);
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+          })
+        );
+      }
+      try {
+        const us = await getUsers(token);
+        setUsers(us);
+        const tps = await getThreadPosts(token, threadid);
+        setThreadPosts(tps);
+        updateProgress(false);
+        updateReload(false);
+      } catch {
+        updateProgress(false);
+        updateReload(false);
+      }
     }
   }, [token]);
 

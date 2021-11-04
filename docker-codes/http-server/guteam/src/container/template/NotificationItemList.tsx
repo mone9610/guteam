@@ -32,35 +32,33 @@ const ExtendedNotificationItemList: VFC = () => {
     dispatch(setProgress(state));
   };
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     if (token) {
-      void getUser(token, sub).then((u) => {
-        if (u === undefined) {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'error',
-              message:
-                'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
-            })
-          );
-          updateProgress(false);
-        } else {
-          setCurrentUser(u);
-        }
-      });
-      if (currentUser?.id) {
-        void getUsers(token).then((us) => {
-          setUsers(us);
-        });
-
-        void getNotifications(token, currentUser?.id)
-          .then((ns) => {
-            setNotifications(ns);
+      try {
+        const u = await getUser(token, sub);
+        setCurrentUser(u);
+      } catch {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
           })
-          .then(() => {
-            updateProgress(false);
-          });
+        );
+        updateProgress(false);
+      }
+
+      if (currentUser?.id) {
+        try {
+          const us = await getUsers(token);
+          setUsers(us);
+          const ns = await getNotifications(token, currentUser?.id);
+          setNotifications(ns);
+          updateProgress(false);
+        } catch {
+          updateProgress(false);
+        }
       }
     }
   }, [token, currentUser?.id]);

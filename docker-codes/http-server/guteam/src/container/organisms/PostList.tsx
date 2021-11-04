@@ -28,34 +28,27 @@ const ExtendedPostList: VFC = () => {
     dispatch(setReload(state));
   };
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     if (token) {
-      void getUsers(token)
-        .then((us) => {
-          setUsers(us);
-        })
-        .then(() => {
-          void getPosts(token)
-            .then((ps) => {
-              setPosts(ps);
-            })
-            .then(() => {
-              updateProgress(false);
-              updateReload(false);
-            })
-            .catch(() => {
-              updateProgress(false);
-              updateReload(false);
-              dispatch(
-                setSnackbarState({
-                  open: true,
-                  type: 'error',
-                  message:
-                    'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
-                })
-              );
-            });
-        });
+      try {
+        const us = await getUsers(token);
+        setUsers(us);
+        const ps = await getPosts(token);
+        setPosts(ps);
+        updateProgress(false);
+        updateReload(false);
+      } catch {
+        updateProgress(false);
+        updateReload(false);
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+          })
+        );
+      }
     }
   }, [token]);
 

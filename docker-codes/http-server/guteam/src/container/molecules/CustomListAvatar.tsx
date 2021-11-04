@@ -15,6 +15,7 @@ import { useToken } from 'common/CustomHooks';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+// import { UserType } from 'common/CustomTypes';
 
 type Props = {
   image_url?: string;
@@ -22,20 +23,19 @@ type Props = {
   sub?: string;
 };
 
+// type Props = Pick<UserType, 'sub' | 'image_url'>;
+
 const CustomListAvatar: VFC<Props> = (props) => {
   const token = useToken();
   const { sub, image_url } = props;
 
   //   プロフィール用のモーダルを制御する機構
   const dispatch = useDispatch();
-  const handleModal = () => {
-    void getUser(token, sub as string)
-      .then((u) => {
-        dispatch(setProfileModalState(u));
-      })
-      .then(() => {
-        dispatch(setProfileModalOpen(true));
-      });
+
+  const handleModal = async () => {
+    const user = await getUser(token, sub as string);
+    dispatch(setProfileModalState(user));
+    dispatch(setProfileModalOpen(true));
   };
 
   return (
