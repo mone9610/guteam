@@ -25,33 +25,31 @@ const ExtendedThreadList: VFC = () => {
   const [community, setCommunity] = useState<CommunityType>();
   const [threads, setThreads] = useState<ThreadType[]>();
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     if (token) {
-      void getCommunity(token, communityid).then((c) => {
-        if (c === undefined) {
-          dispatch(
-            setSnackbarState({
-              open: true,
-              type: 'error',
-              message:
-                'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
-            })
-          );
-          updateProgress(false);
-        } else {
-          setCommunity(c);
-        }
-      });
-    }
-    if (community?.id) {
-      void getCommunityThreads(token, communityid)
-        .then((cts) => {
-          setThreads(cts);
-          updateProgress(false);
-        })
-        .catch(() => {
-          updateProgress(false);
-        });
+      try {
+        const c = await getCommunity(token, communityid);
+        setCommunity(c);
+        updateProgress(false);
+      } catch {
+        dispatch(
+          setSnackbarState({
+            open: true,
+            type: 'error',
+            message:
+              'データの取得に失敗しました。しばらく時間をおいて再試行してください。',
+          })
+        );
+        updateProgress(false);
+      }
+
+      // NOTE:スレッド検索で404エラーが出た場合は、Snackbarを表示しない設定とする
+      try {
+        const cts = await getCommunityThreads(token, communityid);
+        setThreads(cts);
+      } catch {
+        updateProgress(false);
+      }
     }
   }, [community?.id, token]);
 

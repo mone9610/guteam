@@ -55,16 +55,14 @@ export const getUsers = async (token: string): Promise<UserType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/users`;
 
-  const response = await axios
-    .get<UserType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-
-  return response;
+  const response = await axios.get<UserType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const users = response.data;
+  return users;
 };
 
 export const getUser = async (
@@ -74,15 +72,14 @@ export const getUser = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
-  const response = await axios
-    .get<UserType>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<UserType>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const user = response.data;
+  return user;
 };
 
 type PutUserBody = Pick<UserType, 'name' | 'introduction' | 'image_url'>;
@@ -95,15 +92,14 @@ export const putUser = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/users/${sub}`;
 
-  const response = await axios
-    .put<UserType>(url, data, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.put<UserType>(url, data, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const user = response.data;
+  return user;
 };
 
 export const postUser = async (
@@ -113,32 +109,29 @@ export const postUser = async (
   const url = `${basePath}/users`;
   const header = `Bearer ${token}`;
 
-  const response = await axios
-    .post<UserType>(url, data, {
-      headers: {
-        Authorization: header,
-        ContentType: 'application/json; charset=utf-8',
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-
-  return response;
+  const response = await axios.post<UserType>(url, data, {
+    headers: {
+      Authorization: header,
+      ContentType: 'application/json; charset=utf-8',
+    },
+    timeout: 10000,
+  });
+  const user = response.data;
+  return user;
 };
 
 export const getPosts = async (token: string): Promise<PostType[]> => {
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;
 
-  const response = await axios
-    .get<PostType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<PostType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const posts = response.data;
+  return posts;
 };
 
 export const postPost = async (
@@ -148,21 +141,20 @@ export const postPost = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/posts`;
 
-  const response = await axios
-    .post<PostType>(
-      url,
-      {
-        message: body,
+  const response = await axios.post<PostType>(
+    url,
+    {
+      message: body,
+    },
+    {
+      headers: {
+        Authorization: header,
       },
-      {
-        headers: {
-          Authorization: header,
-        },
-        timeout: 10000,
-      }
-    )
-    .then((res) => res.data);
-  return response;
+      timeout: 10000,
+    }
+  );
+  const post = response.data;
+  return post;
 };
 
 export const getNotifications = async (
@@ -172,15 +164,14 @@ export const getNotifications = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/notifications/${id}`;
 
-  const response = await axios
-    .get<NotificationType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<NotificationType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const notifications = response.data;
+  return notifications;
 };
 
 export const getCommunities = async (
@@ -189,15 +180,14 @@ export const getCommunities = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/communities`;
 
-  const response = await axios
-    .get<CommunityType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<CommunityType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const communities = response.data;
+  return communities;
 };
 
 export const getCommunity = async (
@@ -207,15 +197,14 @@ export const getCommunity = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/communities/${id}`;
 
-  const response = await axios
-    .get<CommunityType>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<CommunityType>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const community = response.data;
+  return community;
 };
 
 export const getCommunityThreads = async (
@@ -232,15 +221,14 @@ export const getCommunityThreads = async (
 
   const url = urlHandler();
 
-  const response = await axios
-    .get<ThreadType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<ThreadType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const communityThreads = response.data;
+  return communityThreads;
 };
 
 export const getCommunityThread = async (
@@ -250,15 +238,14 @@ export const getCommunityThread = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/community_threads/${id}`;
 
-  const response = await axios
-    .get<ThreadType>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<ThreadType>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const communityThread = response.data;
+  return communityThread;
 };
 
 type PostCommunityThreadBody = Pick<
@@ -273,16 +260,15 @@ export const postCommunityThread = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/community_threads`;
 
-  const response = await axios
-    .post<ThreadType>(url, body, {
-      headers: {
-        Authorization: header,
-        ContentType: 'application/json; charset=utf-8',
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.post<ThreadType>(url, body, {
+    headers: {
+      Authorization: header,
+      ContentType: 'application/json; charset=utf-8',
+    },
+    timeout: 10000,
+  });
+  const communityThread = response.data;
+  return communityThread;
 };
 
 export const getThreadPosts = async (
@@ -298,15 +284,14 @@ export const getThreadPosts = async (
   };
   const url = urlHandler();
 
-  const response = await axios
-    .get<ThreadPostType[]>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<ThreadPostType[]>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const threadPosts = response.data;
+  return threadPosts;
 };
 
 export const getThreadPost = async (
@@ -316,15 +301,14 @@ export const getThreadPost = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/thread_posts/${id}`;
 
-  const response = await axios
-    .get<ThreadPostType>(url, {
-      headers: {
-        Authorization: header,
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.get<ThreadPostType>(url, {
+    headers: {
+      Authorization: header,
+    },
+    timeout: 10000,
+  });
+  const threadPost = response.data;
+  return threadPost;
 };
 
 type PostThreadPostBody = Pick<
@@ -339,14 +323,13 @@ export const postThreadPost = async (
   const header = `Bearer ${token}`;
   const url = `${basePath}/thread_posts`;
 
-  const response = await axios
-    .post<ThreadPostType>(url, body, {
-      headers: {
-        Authorization: header,
-        ContentType: 'application/json; charset=utf-8',
-      },
-      timeout: 10000,
-    })
-    .then((res) => res.data);
-  return response;
+  const response = await axios.post<ThreadPostType>(url, body, {
+    headers: {
+      Authorization: header,
+      ContentType: 'application/json; charset=utf-8',
+    },
+    timeout: 10000,
+  });
+  const threadPost = response.data;
+  return threadPost;
 };

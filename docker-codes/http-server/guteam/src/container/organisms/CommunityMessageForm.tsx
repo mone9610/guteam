@@ -21,32 +21,31 @@ const CommunityMessageForm: VFC = () => {
 
   const isMobileSize = useSize();
 
-  const send = useCallback(() => {
+  const send = useCallback(async () => {
     const body = {
       message: m as string,
       community_thread_id: Number(threadid),
     };
-    void postThreadPost(token, body)
-      .then(() => {
-        setM('');
-        dispatch(setReload(true));
-        dispatch(
-          setSnackbarState({
-            open: true,
-            type: 'success',
-            message: '送信に成功しました。',
-          })
-        );
-      })
-      .catch(() => {
-        dispatch(
-          setSnackbarState({
-            open: true,
-            type: 'error',
-            message: '予期せぬエラーが発生しました。',
-          })
-        );
-      });
+    try {
+      void (await postThreadPost(token, body));
+      setM('');
+      dispatch(setReload(true));
+      dispatch(
+        setSnackbarState({
+          open: true,
+          type: 'success',
+          message: '送信に成功しました。',
+        })
+      );
+    } catch {
+      dispatch(
+        setSnackbarState({
+          open: true,
+          type: 'error',
+          message: '予期せぬエラーが発生しました。',
+        })
+      );
+    }
   }, [dispatch, m, threadid, token]);
 
   //   Ctrl + Enterでイベントを実行するための関数
@@ -56,7 +55,7 @@ const CommunityMessageForm: VFC = () => {
       if (m?.length === 0 || m === undefined) {
         return;
       }
-      send();
+      void send();
     }
   };
 

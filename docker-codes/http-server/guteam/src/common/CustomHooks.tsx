@@ -34,17 +34,18 @@ export const useCommunities = (): CommunityType[] => {
   const [communities, setCommunities] = useState<CommunityType[]>();
   const dispatch = useDispatch();
 
-  const load = useCallback(() => {
+  const updateCommunities = (state: CommunityType[]) => {
+    dispatch(setCommunityList(state));
+  };
+
+  const load = useCallback(async () => {
     if (token) {
-      void getCommunities(token).then((cs) => {
-        setCommunities(cs);
-        const updateCommunities = (state: CommunityType[]) => {
-          dispatch(setCommunityList(state));
-        };
-        void updateCommunities(cs);
-      });
+      const cs = await getCommunities(token);
+      setCommunities(cs);
+      void updateCommunities(cs);
     }
-  }, [dispatch, token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   useEffect(() => {
     void load();

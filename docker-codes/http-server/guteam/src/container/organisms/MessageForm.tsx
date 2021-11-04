@@ -19,29 +19,28 @@ const MessageForm: VFC = () => {
 
   const isMobileSize = useSize();
 
-  const send = useCallback(() => {
-    void postPost(token, message as string)
-      .then(() => {
-        setMessage('');
-        dispatch(setReload(true));
-        dispatch(
-          setSnackbarState({
-            open: true,
-            type: 'success',
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            message: '送信に成功しました。',
-          })
-        );
-      })
-      .catch(() => {
-        dispatch(
-          setSnackbarState({
-            open: true,
-            type: 'error',
-            message: '予期せぬエラーが発生しました。',
-          })
-        );
-      });
+  const send = useCallback(async () => {
+    try {
+      void (await postPost(token, message as string));
+      setMessage('');
+      dispatch(setReload(true));
+      dispatch(
+        setSnackbarState({
+          open: true,
+          type: 'success',
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          message: '送信に成功しました。',
+        })
+      );
+    } catch {
+      dispatch(
+        setSnackbarState({
+          open: true,
+          type: 'error',
+          message: '予期せぬエラーが発生しました。',
+        })
+      );
+    }
   }, [dispatch, message, token]);
 
   //   Ctrl + Enterでイベントを実行するための関数
@@ -51,7 +50,7 @@ const MessageForm: VFC = () => {
       if (message?.length === 0 || message === undefined) {
         return;
       }
-      send();
+      void send();
     }
   };
 
