@@ -1,0 +1,29 @@
+{
+	"Version": "v0.8.18",
+	"Provider": "aws",
+	"Options": {
+		"Resources": [],
+		"Excludes": [],
+		"PathPattern": "{output}/{provider}/{service}/",
+		"PathOutput": "generated",
+		"State": "local",
+		"Bucket": "",
+		"Profile": "default",
+		"Verbose": false,
+		"Zone": "",
+		"Regions": [],
+		"Projects": null,
+		"ResourceGroup": "",
+		"Connect": true,
+		"Compact": false,
+		"Filter": [],
+		"Output": "hcl",
+		"RetryCount": 5,
+		"RetrySleepMs": 300
+	},
+	"Args": [
+		"",
+		"default"
+	],
+	"ImportedResource": {}
+}
