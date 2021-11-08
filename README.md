@@ -67,7 +67,7 @@ https://guteam.net/
     - MySQL 5.7
     - Docker version 19.03.13
     - docker-compose version 1.27.4
-    - Terraform(予定)
+    - Terraform
 - XaaS
     - [auth0](https://auth0.com/jp)
     - [GitHub](https://github.co.jp/)
